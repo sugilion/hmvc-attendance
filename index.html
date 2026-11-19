@@ -85,6 +85,14 @@ code{font-size:13px;background:var(--bg);border:1px solid var(--line);border-rad
 ol.steps{padding-left:20px;margin:8px 0 0} ol.steps li{margin-bottom:6px}
 input[type=text]{font:500 16px Inter,sans-serif;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);flex:1;min-width:0}
 .ok{color:var(--yes)}
+.grid{margin-top:18px} .grid summary{cursor:pointer;font-weight:500}
+.gridscroll{overflow-x:auto;margin-top:10px}
+.grid table{border-collapse:collapse;width:100%;font-size:13px}
+.grid th,.grid td{border:1px solid var(--line);padding:5px 4px;text-align:center;white-space:nowrap}
+.grid td:first-child{text-align:left;max-width:9.5em;overflow:hidden;text-overflow:ellipsis}
+.grid th{font-weight:500;color:var(--muted)}
+.grid .cur{background:var(--bg);font-weight:600}
+.grid td.g0{color:var(--yes)} .grid td.g1{color:var(--apol)} .grid td.g2{color:var(--no)}
 </style>
 </head>
 <body>
@@ -132,6 +140,10 @@ input[type=text]{font:500 16px Inter,sans-serif;padding:8px 10px;border:1px soli
     <div class="card"><div id="list"></div></div>
     <div class="tally" id="tally"></div>
     <div class="tools"><button class="btn" id="fillBtn">Mark all blanks ✓</button><span></span></div>
+    <details class="card grid" id="gridBox" open>
+      <summary>Recent rehearsals in the spreadsheet</summary>
+      <div id="gridBody"></div>
+    </details>
   </div>
 </div>
 
@@ -444,6 +456,23 @@ function render(){
   });
   $('tally').innerHTML=col?wb.legend.slice(0,3).map((l,k)=>`<span>${E(l.sym)} ${counts[k]}</span>`).join('')+`<span>blank ${blank}</span>`:'';
   $('fillBtn').disabled=!col||blank===0;
+  renderGrid(col);
+}
+function renderGrid(col){
+  const wb=L.wb, ds=wb.dates; if(!ds.length){ $('gridBody').innerHTML=''; return; }
+  const ref=col||lastPastCol()||nearestCol();
+  let i=ds.indexOf(ref); if(i<0) i=0;
+  const cols=ds.slice(Math.max(0,i-4), i+1);
+  const d=s=>new Date((s-25569)*864e5).toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'});
+  let h='<div class="gridscroll"><table><tr><th></th>'+cols.map(c=>`<th${col&&c===col?' class="cur"':''}>${d(c.serial)}</th>`).join('')+'</tr>';
+  for (const p of wb.people){
+    h+=`<tr><td>${E(p.first?p.first[0]+'. ':'')}${E(p.last)}</td>`+cols.map(c=>{
+      const v=p.marks[c.col]||'', k=wb.legend.findIndex(l=>l.sym===v);
+      return `<td class="${col&&c===col?'cur ':''}${k>=0&&k<3?'g'+k:''}">${E(v)}</td>`;
+    }).join('')+'</tr>';
+  }
+  $('gridBody').innerHTML=h+'</table></div>';
+  const sc=$('gridBody').firstChild; if(sc) sc.scrollLeft=sc.scrollWidth;
 }
 function mark(col, row, sym){
   ATT.setMark(L.wb, col, row, sym); L.pending.set(col+'|'+row, sym);
