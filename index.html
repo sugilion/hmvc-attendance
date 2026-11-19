@@ -89,14 +89,16 @@ input[type=text]{font:500 16px Inter,sans-serif;padding:8px 10px;border:1px soli
 #evType{font:500 16px Inter,sans-serif;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
 .evitem{font-size:14px;padding:5px 0;border-top:1px solid var(--line)}
 #typeSel{font:500 14px Inter,sans-serif;padding:4px 6px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);margin-left:4px}
-.grid th small.tt{display:block;font-size:10px;font-weight:600;color:var(--accent);letter-spacing:.02em}
+.grid th small.tt{display:block;font-size:9px;font-weight:600;color:var(--accent);letter-spacing:-.01em;overflow:hidden;text-overflow:clip;margin-top:1px}
+.grid th small.tt.reh{color:var(--muted);font-weight:500}
+.badge.reh{background:var(--line);color:var(--ink)}
 .grid{margin-top:18px} .grid summary{cursor:pointer;font-weight:500}
 .gridnav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;font-size:13px;color:var(--muted);text-align:center}
 .gridnav .btn{padding:7px 10px;font-size:13px;flex:none}
 #gridBody{margin-top:8px}
 .grid table{border-collapse:collapse;width:100%;font-size:13px;table-layout:fixed}
-.grid th:first-child,.grid td:first-child{width:27%}
-.grid th{font-size:12px;padding-left:2px;padding-right:2px}
+.grid th:first-child,.grid td:first-child{width:25%}
+.grid th{font-size:12px;padding-left:1px;padding-right:1px}
 .grid th,.grid td{border:1px solid var(--line);padding:5px 4px;text-align:center;white-space:nowrap}
 .grid td:first-child{text-align:left;max-width:9.5em;overflow:hidden;text-overflow:ellipsis}
 .grid th{font-weight:500;color:var(--muted)}
@@ -599,7 +601,7 @@ function render(){
   const wb=L.wb; $('date').value=L.date;
   const col=currentCol(), info=$('colinfo');
   if (col){
-    info.innerHTML=`<b>${fmt(L.date)}</b>`+(col.type!=='Rehearsal'?` <span class="badge">${E(col.type)}</span>`:'')+` <span style="color:var(--muted)">· column ${col.col}</span>`;
+    info.innerHTML=`<b>${fmt(L.date)}</b>`+` <span class="badge${col.type==='Rehearsal'?' reh':''}">${E(col.type)}</span>`+` <span style="color:var(--muted)">· column ${col.col}</span>`;
   }
   else {
     const n=lastPastCol()||nearestCol();
@@ -639,7 +641,7 @@ function renderGrid(col){
   const cols=ds.slice(L.gridStart, L.gridStart+5);
   const d=s=>new Date((s-25569)*864e5).toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'});
   const dy=s=>new Date((s-25569)*864e5).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'});
-  let h='<table><tr><th></th>'+cols.map(c=>`<th${col&&c===col?' class="cur"':''}>${d(c.serial)}${c.type!=='Rehearsal'?`<small class="tt">${E(c.type)}</small>`:''}</th>`).join('')+'</tr>';
+  let h='<table><tr><th></th>'+cols.map(c=>`<th${col&&c===col?' class="cur"':''}>${d(c.serial)}<small class="tt${c.type==='Rehearsal'?' reh':''}">${c.type==='Rehearsal'?'Reh.':E(c.type)}</small></th>`).join('')+'</tr>';
   for (const p of wb.people){
     h+=`<tr><td>${E(p.first?p.first[0]+'. ':'')}${E(p.last)}</td>`+cols.map(c=>{
       const v=p.marks[c.col]||'', k=wb.legend.findIndex(l=>l.sym===v);
