@@ -103,7 +103,18 @@ input[type=text]{font:500 16px Inter,sans-serif;padding:8px 10px;border:1px soli
 .grid td:first-child{text-align:left;max-width:9.5em;overflow:hidden;text-overflow:ellipsis}
 .grid th{font-weight:500;color:var(--muted)}
 .grid .cur{background:var(--bg);font-weight:600}
-.grid td.g0{color:var(--yes)} .grid td.g1{color:var(--apol)} .grid td.g2{color:var(--no)}
+.grid td.g-yes{color:var(--yes)} .grid td.g-apol{color:var(--apol)} .grid td.g-no{color:var(--no)} .grid td.g-sick{color:var(--sick)}
+.mk.on.k-yes{background:var(--yes-soft);border-color:var(--yes);color:var(--yes);font-weight:600}
+.mk.on.k-apol{background:var(--apol-soft);border-color:var(--apol);color:var(--apol);font-weight:600}
+.mk.on.k-sick{background:var(--sick-soft);border-color:var(--sick);color:var(--sick);font-weight:600}
+.mk.on.k-no{background:var(--no-soft);border-color:var(--no);color:var(--no);font-weight:600}
+.mk.on.k-other{background:var(--line);border-color:var(--muted);color:var(--ink);font-weight:600}
+.mk.emoji{font-size:21px}
+.mk.emoji:not(.on){filter:grayscale(1);opacity:.55}
+.mk{width:44px}
+.marks{gap:5px}
+:root{--sick:#2a63b8;--sick-soft:#e2ecfa}
+@media (prefers-color-scheme:dark){:root{--sick:#8fb6f0;--sick-soft:#1d2a3d}}
 </style>
 </head>
 <body>
@@ -266,7 +277,7 @@ const ATT = (() => {
     for (let r = 1; r < hdr; r++) {
       const a = get('A' + r), b = get('B' + r);
       if (typeof a === 'string' && a.trim().length && a.trim().length <= 2 && typeof b === 'string')
-        legend.push({ sym: a.trim(), label: b.replace(/^\s*=\s*/, '').trim() });
+        legend.push({ sym: a.trim(), label: b.replace(/^\s*=\s*/, '').trim(), row: r });
     }
     if (legend.length < 2) legend.splice(0, legend.length, { sym: '✓', label: 'Attended' }, { sym: '~', label: 'Apologies received' }, { sym: '✗', label: "Didn't Attend" });
 
@@ -356,8 +367,29 @@ const ATT = (() => {
     return ref.replace(/([A-Z]+)(\d+)/g, (all, c, r) => +r >= from ? c + (+r + d) : all);
   }
 
-  // One-time upgrade: add a "Type" row above the dates and turn the date formulas into plain dates.
-  function needsUpgrade(wb) { return !wb.typeRow || wb.hasFormulas; }
+  // Move every row from `at` downwards by one, keeping drop-downs, merges and selections pointing at the same cells.
+  function shiftDown(x, at) {
+    x = x.replace(ROW_RE, row => {
+      const r = +row.match(/^<row r="(\d+)"/)[1];
+      if (r < at) return row;
+      return row.replace(/^<row r="\d+"/, `<row r="${r + 1}"`).replace(/<c r="([A-Z]+)\d+"/g, (a, c) => `<c r="${c}${r + 1}"`);
+    });
+    x = x.replace(/(<dataValidation [^>]*sqref=")([^"]*)(")/g, (a, p, ref, q) => p + shiftRangeRows(ref, at, 1) + q);
+    x = x.replace(/(<formula1>)([^<]*)(<\/formula1>)/g, (a, p, f, q) => f.trim().startsWith('"') ? a :
+      p + f.replace(/(\$?)([A-Z]+)(\$?)(\d+)/g, (m, d1, c, d2, r) => +r >= at ? d1 + c + d2 + (+r + 1) : m) + q);
+    x = x.replace(/(<mergeCell ref=")([^"]*)(")/g, (a, p, ref, q) => p + shiftRangeRows(ref, at, 1) + q);
+    x = x.replace(/(<(?:selection|pane)[^>]*?(?:activeCell|topLeftCell)=")([A-Z]+\d+)(")/g, (a, p, ref, q) => p + shiftRangeRows(ref, at, 1) + q);
+    x = x.replace(/(<selection[^>]*?sqref=")([^"]*)(")/g, (a, p, ref, q) => p + shiftRangeRows(ref, at, 1) + q);
+    return x;
+  }
+  const SICK = '\u{1F912}', SICK_LABEL = 'Sick';
+  const hasSick = wb => wb.legend.some(l => l.sym === SICK || /\b(sick|unwell|ill)\b/i.test(l.label));
+
+  // Upgrades, each done once: a "Type" row above the dates, plain dates instead of formulas, and a "Sick" mark.
+  const oldAbsent = wb => wb.legend.find(l => /didn.?t\s*attend/i.test(l.label));
+  const APOL = '\u{1F64F}';
+  const oldApol = wb => wb.legend.find(l => /apolog/i.test(l.label) && l.sym !== APOL);
+  function needsUpgrade(wb) { return !wb.typeRow || wb.hasFormulas || !hasSick(wb) || !!oldAbsent(wb) || !!oldApol(wb); }
   async function upgrade(wb) {
     let x = stripSpans(wb.sheetXml);
     const hdr = wb.hdr;
@@ -381,15 +413,7 @@ const ATT = (() => {
     }
     if (!wb.typeRow) {
       // shift the header row and everything below it down by one
-      x = x.replace(ROW_RE, row => {
-        const r = +row.match(/^<row r="(\d+)"/)[1];
-        if (r < hdr) return row;
-        return row.replace(/^<row r="\d+"/, `<row r="${r + 1}"`).replace(/<c r="([A-Z]+)\d+"/g, (a, c) => `<c r="${c}${r + 1}"`);
-      });
-      x = x.replace(/(<dataValidation [^>]*sqref=")([^"]*)(")/g, (a, p, ref, q) => p + shiftRangeRows(ref, hdr, 1) + q);
-      x = x.replace(/(<mergeCell ref=")([^"]*)(")/g, (a, p, ref, q) => p + shiftRangeRows(ref, hdr, 1) + q);
-      x = x.replace(/(<(?:selection|pane)[^>]*?(?:activeCell|topLeftCell)=")([A-Z]+\d+)(")/g, (a, p, ref, q) => p + shiftRangeRows(ref, hdr, 1) + q);
-      x = x.replace(/(<selection[^>]*?sqref=")([^"]*)(")/g, (a, p, ref, q) => p + shiftRangeRows(ref, hdr, 1) + q);
+      x = shiftDown(x, hdr);
       // a style for the Type labels: rotated like the dates, regular weight, pushed to the top of the row
       let hs = wb.hdrStyle ? ` s="${wb.hdrStyle}"` : '';
       const stP = 'xl/styles.xml', stF = wb.zip.file(stP);
@@ -413,6 +437,33 @@ const ATT = (() => {
       x = x.slice(0, pos) + row + x.slice(pos);
     }
     wb.sheetXml = x; fixDimension(wb); parse(wb);
+    if (!hasSick(wb) && wb.legend.length) {
+      // new legend line just before "Didn't attend" (or after the last line), which also widens the drop-down list
+      const no = wb.legend.find(l => /didn|not\s*attend|absent/i.test(l.label));
+      const at = no ? no.row : wb.legend[wb.legend.length - 1].row + 1;
+      const refRow = wb.legend.find(l => l.row === at - 1) ? at - 1 : wb.legend[0].row;
+      x = stripSpans(wb.sheetXml);
+      const refXml = (x.match(new RegExp(`<row r="${refRow}"(?=[\\s>/])[^>]*?(?:/>|>[\\s\\S]*?</row>)`)) || [''])[0];
+      const st = col => (refXml.match(new RegExp(`<c r="${col}${refRow}"[^>]*?\\ss="(\\d+)"`)) || [])[1];
+      x = shiftDown(x, at);
+      const sA = st('A'), sB = st('B'), sC = st('C');
+      let row = `<row r="${at}"><c r="A${at}"${sA ? ` s="${sA}"` : ''} t="s"><v>${sstIndex(wb, SICK)}</v></c>`
+              + `<c r="B${at}"${sB ? ` s="${sB}"` : ''} t="s"><v>${sstIndex(wb, '=  ' + SICK_LABEL)}</v></c>`
+              + (sC ? `<c r="C${at}" s="${sC}"/>` : '') + '</row>';
+      const pos = x.search(new RegExp(`<row r="${at + 1}"[\\s>/]`));
+      x = x.slice(0, pos) + row + x.slice(pos);
+      wb.sheetXml = x; fixDimension(wb); parse(wb);
+    }
+    // "Didn't Attend" is now called "Absent"
+    const oa = oldAbsent(wb);
+    if (oa) { setMark(wb, 'B', oa.row, '=  Absent'); parse(wb); }
+    // apologies are now shown as folded hands: change the legend symbol and every existing mark
+    const ap = oldApol(wb);
+    if (ap) {
+      const old = ap.sym;
+      for (const p of wb.people) for (const d of wb.dates) if (p.marks[d.col] === old) setMark(wb, d.col, p.row, APOL);
+      setMark(wb, 'A', ap.row, APOL); parse(wb);
+    }
   }
 
   // Insert a new date column (Concert/Event/Rehearsal) in date order. Requires an upgraded sheet.
@@ -597,6 +648,16 @@ function currentCol(){ const s=ATT.isoToSerial(L.date); return L.wb.dates.find(d
 function nearestCol(){ const s=ATT.isoToSerial(L.date); let b=null; for(const d of L.wb.dates) if(!b||Math.abs(d.serial-s)<Math.abs(b.serial-s)) b=d; return b; }
 function lastPastCol(){ const s=ATT.isoToSerial(L.date); let b=null; for(const d of L.wb.dates) if(d.serial<=s) b=d; return b; }
 
+// colour each mark by what it means, not by its position in the legend
+function kindOf(l){
+  const t=(l.label||'').toLowerCase();
+  if (/sick|unwell|\bill\b/.test(t)) return 'sick';
+  if (/apolog/.test(t)) return 'apol';
+  if (/didn|not\s*attend|absent|no.?show/.test(t)) return 'no';
+  if (/attend|present/.test(t)) return 'yes';
+  return 'other';
+}
+const isEmoji = s => /\p{Extended_Pictographic}/u.test(s);
 function render(){
   const wb=L.wb; $('date').value=L.date;
   const col=currentCol(), info=$('colinfo');
@@ -611,22 +672,22 @@ function render(){
   }
   $('legend').innerHTML=wb.legend.map(l=>`<span><b>${E(l.sym)}</b> ${E(l.label)}</span>`).join('');
   const list=$('list'); list.innerHTML='';
-  const counts=[0,0,0]; let blank=0;
+  const legend=wb.legend.slice(0,5), counts=legend.map(()=>0); let blank=0;
   wb.people.forEach(p=>{
-    const cur=col?p.marks[col.col]:undefined, ki=wb.legend.findIndex(l=>l.sym===cur);
-    if(ki>=0&&ki<3) counts[ki]++; else blank++;
+    const cur=col?p.marks[col.col]:undefined, ki=legend.findIndex(l=>l.sym===cur);
+    if(ki>=0) counts[ki]++; else blank++;
     const el=document.createElement('div'); el.className='person';
     el.innerHTML=`<div class="name">${E(p.first)} ${E(p.last)}${cur&&ki<0?`<small>Cell holds “${E(cur)}”</small>`:''}</div>`;
     const m=document.createElement('div'); m.className='marks';
-    wb.legend.slice(0,3).forEach((l,k)=>{
-      const b=document.createElement('button'); b.className='mk k'+k+(cur===l.sym?' on':''); b.textContent=l.sym;
+    legend.forEach(l=>{
+      const b=document.createElement('button'); b.className='mk k-'+kindOf(l)+(isEmoji(l.sym)?' emoji':'')+(cur===l.sym?' on':''); b.textContent=l.sym;
       b.title=l.label; b.setAttribute('aria-label',`${p.first} ${p.last}: ${l.label}`); b.disabled=!col;
       b.onclick=()=>mark(col.col, p.row, cur===l.sym?null:l.sym);
       m.appendChild(b);
     });
     el.appendChild(m); list.appendChild(el);
   });
-  $('tally').innerHTML=col?wb.legend.slice(0,3).map((l,k)=>`<span>${E(l.sym)} ${counts[k]}</span>`).join('')+`<span>blank ${blank}</span>`:'';
+  $('tally').innerHTML=col?legend.map((l,k)=>`<span>${E(l.sym)} ${counts[k]}</span>`).join('')+`<span>blank ${blank}</span>`:'';
   $('fillBtn').disabled=!col||blank===0;
   renderGrid(col);
 }
@@ -645,7 +706,7 @@ function renderGrid(col){
   for (const p of wb.people){
     h+=`<tr><td>${E(p.first?p.first[0]+'. ':'')}${E(p.last)}</td>`+cols.map(c=>{
       const v=p.marks[c.col]||'', k=wb.legend.findIndex(l=>l.sym===v);
-      return `<td class="${col&&c===col?'cur ':''}${k>=0&&k<3?'g'+k:''}">${E(v)}</td>`;
+      return `<td class="${col&&c===col?'cur ':''}${k>=0?'g-'+kindOf(wb.legend[k]):''}">${E(v)}</td>`;
     }).join('')+'</tr>';
   }
   $('gridBody').innerHTML=h+'</table>';
@@ -829,7 +890,7 @@ async function adminPrepare(files){
     try{ const r=await processSheet(auth, f, null); if (r.saved) upgraded++; adminSheets.push({f, label:labelFor(r.wb, f.name), wb:r.wb}); }
     catch(e){ if (e.auth){ adminStore.patch({refresh:null}); return adminRender(); } failed.push(f.name); }
   }
-  $('prepNote').innerHTML = (upgraded?`<span class="ok">\u2713 Prepared ${upgraded} sheet${upgraded>1?'s':''}</span>: added the Type row and fixed the dates as values. Originals saved in the app folder\u2019s <b>Backups</b> folder. `:'')
+  $('prepNote').innerHTML = (upgraded?`<span class="ok">\u2713 Prepared ${upgraded} sheet${upgraded>1?'s':''}</span>: brought the layout up to date (Type row, plain dates, 🙏 Apologies, 🤒 Sick, “Absent”). Originals saved in the app folder\u2019s <b>Backups</b> folder. `:'')
     + (failed.length?`<span class="warn">Couldn\u2019t read: ${E(failed.join(', '))}.</span>`:'');
   $('aDates').classList.toggle('hidden', !adminSheets.length);
   renderEventList();
