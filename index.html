@@ -87,6 +87,40 @@ input[type=text]{font:500 16px Inter,sans-serif;padding:8px 10px;border:1px soli
 .ok{color:var(--yes)}
 .badge{display:inline-block;background:var(--accent);color:var(--on-accent);font-size:12px;font-weight:600;border-radius:999px;padding:2px 9px;margin-left:4px;vertical-align:1px}
 #evType{font:500 16px Inter,sans-serif;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+.viz-root{--surface-1:#fcfcfb;--text-primary:#0b0b0b;--text-secondary:#52514e;--text-muted:#8a8984;--grid:#e8e6e1;
+  --series-1:#2a78d6;--series-2:#eb6834;--series-3:#1baf7a;--series-4:#eda100;background:var(--surface-1)}
+@media (prefers-color-scheme:dark){.viz-root{--surface-1:#1a1a19;--text-primary:#f0efec;--text-secondary:#c3c2b7;--text-muted:#8f8e88;--grid:#2e2d2b;
+  --series-1:#3987e5;--series-2:#d95926;--series-3:#199e70;--series-4:#c98500}}
+.viz-h{font:600 15px Inter,sans-serif;margin:14px 0 6px;color:var(--text-primary)}
+.viz-head{margin:4px 0 4px;color:var(--text-secondary);font-size:14px}
+.viz-head .big{font:650 28px Fraunces,Georgia,serif;color:var(--text-primary);margin-right:6px;vertical-align:-3px}
+.viz-legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--text-secondary);margin:2px 0 6px}
+.viz-legend i,.viz-tip i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.viz-legend i.tot,.viz-tip i.tot{background:var(--text-primary)}
+.viz-chart svg{display:block;overflow:visible}
+.viz-grid{stroke:var(--grid);stroke-width:1}
+.viz-base{stroke:var(--text-muted);stroke-width:1}
+.viz-cross{stroke:var(--text-muted);stroke-width:1;stroke-dasharray:3 3}
+.viz-ax{font:11px Inter,sans-serif;fill:var(--text-secondary)}
+.viz-ax2{font:10px Inter,sans-serif;fill:var(--text-muted)}
+.viz-val{font:600 11px Inter,sans-serif;fill:var(--text-primary)}
+.viz-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.viz-tip{position:absolute;display:none;z-index:20;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px;box-shadow:0 4px 18px rgba(0,0,0,.18);pointer-events:none;min-width:190px}
+.viz-tip .h{font-weight:600;margin-bottom:4px}
+.viz-tip .r{display:flex;align-items:center;gap:4px;padding:1px 0}
+.viz-tip .r b{margin-left:auto;font-weight:600} .viz-tip .r small{color:var(--muted);width:3.6em;text-align:right}
+.viz-tip .r.t{border-top:1px solid var(--line);margin-top:3px;padding-top:4px}
+.viz-tip{--series-1:#2a78d6;--series-2:#eb6834;--series-3:#1baf7a;--series-4:#eda100;--text-primary:#0b0b0b}
+@media (prefers-color-scheme:dark){.viz-tip{--series-1:#3987e5;--series-2:#d95926;--series-3:#199e70;--series-4:#c98500;--text-primary:#f0efec}}
+.viz-fig{margin-top:6px} .viz-fig summary{cursor:pointer;font-size:13.5px;color:var(--accent)}
+.viz-tablewrap{overflow-x:auto;margin-top:8px}
+.viz-table{border-collapse:collapse;font-size:13px;width:100%}
+.viz-table th,.viz-table td{border-bottom:1px solid var(--line);padding:5px 4px;text-align:right;white-space:nowrap}
+.viz-table th{white-space:normal;vertical-align:bottom;line-height:1.2}
+.viz-halo{paint-order:stroke;stroke:var(--surface-1);stroke-width:3px}
+.viz-table th{color:var(--muted);font-weight:500} .viz-table th:first-child,.viz-table td:first-child{text-align:left}
+.viz-table td small{display:block;color:var(--muted);font-size:11px}
+.viz-table .mut{color:var(--muted)}
 .evitem{font-size:14px;padding:5px 0;border-top:1px solid var(--line)}
 #typeSel{font:500 14px Inter,sans-serif;padding:4px 6px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);margin-left:4px}
 .grid th small.tt{display:block;font-size:9px;font-weight:600;color:var(--accent);letter-spacing:-.01em;overflow:hidden;text-overflow:clip;margin-top:1px}
@@ -138,6 +172,12 @@ input[type=text]{font:500 16px Inter,sans-serif;padding:8px 10px;border:1px soli
       <p class="sub" style="margin-bottom:10px" id="connState">The app can only reach its own folder, <b>Apps › (your app name)</b>, in your Dropbox — nothing else.</p>
       <button class="btn primary" id="connectBtn">Connect Dropbox</button>
       <div class="warn" id="adminErr" style="margin-top:10px"></div>
+      <div id="orgLinkBox" class="hidden" style="margin-top:12px">
+        <p class="lbl" style="margin:0 0 4px">Your organiser link</p>
+        <p class="sub" style="margin:0 0 6px">Bookmark this, or add it to your home screen. It opens this page on any device, already connected, with no key or sign-in needed. Keep it private: like the lead links, it gives access to the sheets.</p>
+        <div class="linkbox" id="orgLink"></div>
+        <div class="row" style="margin-top:8px"><button class="btn primary" id="orgCopy">Copy organiser link</button></div>
+      </div>
     </div>
     <div class="card hidden" id="aLinks" style="margin-top:12px">
       <h2>3. Send each lead their link</h2>
@@ -153,6 +193,17 @@ input[type=text]{font:500 16px Inter,sans-serif;padding:8px 10px;border:1px soli
       <div class="row" style="margin-top:10px"><button class="btn primary" id="evApply">Add to all sheets</button></div>
       <div id="evResult" style="margin-top:10px;font-size:14px"></div>
       <div id="evList" style="margin-top:12px"></div>
+    </div>
+    <div class="card hidden viz-root" id="aStats" style="margin-top:12px">
+      <h2>5. Attendance summary</h2>
+      <p class="sub" style="margin-bottom:8px">Attendance = singers marked ✓ as a share of everyone with a mark for that date (blank cells don’t count). Tap or hover a chart for figures.</p>
+      <p id="statsHead" class="viz-head"></p>
+      <h3 class="viz-h" id="monthlyTitle">Rehearsals — monthly average</h3>
+      <div id="chartMonthly" class="viz-chart"></div>
+      <details class="viz-fig"><summary>Show figures</summary><div id="tblMonthly"></div></details>
+      <h3 class="viz-h" style="margin-top:22px">Concerts &amp; events</h3>
+      <div id="chartEvents" class="viz-chart"></div>
+      <details class="viz-fig"><summary>Show figures</summary><div id="tblEvents"></div></details>
     </div>
     <div class="foot"><span id="adminWho"></span><button class="btn link hidden" id="disconnectBtn">Disconnect &amp; cancel all links</button></div>
   </div>
@@ -842,9 +893,17 @@ async function adminRender(){
   if (!adminAuth()) $('aDates').classList.add('hidden');
   const auth=adminAuth();
   $('aLinks').classList.toggle('hidden', !auth); $('disconnectBtn').classList.toggle('hidden', !auth);
-  if (!auth){ $('connectBtn').textContent='Connect Dropbox'; return; }
+  if (!auth){ $('connectBtn').textContent='Connect Dropbox'; $('orgLinkBox').classList.add('hidden');
+    if (!window.DEMO && /[#&]t=/.test(location.hash)) history.replaceState(null,'',REDIRECT+'#admin&k='+encodeURIComponent(a.key||''));
+    return; }
   $('connState').innerHTML='<span class="ok">✓ Connected.</span> The app can only reach its own folder, <b>Apps › (your app name)</b>. Put the four attendance sheets in there.';
   $('connectBtn').textContent='Reconnect';
+  const ol=REDIRECT+'#admin&k='+encodeURIComponent(a.key||'')+'&t='+encodeURIComponent(a.refresh);
+  $('orgLink').textContent=ol; $('orgLinkBox').classList.remove('hidden');
+  $('orgCopy').onclick=async()=>{ try{ await navigator.clipboard.writeText(ol); $('orgCopy').textContent='Copied \u2713'; setTimeout(()=>$('orgCopy').textContent='Copy organiser link',2000); }catch(e){ $('orgCopy').textContent='Copy failed \u2014 select the text'; } };
+  if (adminStore.get().fromLink) adminStore.patch({fromLink:false});
+  // keep the address bar showing a link that works, so bookmarking the page itself also works
+  if (!window.DEMO && location.hash.slice(1)!==ol.split('#')[1]) history.replaceState(null,'',ol);
   try{ const acct=await dbx(auth,'rpc','users/get_current_account'); $('adminWho').textContent='Dropbox: '+(acct.email||''); }catch(e){}
   adminFiles();
 }
@@ -888,12 +947,12 @@ async function adminPrepare(files){
   let upgraded=0, failed=[];
   for (const f of files){
     try{ const r=await processSheet(auth, f, null); if (r.saved) upgraded++; adminSheets.push({f, label:labelFor(r.wb, f.name), wb:r.wb}); }
-    catch(e){ if (e.auth){ adminStore.patch({refresh:null}); return adminRender(); } failed.push(f.name); }
+    catch(e){ if (e.auth){ adminStore.patch({refresh:null}); await adminRender(); $('adminErr').textContent='That connection no longer works (it was disconnected or replaced). Connect again, then bookmark the new organiser link.'; return; } failed.push(f.name); }
   }
   $('prepNote').innerHTML = (upgraded?`<span class="ok">\u2713 Prepared ${upgraded} sheet${upgraded>1?'s':''}</span>: brought the layout up to date (Type row, plain dates, 🙏 Apologies, 🤒 Sick, “Absent”). Originals saved in the app folder\u2019s <b>Backups</b> folder. `:'')
     + (failed.length?`<span class="warn">Couldn\u2019t read: ${E(failed.join(', '))}.</span>`:'');
   $('aDates').classList.toggle('hidden', !adminSheets.length);
-  renderEventList();
+  renderEventList(); renderStats();
 }
 async function adminApplyDate(){
   const iso=$('evDate').value, type=$('evType').value;
@@ -911,13 +970,180 @@ async function adminApplyDate(){
       });
       sh.wb=r.wb; lines.push(`<span class="ok">\u2713</span> ${E(sh.label)}: ${E(r.msg.text)}`);
     }catch(e){
-      if (e.auth){ adminStore.patch({refresh:null}); return adminRender(); }
+      if (e.auth){ adminStore.patch({refresh:null}); await adminRender(); $('adminErr').textContent='That connection no longer works (it was disconnected or replaced). Connect again, then bookmark the new organiser link.'; return; }
       lines.push(`<span class="warn">\u2717 ${E(sh.label)}: ${e.net?'no connection':'couldn\u2019t update'} \u2014 try again</span>`);
     }
     out.innerHTML=lines.join('<br>');
   }
-  $('evApply').disabled=false; renderEventList();
+  $('evApply').disabled=false; renderEventList(); renderStats();
 }
+// =====================================================================
+// ORGANISER: attendance summary (charts + tables)
+// Attendance % = ✓ marks ÷ singers with any mark recorded for that date (blank cells are ignored).
+// =====================================================================
+const VIZ_SERIES = ['var(--series-1)','var(--series-2)','var(--series-3)','var(--series-4)'];
+function markKind(wb, v){ const l=wb.legend.find(x=>x.sym===v); return l ? kindOf(l) : null; }
+function dateCounts(wb, d){
+  let a=0, r=0;
+  for (const p of wb.people){ const v=p.marks[d.col]; if (!v) continue; const k=markKind(wb, v); if (!k) continue; r++; if (k==='yes') a++; }
+  return {a, r};
+}
+const pct = (a,r) => r ? Math.round(100*a/r) : null;
+const todaySerial = () => ATT.isoToSerial(todayISO());
+function serialMonth(s){ const d=new Date((s-25569)*864e5); return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0'); }
+function monthLabel(k, withYear){ const [y,m]=k.split('-'); const d=new Date(Date.UTC(+y,+m-1,1)); return d.toLocaleDateString('en-GB',{month:'short', ...(withYear?{year:'2-digit'}:{}), timeZone:'UTC'}); }
+
+function computeStats(){
+  const sections = adminSheets.map((sh,i)=>({name:sh.label, color:VIZ_SERIES[i%4], wb:sh.wb}));
+  const now = new Date(), months=[];
+  for (let i=11; i>=0; i--){ const d=new Date(Date.UTC(now.getFullYear(), now.getMonth()-i, 1)); months.push(d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')); }
+  const today = todaySerial();
+  // monthly rehearsals
+  const monthly = months.map(m=>({m, sec:sections.map(()=>({a:0,r:0,n:0})), tot:{a:0,r:0}}));
+  const mi = Object.fromEntries(months.map((m,i)=>[m,i]));
+  sections.forEach((s,si)=>{
+    for (const d of s.wb.dates){
+      if (d.type!=='Rehearsal' || d.serial>today) continue;
+      const i=mi[serialMonth(d.serial)]; if (i==null) continue;
+      const c=dateCounts(s.wb,d); if (!c.r) continue;
+      const x=monthly[i].sec[si]; x.a+=c.a; x.r+=c.r; x.n++;
+      monthly[i].tot.a+=c.a; monthly[i].tot.r+=c.r;
+    }
+  });
+  // concerts & events (any date with marks)
+  const ev = new Map();
+  sections.forEach((s,si)=>{
+    for (const d of s.wb.dates){
+      if (d.type==='Rehearsal') continue;
+      const c=dateCounts(s.wb,d); const k=d.serial+'|'+d.type;
+      if (!ev.has(k)) ev.set(k,{serial:d.serial, type:d.type, sec:sections.map(()=>({a:0,r:0})), tot:{a:0,r:0}});
+      const e=ev.get(k); e.sec[si]={a:c.a, r:c.r}; e.tot.a+=c.a; e.tot.r+=c.r;
+    }
+  });
+  while (monthly.length>1 && !monthly[0].tot.r) monthly.shift();
+  const events=[...ev.values()].filter(e=>e.tot.r>0 && e.serial>=ATT.isoToSerial(months[0]+'-01')).sort((a,b)=>a.serial-b.serial);
+  const upcoming=[...ev.values()].filter(e=>e.tot.r===0 && e.serial>=today).length;
+  return {sections, monthly, events, upcoming};
+}
+
+// ---- tooltip shared by both charts ----
+function vizTip(){ let t=$('vizTip'); if(!t){ t=document.createElement('div'); t.id='vizTip'; t.className='viz-tip'; document.body.appendChild(t); } return t; }
+function showTip(html, x, y){ const t=vizTip(); t.innerHTML=html; t.style.display='block';
+  const w=t.offsetWidth, h=t.offsetHeight; let left=x+12, top=y-h-12;
+  if (left+w>window.innerWidth-8) left=x-w-12; if (left<8) left=8; if (top<8) top=y+16;
+  t.style.left=(left+window.scrollX)+'px'; t.style.top=(top+window.scrollY)+'px'; }
+function hideTip(){ const t=$('vizTip'); if(t) t.style.display='none'; }
+document.addEventListener('scroll', hideTip, {passive:true});
+
+function legendHTML(sections){
+  return '<div class="viz-legend">'+sections.map(s=>`<span><i style="background:${s.color}"></i>${E(s.name)}</span>`).join('')+
+    '<span><i class="tot"></i>All sections</span></div>';
+}
+const svgEl = (tag, attrs) => { const e=document.createElementNS('http://www.w3.org/2000/svg', tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
+function tipRows(sections, sec, tot){
+  return sections.map((s,i)=>{ const p=pct(sec[i].a,sec[i].r); return `<div class="r"><i style="background:${s.color}"></i>${E(s.name)}<b>${p==null?'–':p+'%'}</b><small>${sec[i].r?sec[i].a+'/'+sec[i].r:''}</small></div>`; }).join('')+
+    `<div class="r t"><i class="tot"></i>All sections<b>${pct(tot.a,tot.r)==null?'–':pct(tot.a,tot.r)+'%'}</b><small>${tot.r?tot.a+'/'+tot.r:''}</small></div>`;
+}
+
+// ---- monthly line chart ----
+function drawMonthly(host, st){
+  host.innerHTML=''; const {sections, monthly}=st;
+  if (!monthly.some(m=>m.tot.r)){ host.innerHTML='<p class="sub">No rehearsal attendance recorded in the last 12 months yet.</p>'; return; }
+  host.insertAdjacentHTML('beforeend', legendHTML(sections));
+  const W=Math.max(300, host.clientWidth||340), H=230, m={l:38,r:34,t:12,b:28};
+  const iw=W-m.l-m.r, ih=H-m.t-m.b, n=monthly.length;
+  const X=i=>m.l+iw*(i+0.5)/n, Y=v=>m.t+ih*(1-v/100);
+  const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`, width:'100%', role:'img', 'aria-label':'Monthly average rehearsal attendance by section, last 12 months'});
+  for (const v of [0,25,50,75,100]){
+    svg.appendChild(svgEl('line',{x1:m.l,x2:W-m.r,y1:Y(v),y2:Y(v),class:v?'viz-grid':'viz-base'}));
+    const t=svgEl('text',{x:m.l-6,y:Y(v)+4,'text-anchor':'end',class:'viz-ax'}); t.textContent=v+'%'; svg.appendChild(t);
+  }
+  monthly.forEach((mm,i)=>{ if (i%2 && n>7) return; const t=svgEl('text',{x:X(i),y:H-8,'text-anchor':'middle',class:'viz-ax'}); t.textContent=monthLabel(mm.m, i===0||mm.m.endsWith('-01')); svg.appendChild(t); });
+  const series=[...sections.map((s,si)=>({color:s.color, w:2, vals:monthly.map(mm=>pct(mm.sec[si].a,mm.sec[si].r))})),
+                {color:'var(--text-primary)', w:3, vals:monthly.map(mm=>pct(mm.tot.a,mm.tot.r)), tot:true}];
+  const cross=svgEl('line',{y1:m.t,y2:m.t+ih,class:'viz-cross',visibility:'hidden'}); svg.appendChild(cross);
+  for (const s of series){
+    let d='', pen=false;
+    s.vals.forEach((v,i)=>{ if (v==null){ pen=false; return; } d+=(pen?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1); pen=true; });
+    if (d) svg.appendChild(svgEl('path',{d, fill:'none', stroke:s.color, 'stroke-width':s.w, 'stroke-linejoin':'round','stroke-linecap':'round'}));
+    s.vals.forEach((v,i)=>{ if (v!=null) svg.appendChild(svgEl('circle',{cx:X(i),cy:Y(v),r:s.tot?4.5:3.5,fill:s.color,stroke:'var(--surface-1)','stroke-width':2})); });
+  }
+  // direct label: latest total
+  const li=series[series.length-1].vals.map((v,i)=>v==null?-1:i).filter(i=>i>=0).pop();
+  if (li!=null){ const v=series[series.length-1].vals[li]; const t=svgEl('text',{x:X(li)+9,y:Y(v)+4,'text-anchor':'start',class:'viz-val viz-halo'}); t.textContent=v+'%'; svg.appendChild(t); }
+  // hover / tap targets, one per month
+  monthly.forEach((mm,i)=>{
+    const hit=svgEl('rect',{x:m.l+iw*i/n,y:m.t,width:iw/n,height:ih,fill:'transparent'});
+    const on=ev=>{ cross.setAttribute('x1',X(i)); cross.setAttribute('x2',X(i)); cross.setAttribute('visibility','visible');
+      const y=new Date(Date.UTC(+mm.m.slice(0,4), +mm.m.slice(5)-1,1)).toLocaleDateString('en-GB',{month:'long',year:'numeric',timeZone:'UTC'});
+      showTip(`<div class="h">${y} · rehearsals</div>`+tipRows(sections, mm.sec, mm.tot), ev.clientX, ev.clientY); };
+    hit.addEventListener('pointermove', on); hit.addEventListener('pointerdown', on);
+    hit.addEventListener('pointerleave', ()=>{ cross.setAttribute('visibility','hidden'); hideTip(); });
+    svg.appendChild(hit);
+  });
+  host.appendChild(svg);
+}
+
+// ---- concerts & events grouped bars ----
+function drawEvents(host, st){
+  host.innerHTML=''; const {sections, events, upcoming}=st;
+  if (!events.length){ host.innerHTML=`<p class="sub">No concert or event attendance recorded in the last 12 months yet.${upcoming?` (${upcoming} upcoming.)`:''}</p>`; return; }
+  host.insertAdjacentHTML('beforeend', legendHTML(sections));
+  const nb=sections.length+1, bw=12, gap=2, gw=nb*bw+(nb-1)*gap, gpad=22;
+  const m={l:38,r:10,t:16,b:40}, H=240, ih=H-m.t-m.b;
+  const W=Math.max(host.clientWidth||340, m.l+m.r+events.length*(gw+gpad));
+  const iw=W-m.l-m.r, slot=iw/events.length, Y=v=>m.t+ih*(1-v/100);
+  const wrap=document.createElement('div'); wrap.className='viz-scroll';
+  const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`, width:W, height:H, role:'img','aria-label':'Attendance at each concert and event, by section'});
+  for (const v of [0,25,50,75,100]){
+    svg.appendChild(svgEl('line',{x1:m.l,x2:W-m.r,y1:Y(v),y2:Y(v),class:v?'viz-grid':'viz-base'}));
+    const t=svgEl('text',{x:m.l-6,y:Y(v)+4,'text-anchor':'end',class:'viz-ax'}); t.textContent=v+'%'; svg.appendChild(t);
+  }
+  const fmtD=s=>new Date((s-25569)*864e5).toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'});
+  events.forEach((e,gi)=>{
+    const x0=m.l+slot*gi+(slot-gw)/2;
+    const bars=[...sections.map((s,si)=>({c:s.color, a:e.sec[si].a, r:e.sec[si].r, name:s.name})), {c:'var(--text-primary)', a:e.tot.a, r:e.tot.r, name:'All sections', tot:true}];
+    bars.forEach((b,bi)=>{
+      const p=pct(b.a,b.r), x=x0+bi*(bw+gap);
+      if (p!=null && p>0){
+        const h=Math.max(2, ih*p/100), y=Y(p), rr=Math.min(4,h);
+        svg.appendChild(svgEl('path',{d:`M${x} ${y+h}V${y+rr}Q${x} ${y} ${x+rr} ${y}H${x+bw-rr}Q${x+bw} ${y} ${x+bw} ${y+rr}V${y+h}Z`, fill:b.c}));
+      }
+      if (b.tot && p!=null){ const t=svgEl('text',{x:x+bw/2,y:Y(p)-5,'text-anchor':'middle',class:'viz-val'}); t.textContent=p+'%'; svg.appendChild(t); }
+    });
+    const hit=svgEl('rect',{x:m.l+slot*gi,y:m.t,width:slot,height:ih+m.b,fill:'transparent'});
+    const on=ev=>showTip(`<div class="h">${E(e.type)} · ${E(shortDate(e.serial))}</div>`+tipRows(sections, e.sec, e.tot), ev.clientX, ev.clientY);
+    hit.addEventListener('pointermove', on); hit.addEventListener('pointerdown', on); hit.addEventListener('pointerleave', hideTip);
+    const l1=svgEl('text',{x:x0+gw/2,y:H-m.b+16,'text-anchor':'middle',class:'viz-ax'}); l1.textContent=fmtD(e.serial);
+    const l2=svgEl('text',{x:x0+gw/2,y:H-m.b+30,'text-anchor':'middle',class:'viz-ax2'}); l2.textContent=e.type;
+    svg.appendChild(l1); svg.appendChild(l2); svg.appendChild(hit);
+  });
+  wrap.appendChild(svg); host.appendChild(wrap);
+}
+
+function statsTable(head, rows){
+  return '<div class="viz-tablewrap"><table class="viz-table"><tr>'+head.map(h=>`<th>${E(h)}</th>`).join('')+'</tr>'+
+    rows.map(r=>'<tr>'+r.map((c,i)=>i===0?`<td>${c}</td>`:`<td>${c}</td>`).join('')+'</tr>').join('')+'</table></div>';
+}
+const cell = x => { const p=pct(x.a,x.r); return p==null ? '<span class="mut">–</span>' : `${p}%<small>${x.a}/${x.r}</small>`; };
+function renderStats(){
+  if (!adminSheets.length){ $('aStats').classList.add('hidden'); return; }
+  $('aStats').classList.remove('hidden');
+  const st=computeStats();
+  drawMonthly($('chartMonthly'), st); drawEvents($('chartEvents'), st);
+  const head=['', ...st.sections.map(s=>s.name), 'All'];
+  $('tblMonthly').innerHTML = statsTable(head, st.monthly.slice().reverse().map(mm=>[
+    new Date(Date.UTC(+mm.m.slice(0,4), +mm.m.slice(5)-1,1)).toLocaleDateString('en-GB',{month:'short',year:'2-digit',timeZone:'UTC'}),
+    ...mm.sec.map(cell), cell(mm.tot)]));
+  $('tblEvents').innerHTML = st.events.length ? statsTable(head, st.events.slice().reverse().map(e=>[`${E(new Date((e.serial-25569)*864e5).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'2-digit',timeZone:'UTC'}))}<small>${E(e.type)}</small>`, ...e.sec.map(cell), cell(e.tot)])) : '';
+  // 12-month headline
+  const t=st.monthly.reduce((acc,mm)=>({a:acc.a+mm.tot.a, r:acc.r+mm.tot.r}),{a:0,r:0});
+  const span = st.monthly.length>=12 ? 'over the last 12 months' : 'since '+new Date(Date.UTC(+st.monthly[0].m.slice(0,4), +st.monthly[0].m.slice(5)-1,1)).toLocaleDateString('en-GB',{month:'long',year:'numeric',timeZone:'UTC'});
+  $('statsHead').innerHTML = t.r ? `<span class="big">${pct(t.a,t.r)}%</span> average rehearsal attendance across all sections ${span}` : '';
+  $('monthlyTitle').textContent = 'Rehearsals \u2014 monthly average' + (st.monthly.length>=12 ? ', last 12 months' : '');
+}
+let statsResize; window.addEventListener('resize', ()=>{ clearTimeout(statsResize); statsResize=setTimeout(()=>{ if(adminSheets.length && !$('vAdmin').classList.contains('hidden')) renderStats(); }, 200); });
+
 async function adminFiles(){
   const out=$('fileList'); out.innerHTML='<p class="sub">Looking in the app folder…</p>';
   const auth=adminAuth();
@@ -943,7 +1169,7 @@ async function adminFiles(){
       d.appendChild(row); out.appendChild(d);
     }
   }catch(e){
-    if (e.auth){ adminStore.patch({refresh:null}); return adminRender(); }
+    if (e.auth){ adminStore.patch({refresh:null}); await adminRender(); $('adminErr').textContent='That connection no longer works (it was disconnected or replaced). Connect again, then bookmark the new organiser link.'; return; }
     out.innerHTML='<p class="warn">Couldn’t read the app folder. Check your connection and tap Refresh list.</p>';
   }
 }
@@ -973,7 +1199,13 @@ async function start(){
     return adminRender();
   }
   const h=(window.DEMO_HASH!=null?window.DEMO_HASH:location.hash).slice(1);
-  if (h==='admin') return adminRender();
+  const hp=new URLSearchParams(h);
+  if (h==='admin' || hp.has('admin')){
+    if (hp.get('k')) adminStore.patch({key:hp.get('k')});
+    // use the link's connection only if this browser has none of its own (a newer one may be saved here)
+    if (hp.get('t') && !adminStore.get().refresh) adminStore.patch({refresh:hp.get('t'), fromLink:true});
+    return adminRender();
+  }
   const p=new URLSearchParams(h);
   if (p.get('f')) return leadStart(p);
   message('Choir attendance', 'Please open this page using the link you were sent for your voice part.');
