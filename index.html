@@ -121,6 +121,32 @@ input[type=text]{font:500 16px Inter,sans-serif;padding:8px 10px;border:1px soli
 .viz-table th{color:var(--muted);font-weight:500} .viz-table th:first-child,.viz-table td:first-child{text-align:left}
 .viz-table td small{display:block;color:var(--muted);font-size:11px}
 .viz-table .mut{color:var(--muted)}
+.sc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 12px}
+.sc-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.sc-h b{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:19px}
+.sc-t{font-size:12px;color:var(--muted);margin:12px 0 4px;letter-spacing:.01em}
+.sc-t .sub{font-size:11px}
+.sc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.sc-big{font:650 30px Fraunces,Georgia,serif;line-height:1}
+.sc-chip{display:inline-block;font-size:13px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--line);color:var(--ink)}
+.sc-chip.up{background:var(--yes-soft);color:var(--yes)} .sc-chip.down{background:var(--no-soft);color:var(--no)}
+.sc-bars{display:flex;align-items:flex-end;gap:4px;height:44px;border-bottom:1px solid var(--line)}
+.sc-bars span{flex:1;background:var(--accent);border-radius:3px 3px 0 0;opacity:.85}
+.sc-dates{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:2px}
+.sc-stack{display:flex;gap:2px;height:12px;border-radius:4px;overflow:hidden}
+.sc-lg{display:flex;flex-wrap:wrap;gap:3px 12px;font-size:12.5px;color:var(--muted);margin-top:5px}
+.sc-lg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.sc-m{background:var(--bg);border-radius:10px;padding:8px 10px;margin-top:10px}
+.sc-m .sc-t{margin:0 0 2px} .sc-m b{font-size:18px;font-weight:600;display:block} .sc-m small{font-size:11.5px;color:var(--muted)}
+.sc-line{font-size:14px}
+.sc-singers{margin-top:12px;border-top:1px solid var(--line);padding-top:8px}
+.sc-singers summary{cursor:pointer;font-weight:500;font-size:14px}
+.sc-singers table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px;table-layout:fixed}
+.sc-singers th{font-size:12px;font-weight:500;color:var(--muted);text-align:left;padding:4px 2px}
+.sc-singers td{padding:6px 2px;border-top:1px solid var(--line);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc-singers th:first-child{width:44%} .sc-singers .n{text-align:right}
+.sc-singers tr.nudge td:first-child{color:var(--no);font-weight:500}
+.sq{display:inline-block;width:14px;height:14px;border-radius:4px;margin-left:3px;vertical-align:-2px}
 .evitem{font-size:14px;padding:5px 0;border-top:1px solid var(--line)}
 #typeSel{font:500 14px Inter,sans-serif;padding:4px 6px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);margin-left:4px}
 .grid th small.tt{display:block;font-size:9px;font-weight:600;color:var(--accent);letter-spacing:-.01em;overflow:hidden;text-overflow:clip;margin-top:1px}
@@ -198,7 +224,9 @@ input[type=text]{font:500 16px Inter,sans-serif;padding:8px 10px;border:1px soli
       <h2>5. Attendance summary</h2>
       <p class="sub" style="margin-bottom:8px">Attendance = singers marked ✓ as a share of everyone with a mark for that date (blank cells don’t count). Tap or hover a chart for figures.</p>
       <p id="statsHead" class="viz-head"></p>
-      <h3 class="viz-h" id="monthlyTitle">Rehearsals — monthly average</h3>
+      <h3 class="viz-h" style="margin-top:6px">Section summaries</h3>
+      <div id="secCards"></div>
+      <h3 class="viz-h" id="monthlyTitle" style="margin-top:22px">Rehearsals — monthly average</h3>
       <div id="chartMonthly" class="viz-chart"></div>
       <details class="viz-fig"><summary>Show figures</summary><div id="tblMonthly"></div></details>
       <h3 class="viz-h" style="margin-top:22px">Concerts &amp; events</h3>
@@ -222,6 +250,7 @@ input[type=text]{font:500 16px Inter,sans-serif;padding:8px 10px;border:1px soli
     <div class="card"><div id="list"></div></div>
     <div class="tally" id="tally"></div>
     <div class="tools"><button class="btn" id="fillBtn">Mark all blanks ✓</button><span></span></div>
+    <div id="leadSummary" style="margin-top:18px"></div>
     <details class="card grid" id="gridBox" open>
       <summary>Attendance so far</summary>
       <div class="gridnav hidden" id="gridNav">
@@ -741,6 +770,7 @@ function render(){
   $('tally').innerHTML=col?legend.map((l,k)=>`<span>${E(l.sym)} ${counts[k]}</span>`).join('')+`<span>blank ${blank}</span>`:'';
   $('fillBtn').disabled=!col||blank===0;
   renderGrid(col);
+  $('leadSummary').innerHTML = `<p class="lbl" style="margin:0 0 6px">${E(L.label)} section summary</p>` + sectionCardHTML(L.label, L.wb, true);
 }
 function renderGrid(col){
   const wb=L.wb, ds=wb.dates; if(!ds.length){ $('gridBody').innerHTML=''; $('gridNav').classList.add('hidden'); return; }
@@ -978,6 +1008,77 @@ async function adminApplyDate(){
   $('evApply').disabled=false; renderEventList(); renderStats();
 }
 // =====================================================================
+// SECTION SUMMARY CARD — used on the organiser page (all sections) and the lead page (own section)
+// =====================================================================
+const KIND_COL = {yes:'var(--yes)', apol:'var(--apol)', sick:'var(--sick)', no:'var(--no)', other:'var(--muted)'};
+const KIND_NAME = {yes:'Attended', apol:'Apologies', sick:'Sick', no:'Absent', other:'Other'};
+function sectionSummary(wb){
+  const today=todaySerial(), from=today-365;
+  const kindOfMark = v => { const l=wb.legend.find(x=>x.sym===v); return l?kindOf(l):null; };
+  const past = wb.dates.filter(d=>d.serial<=today && d.serial>from);
+  const marked = d => wb.people.some(p=>p.marks[d.col] && kindOfMark(p.marks[d.col]));
+  const reh = past.filter(d=>d.type==='Rehearsal');
+  const rehMarked = reh.filter(marked);
+  const firstMarked = rehMarked.length ? rehMarked[0].serial : null;
+  const tally = (dates, people=wb.people) => { const t={yes:0,apol:0,sick:0,no:0,other:0,r:0};
+    for (const d of dates) for (const p of people){ const k=kindOfMark(p.marks[d.col]); if(!k) continue; t[k]++; t.r++; } return t; };
+  const all = tally(rehMarked);
+  const win = (a,b) => tally(rehMarked.filter(d=>d.serial>a && d.serial<=b));
+  const recent = win(today-91, today), prior = win(today-182, today-91);
+  const trend = recent.r && prior.r ? Math.round(100*recent.yes/recent.r) - Math.round(100*prior.yes/prior.r) : null;
+  const last8 = rehMarked.slice(-8).map(d=>{ const t=tally([d]); return {d, p:pct(t.yes,t.r), t}; });
+  const ev = tally(past.filter(d=>d.type!=='Rehearsal' && marked(d)));
+  const last6 = rehMarked.slice(-6), last4 = rehMarked.slice(-4);
+  const singers = wb.people.map(p=>{
+    const t=tally(rehMarked,[p]);
+    const noCount = last6.filter(d=>kindOfMark(p.marks[d.col])==='no').length;
+    return {name:(p.first?p.first+' ':'')+p.last, short:(p.first?p.first[0]+'. ':'')+p.last, p:pct(t.yes,t.r), r:t.r,
+            last4:last4.map(d=>({d, k:kindOfMark(p.marks[d.col]), v:p.marks[d.col]||''})), nudge:noCount>=3, noCount};
+  });
+  const unmarked = firstMarked==null ? [] : reh.filter(d=>d.serial>=firstMarked && !marked(d));
+  return {all, pct12:pct(all.yes,all.r), trend, last8, ev, evPct:pct(ev.yes,ev.r), singers, nudges:singers.filter(s=>s.nudge), unmarked, count:wb.people.length};
+}
+const dShort = s => new Date((s-25569)*864e5).toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'});
+function sectionCardHTML(label, wb, openSingers){
+  const s=sectionSummary(wb);
+  if (!s.all.r) return `<div class="sc"><div class="sc-h"><b>${E(label)}</b></div><p class="sub" style="margin:6px 0 0">No rehearsal marks in the last 12 months yet.</p></div>`;
+  const trend = s.trend==null ? '<span class="sc-chip">Not enough data yet</span>' :
+    `<span class="sc-chip ${s.trend>0?'up':s.trend<0?'down':''}">${s.trend>0?'+':s.trend<0?'\u2212':''}${Math.abs(s.trend)} pts</span>`;
+  const bars = s.last8.map(x=>`<span title="${E(dShort(x.d.serial))}: ${x.p}% (${x.t.yes}/${x.t.r})" style="height:${Math.max(6,x.p)}%"></span>`).join('');
+  const kinds=['yes','apol','sick','no'].filter(k=>s.all[k]||k!=='other');
+  const seg = kinds.map(k=>s.all[k]?`<span style="flex:${s.all[k]};background:${KIND_COL[k]}" title="${KIND_NAME[k]} ${pct(s.all[k],s.all.r)}%"></span>`:'').join('');
+  const lg = kinds.map(k=>`<span><i style="background:${KIND_COL[k]}"></i>${KIND_NAME[k]} ${pct(s.all[k],s.all.r)}%</span>`).join('');
+  const nudge = s.nudges.length ? `<span class="warn">${s.nudges.length} singer${s.nudges.length>1?'s':''}: ${E(s.nudges.map(n=>n.short).join(', '))}</span>` : '<span class="ok">None \u2014 all good</span>';
+  const unm = s.unmarked.length ? `<span class="warn">${E(s.unmarked.slice(-3).map(d=>dShort(d.serial)).join(', '))}${s.unmarked.length>3?` and ${s.unmarked.length-3} more`:''}</span>` : '<span class="ok">All rehearsals marked</span>';
+  const rows = s.singers.slice().sort((a,b)=>(b.nudge-a.nudge)||((a.p??101)-(b.p??101))).map(x=>
+    `<tr${x.nudge?' class="nudge"':''}><td>${x.nudge?'\u26a0\ufe0e ':''}${E(x.name)}</td><td class="n">${x.p==null?'\u2013':x.p+'%'}</td><td class="n">${
+      x.last4.map(m=>`<span class="sq" style="background:${m.k?KIND_COL[m.k]:'transparent'};${m.k?'':'border:1px dashed var(--line)'}" title="${E(dShort(m.d.serial))}: ${m.k?KIND_NAME[m.k]:'not marked'}"></span>`).join('')}</td></tr>`).join('');
+  return `<div class="sc">
+    <div class="sc-h"><b>${E(label)}</b><span class="sub">${s.count} singers</span></div>
+    <div class="sc-grid">
+      <div><div class="sc-t">Rehearsal attendance, last 12 months</div><div class="sc-big">${s.pct12}%</div></div>
+      <div><div class="sc-t">Last 3 months vs the 3 before</div>${trend}</div>
+    </div>
+    <div class="sc-t">Last ${s.last8.length} rehearsals</div>
+    <div class="sc-bars">${bars}</div>
+    <div class="sc-dates"><span>${E(dShort(s.last8[0].d.serial))}</span><span>${E(dShort(s.last8[s.last8.length-1].d.serial))}</span></div>
+    <div class="sc-t">All rehearsal marks, last 12 months</div>
+    <div class="sc-stack">${seg}</div>
+    <div class="sc-lg">${lg}</div>
+    <div class="sc-grid">
+      <div class="sc-m"><div class="sc-t">Concerts and events</div><b>${s.evPct==null?'\u2013':s.evPct+'%'}</b>${s.ev.r?`<small>${s.ev.yes}/${s.ev.r} marks</small>`:'<small>none marked yet</small>'}</div>
+      <div class="sc-m"><div class="sc-t">Absences with notice</div><b>${(s.all.r-s.all.yes)?pct(s.all.apol+s.all.sick, s.all.r-s.all.yes)+'%':'\u2013'}</b><small>apologies or sick, of all absences</small></div>
+    </div>
+    <div class="sc-t">Needs a nudge <span class="sub">(3+ \u2717 in the last 6 rehearsals)</span></div><div class="sc-line">${nudge}</div>
+    <div class="sc-t">Rehearsals not marked yet</div><div class="sc-line">${unm}</div>
+    <details class="sc-singers"${openSingers?' open':''}><summary>Singers</summary>
+      <div class="sc-lg" style="margin:6px 0 0">${['yes','apol','sick','no'].map(k=>`<span><i style="background:${KIND_COL[k]}"></i>${KIND_NAME[k]}</span>`).join('')}<span>\u26a0\ufe0e needs a nudge</span></div>
+      <table><tr><th>Singer</th><th class="n">12 months</th><th class="n">Last 4 rehearsals</th></tr>${rows}</table>
+    </details>
+  </div>`;
+}
+
+// =====================================================================
 // ORGANISER: attendance summary (charts + tables)
 // Attendance % = ✓ marks ÷ singers with any mark recorded for that date (blank cells are ignored).
 // =====================================================================
@@ -1131,6 +1232,7 @@ function renderStats(){
   $('aStats').classList.remove('hidden');
   const st=computeStats();
   drawMonthly($('chartMonthly'), st); drawEvents($('chartEvents'), st);
+  $('secCards').innerHTML = adminSheets.map(sh=>sectionCardHTML(sh.label, sh.wb, false)).join('');
   const head=['', ...st.sections.map(s=>s.name), 'All'];
   $('tblMonthly').innerHTML = statsTable(head, st.monthly.slice().reverse().map(mm=>[
     new Date(Date.UTC(+mm.m.slice(0,4), +mm.m.slice(5)-1,1)).toLocaleDateString('en-GB',{month:'short',year:'2-digit',timeZone:'UTC'}),
