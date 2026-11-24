@@ -130,8 +130,14 @@ input[type=text]{font:500 16px Inter,sans-serif;padding:8px 10px;border:1px soli
 .sc-big{font:650 30px Fraunces,Georgia,serif;line-height:1}
 .sc-chip{display:inline-block;font-size:13px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--line);color:var(--ink)}
 .sc-chip.up{background:var(--yes-soft);color:var(--yes)} .sc-chip.down{background:var(--no-soft);color:var(--no)}
-.sc-bars{display:flex;align-items:flex-end;gap:4px;height:44px;border-bottom:1px solid var(--line)}
-.sc-bars span{flex:1;background:var(--accent);border-radius:3px 3px 0 0;opacity:.85}
+.sc-bars{display:flex;align-items:flex-end;gap:4px;height:78px;padding-top:16px;border-bottom:1px solid var(--line)}
+.sc-bars span{flex:1;border-radius:4px 4px 0 0;position:relative;min-width:0}
+.sc-bars .b-g{background:#7fcf9c} .sc-bars .b-a{background:#f2c45a} .sc-bars .b-r{background:#f08a80}
+.sc-bars em{position:absolute;left:0;right:0;text-align:center;font-style:normal;font-weight:700;font-size:11.5px;line-height:1;white-space:nowrap}
+.sc-bars em.in{top:5px;color:#000}
+.sc-bars em.out{bottom:calc(100% + 3px);color:var(--ink)}
+.sc-key{display:flex;flex-wrap:wrap;gap:3px 12px;font-size:12px;color:var(--muted);margin-top:4px}
+.sc-key i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
 .sc-dates{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:2px}
 .sc-stack{display:flex;gap:2px;height:12px;border-radius:4px;overflow:hidden}
 .sc-lg{display:flex;flex-wrap:wrap;gap:3px 12px;font-size:12.5px;color:var(--muted);margin-top:5px}
@@ -1044,7 +1050,9 @@ function sectionCardHTML(label, wb, openSingers){
   if (!s.all.r) return `<div class="sc"><div class="sc-h"><b>${E(label)}</b></div><p class="sub" style="margin:6px 0 0">No rehearsal marks in the last 12 months yet.</p></div>`;
   const trend = s.trend==null ? '<span class="sc-chip">Not enough data yet</span>' :
     `<span class="sc-chip ${s.trend>0?'up':s.trend<0?'down':''}">${s.trend>0?'+':s.trend<0?'\u2212':''}${Math.abs(s.trend)} pts</span>`;
-  const bars = s.last8.map(x=>`<span title="${E(dShort(x.d.serial))}: ${x.p}% (${x.t.yes}/${x.t.r})" style="height:${Math.max(6,x.p)}%"></span>`).join('');
+  const band = p => p>=76 ? 'g' : p>=40 ? 'a' : 'r';
+  const bars = s.last8.map(x=>{ const h=Math.max(4,x.p), inside=h>=30;
+    return `<span class="b-${band(x.p)}" title="${E(dShort(x.d.serial))}: ${x.p}% (${x.t.yes}/${x.t.r})" style="height:${h}%"><em class="${inside?'in':'out'}">${x.p}%</em></span>`; }).join('');
   const kinds=['yes','apol','sick','no'].filter(k=>s.all[k]||k!=='other');
   const seg = kinds.map(k=>s.all[k]?`<span style="flex:${s.all[k]};background:${KIND_COL[k]}" title="${KIND_NAME[k]} ${pct(s.all[k],s.all.r)}%"></span>`:'').join('');
   const lg = kinds.map(k=>`<span><i style="background:${KIND_COL[k]}"></i>${KIND_NAME[k]} ${pct(s.all[k],s.all.r)}%</span>`).join('');
@@ -1062,6 +1070,7 @@ function sectionCardHTML(label, wb, openSingers){
     <div class="sc-t">Last ${s.last8.length} rehearsals</div>
     <div class="sc-bars">${bars}</div>
     <div class="sc-dates"><span>${E(dShort(s.last8[0].d.serial))}</span><span>${E(dShort(s.last8[s.last8.length-1].d.serial))}</span></div>
+    <div class="sc-key"><span><i style="background:#7fcf9c"></i>76\u2013100%</span><span><i style="background:#f2c45a"></i>40\u201375%</span><span><i style="background:#f08a80"></i>0\u201339%</span></div>
     <div class="sc-t">All rehearsal marks, last 12 months</div>
     <div class="sc-stack">${seg}</div>
     <div class="sc-lg">${lg}</div>
