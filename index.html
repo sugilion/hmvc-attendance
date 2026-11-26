@@ -153,6 +153,8 @@ input[type=text]{font:500 16px Inter,sans-serif;padding:8px 10px;border:1px soli
 .sc-singers th:first-child{width:44%} .sc-singers .n{text-align:right}
 .sc-singers tr.nudge td:first-child{color:var(--no);font-weight:500}
 .sq{display:inline-block;width:14px;height:14px;border-radius:4px;margin-left:3px;vertical-align:-2px}
+body.viewonly #aKey,body.viewonly #aConnect,body.viewonly #aLinks,body.viewonly #aDates,body.viewonly #aCommittee,body.viewonly .foot{display:none!important}
+body.viewonly #aStats{margin-top:0!important}
 .evitem{font-size:14px;padding:5px 0;border-top:1px solid var(--line)}
 #typeSel{font:500 14px Inter,sans-serif;padding:4px 6px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);margin-left:4px}
 .grid th small.tt{display:block;font-size:9px;font-weight:600;color:var(--accent);letter-spacing:-.01em;overflow:hidden;text-overflow:clip;margin-top:1px}
@@ -226,8 +228,17 @@ input[type=text]{font:500 16px Inter,sans-serif;padding:8px 10px;border:1px soli
       <div id="evResult" style="margin-top:10px;font-size:14px"></div>
       <div id="evList" style="margin-top:12px"></div>
     </div>
+    <div class="card hidden" id="aCommittee" style="margin-top:12px">
+      <h2>5. Committee link</h2>
+      <p class="sub" style="margin-bottom:10px">A <b>read-only</b> link to the Attendance summary below, for committee members. Dropbox grants it read permission only, so it can’t change any sheet. It shows live figures each time it’s opened.</p>
+      <div id="comNone"><button class="btn primary" id="comCreate">Create committee link</button><p class="sub" style="margin:8px 0 0">You’ll be taken to Dropbox once to approve read-only access.</p></div>
+      <div id="comHas" class="hidden">
+        <div class="linkbox" id="comLink"></div>
+        <div class="row" style="margin-top:8px"><button class="btn primary" id="comCopy">Copy committee link</button><a class="btn" id="comOpen" target="_blank" rel="noopener">Open</a><button class="btn link" id="comCancel">Cancel this link</button></div>
+      </div>
+    </div>
     <div class="card hidden viz-root" id="aStats" style="margin-top:12px">
-      <h2>5. Attendance summary</h2>
+      <h2 id="statsTitle">6. Attendance summary</h2>
       <p class="sub" style="margin-bottom:8px">Attendance = singers marked ✓ as a share of everyone with a mark for that date (blank cells don’t count). Tap or hover a chart for figures.</p>
       <p id="statsHead" class="viz-head"></p>
       <h3 class="viz-h" style="margin-top:6px">Section summaries</h3>
@@ -899,28 +910,75 @@ document.addEventListener('visibilitychange', ()=>{
 // =====================================================================
 // ORGANISER VIEW — #admin : connect Dropbox once, then hand out links
 // =====================================================================
-async function adminConnect(){
-  const key=$('keyIn').value.trim();
+async function adminConnect(purpose){
+  const key=$('keyIn').value.trim() || adminStore.get().key || '';
   if (!key){ $('adminErr').textContent='Paste the app key first.'; return; }
   const verifier=randStr(64), st=randStr(16);
   const challenge=b64url(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier)));
-  adminStore.patch({key, pkce:{verifier, state:st}});
+  adminStore.patch({key, pkce:{verifier, state:st, purpose:purpose||'organiser'}});
   if (window.DEMO) return demoAuthorize(st);
   const u=new URL('https://www.dropbox.com/oauth2/authorize');
-  u.search=new URLSearchParams({client_id:key, response_type:'code', code_challenge:challenge, code_challenge_method:'S256', redirect_uri:REDIRECT, token_access_type:'offline', state:st});
+  const q={client_id:key, response_type:'code', code_challenge:challenge, code_challenge_method:'S256', redirect_uri:REDIRECT, token_access_type:'offline', state:st};
+  if (purpose==='committee') q.scope='files.metadata.read files.content.read';   // read-only: this link can never change a sheet
+  u.search=new URLSearchParams(q);
   location.href=u.toString();
 }
 async function adminFinish(code, st){
   const a=adminStore.get();
   if (!a.pkce || a.pkce.state!==st) throw new Error('The connection was interrupted. Please try again.');
   const j=await tokenRequest({code, grant_type:'authorization_code', code_verifier:a.pkce.verifier, redirect_uri:REDIRECT, client_id:a.key});
-  adminStore.patch({pkce:null, refresh:j.refresh_token});
+  if (a.pkce.purpose==='committee') adminStore.patch({pkce:null, committee:j.refresh_token});
+  else adminStore.patch({pkce:null, refresh:j.refresh_token});
 }
 function adminAuth(){ const a=adminStore.get(); return a.refresh ? {key:a.key, refresh:a.refresh} : null; }
 function leadLink(fileId){
   const a=adminStore.get();
   return REDIRECT + '#f=' + encodeURIComponent(fileId) + '&t=' + encodeURIComponent(a.refresh) + '&k=' + encodeURIComponent(a.key);
 }
+function committeeRender(){
+  const a=adminStore.get(), has=!!a.committee;
+  $('aCommittee').classList.toggle('hidden', !adminAuth());
+  $('comNone').classList.toggle('hidden', has); $('comHas').classList.toggle('hidden', !has);
+  if (!has) return;
+  const link=REDIRECT+'#view&k='+encodeURIComponent(a.key||'')+'&t='+encodeURIComponent(a.committee);
+  $('comLink').textContent=link; $('comOpen').href=link;
+  $('comCopy').onclick=async()=>{ try{ await navigator.clipboard.writeText(link); $('comCopy').textContent='Copied \u2713'; setTimeout(()=>$('comCopy').textContent='Copy committee link',2000); }catch(e){ $('comCopy').textContent='Copy failed \u2014 select the text'; } };
+}
+$('comCreate').onclick=()=>adminConnect('committee');
+$('comCancel').onclick=()=>confirmBox('Cancel the committee link? It stops working straight away. Lead links and your organiser link are not affected.', async()=>{
+  const a=adminStore.get(); try{ await dbx({key:a.key, refresh:a.committee},'rpc','auth/token/revoke'); }catch(e){}
+  adminStore.patch({committee:null}); committeeRender();
+}, 'Cancel link');
+
+// ---------- Committee view: #view&k=..&t=.. (read-only, summary only) ----------
+async function viewStart(p){
+  document.body.classList.add('viewonly');
+  const auth={key:p.get('k'), refresh:p.get('t')};
+  if (!auth.key || !auth.refresh) return message('This link is incomplete','Please open the page using the full link you were sent.');
+  message('Loading\u2026','Fetching the attendance sheets.');
+  try{
+    let r=await dbx(auth,'rpc','files/list_folder',{path:'', recursive:true}), entries=r.entries;
+    while (r.has_more){ r=await dbx(auth,'rpc','files/list_folder/continue',{cursor:r.cursor}); entries=entries.concat(r.entries); }
+    const o=n=>{ n=n.toLowerCase(); return n.includes('bass')?0:n.includes('bari')?1:n.includes('top')?2:n.includes('second')?3:9; };
+    const files=entries.filter(e=>e['.tag']==='file' && /\.xlsx$/i.test(e.name) && !/^\/backups\//i.test(e.path_display||'')).sort((x,y)=>o(x.name)-o(y.name)||x.name.localeCompare(y.name));
+    adminSheets=[];
+    for (const f of files){
+      try{ const wb=await ATT.load(JSZip, await dbx(auth,'download','files/download',{path:f.id})); adminSheets.push({f, label:labelFor(wb,f.name), wb}); }
+      catch(e){ if (e.auth||e.net) throw e; }
+    }
+  }catch(e){
+    if (e.auth) return message('This link no longer works','It has been cancelled or replaced. Please ask the organiser for a new one.');
+    if (e.net) return message('No connection','Couldn\u2019t reach Dropbox. Check you\u2019re online and try again.', ()=>location.reload());
+    return message('Couldn\u2019t load the summary','Please try again in a moment.', ()=>location.reload());
+  }
+  if (!adminSheets.length) return message('Nothing to show yet','No attendance sheets were found.');
+  document.title='Choir attendance summary';
+  $('h1').textContent='Choir attendance summary';
+  $('sub').textContent='For information only \u2014 figures are read live from the attendance sheets when this page opens.';
+  $('statsTitle').textContent='Attendance summary';
+  show('vAdmin'); renderStats();
+}
+
 async function adminRender(){
   show('vAdmin');
   $('h1').textContent='Organiser setup'; $('sub').textContent='Connect your Dropbox once, then send each voice lead their own link.';
@@ -929,6 +987,7 @@ async function adminRender(){
   if (!adminAuth()) $('aDates').classList.add('hidden');
   const auth=adminAuth();
   $('aLinks').classList.toggle('hidden', !auth); $('disconnectBtn').classList.toggle('hidden', !auth);
+  committeeRender();
   if (!auth){ $('connectBtn').textContent='Connect Dropbox'; $('orgLinkBox').classList.add('hidden');
     if (!window.DEMO && /[#&]t=/.test(location.hash)) history.replaceState(null,'',REDIRECT+'#admin&k='+encodeURIComponent(a.key||''));
     return; }
@@ -1318,6 +1377,7 @@ async function start(){
     return adminRender();
   }
   const p=new URLSearchParams(h);
+  if (p.has('view')) return viewStart(p);
   if (p.get('f')) return leadStart(p);
   message('Choir attendance', 'Please open this page using the link you were sent for your voice part.');
 }
