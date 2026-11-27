@@ -153,7 +153,31 @@ input[type=text]{font:500 16px Inter,sans-serif;padding:8px 10px;border:1px soli
 .sc-singers th:first-child{width:44%} .sc-singers .n{text-align:right}
 .sc-singers tr.nudge td:first-child{color:var(--no);font-weight:500}
 .sq{display:inline-block;width:14px;height:14px;border-radius:4px;margin-left:3px;vertical-align:-2px}
-body.viewonly #aKey,body.viewonly #aConnect,body.viewonly #aLinks,body.viewonly #aDates,body.viewonly #aCommittee,body.viewonly .foot{display:none!important}
+body.viewonly #aKey,body.viewonly #aConnect,body.viewonly #aLinks,body.viewonly #aDates,body.viewonly #aCommittee,body.viewonly #aMembers,body.viewonly #aSettings,body.viewonly .foot{display:none!important}
+.person.away .name{color:var(--muted);white-space:normal;overflow:visible} .person.away .mk{opacity:.25!important;filter:grayscale(1)}
+.awaytag{display:inline-block!important;font-size:11.5px;background:var(--line);color:var(--muted);border-radius:6px;padding:1px 7px;margin-top:2px}
+.grid td.off{background:repeating-linear-gradient(135deg,transparent 0 4px,var(--line) 4px 5px)} .grid td.awaycell{background:var(--bg);opacity:.6}
+.sc-singers tr.former td{color:var(--muted)} .sc-singers td small{display:block;font-size:11px;color:var(--muted);white-space:normal}
+.sc-singers table.yrs th:first-child{width:38%}
+.mem-row{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:9px 2px;font:14px Inter,sans-serif;color:var(--ink);cursor:pointer}
+.pill{font-size:11.5px;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.pill.act{background:var(--yes-soft);color:var(--yes)} .pill.mem{background:#ecebfb;color:#3c3489} .pill.res{background:var(--line);color:var(--ink)} .pill.sab{background:var(--apol-soft);color:var(--apol)}
+@media (prefers-color-scheme:dark){.pill.mem{background:#2a2747;color:#c9c5f6}}
+.mem-form{margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+#memSheet{font:500 15px Inter,sans-serif;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+.mem-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.mem-grid label{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+.mem-grid input,.mem-grid select{font:500 15px Inter,sans-serif;padding:7px 8px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--ink);min-width:0}
+.mem-grid .row select{flex:1}
+.set-row{display:flex;align-items:center;gap:8px;font-size:14.5px;margin:8px 0;flex-wrap:wrap}
+.set-row input[type=number]{font:500 15px Inter,sans-serif;padding:5px 7px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.cu-it{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+.cu-ic{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;font-size:18px}
+.cu-ic.bd{background:#fbeaf0} .cu-major{display:inline-block;font-size:11px;font-weight:600;background:var(--accent);color:var(--on-accent);border-radius:999px;padding:1px 7px;vertical-align:1px} .cu-ic.pn{background:var(--apol-soft)}
+@media (prefers-color-scheme:dark){.cu-ic.bd{background:#3d2430}}
+.cu-nm{font-size:14px;min-width:0} .cu-nm small{display:block;font-size:12px;color:var(--muted)}
+.cu-cnt{margin-left:auto;text-align:right;flex:none} .cu-cnt b{font-size:19px;font-weight:600;display:block;line-height:1} .cu-cnt small{font-size:11px;color:var(--muted)}
+.cu-today{background:var(--yes-soft);color:var(--yes);border-radius:999px;padding:3px 9px;font-size:12.5px;font-weight:600}
 body.viewonly #aStats{margin-top:0!important}
 .evitem{font-size:14px;padding:5px 0;border-top:1px solid var(--line)}
 #typeSel{font:500 14px Inter,sans-serif;padding:4px 6px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);margin-left:4px}
@@ -237,10 +261,36 @@ body.viewonly #aStats{margin-top:0!important}
         <div class="row" style="margin-top:8px"><button class="btn primary" id="comCopy">Copy committee link</button><a class="btn" id="comOpen" target="_blank" rel="noopener">Open</a><button class="btn link" id="comCancel">Cancel this link</button></div>
       </div>
     </div>
+    <div class="card hidden" id="aMembers" style="margin-top:12px">
+      <h2>6. Members</h2>
+      <p class="sub" style="margin-bottom:10px">Changing a status never deletes attendance — past marks stay in the sheet. Tap a singer to edit.</p>
+      <select id="memSheet" aria-label="Voice part" style="width:100%"></select>
+      <div id="memList" style="margin-top:6px"></div>
+      <div id="memForm" class="hidden mem-form"></div>
+      <div id="memMsg" style="margin-top:8px;font-size:14px"></div>
+      <h3 class="viz-h" style="margin-top:18px">Add a new member</h3>
+      <div class="mem-grid">
+        <label>First name<input type="text" id="amFirst" autocomplete="off"></label>
+        <label>Last name<input type="text" id="amLast" autocomplete="off"></label>
+        <label>Voice part<select id="memVoice"></select></label>
+        <label>Joined<input type="date" id="amJoined"></label>
+        <label>Date of birth<input type="date" id="amB"></label>
+      </div>
+      <div class="warn" id="amErr" style="margin-top:8px"></div>
+      <div class="row" style="margin-top:10px"><button class="btn primary" id="amAdd">Add member</button></div>
+    </div>
+    <div class="card hidden" id="aSettings" style="margin-top:12px">
+      <h2>7. Settings</h2>
+      <label class="set-row"><input type="checkbox" id="setSab"> Count sabbaticals towards years of membership</label>
+      <label class="set-row">Show birthdays and pins coming up in the next <input type="number" id="setLook" min="7" max="365" step="1" style="width:5em"> days</label>
+      <div class="row" style="margin-top:10px"><button class="btn primary" id="setSave">Save settings</button></div>
+      <div id="setMsg" style="margin-top:8px;font-size:14px"></div>
+    </div>
     <div class="card hidden viz-root" id="aStats" style="margin-top:12px">
-      <h2 id="statsTitle">6. Attendance summary</h2>
+      <h2 id="statsTitle">8. Attendance summary</h2>
       <p class="sub" style="margin-bottom:8px">Attendance = singers marked ✓ as a share of everyone with a mark for that date (blank cells don’t count). Tap or hover a chart for figures.</p>
       <p id="statsHead" class="viz-head"></p>
+      <div id="comingUp" style="margin-top:10px"></div>
       <h3 class="viz-h" style="margin-top:6px">Section summaries</h3>
       <div id="secCards"></div>
       <h3 class="viz-h" id="monthlyTitle" style="margin-top:22px">Rehearsals — monthly average</h3>
@@ -311,6 +361,75 @@ const ATT = (() => {
   const colName = n => { let s = ''; while (n > 0) { const m = (n - 1) % 26; s = String.fromCharCode(65 + m) + s; n = Math.floor((n - 1) / 26); } return s; };
   const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const TYPES = ['Rehearsal', 'Concert', 'Event'];
+  const MEMBER_COLS = ['Status', 'Joined', 'Left', 'Return', 'Birthday', 'Note'];
+  const STATUSES = ['Active', 'Sabbatical', 'Resigned', 'Deceased'];
+  const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function normStatus(s) {
+    s = (s || '').toLowerCase();
+    if (/deceas|memori|died/.test(s)) return 'Deceased';
+    if (/resign|left|leaver/.test(s)) return 'Resigned';
+    if (/sabbat|leave|away/.test(s)) return 'Sabbatical';
+    return 'Active';
+  }
+  function toSerial(v) {
+    if (v == null || v === '') return null;
+    if (typeof v === 'number') return Math.round(v);
+    const t = Date.parse(String(v).trim() + ' UTC'); if (isNaN(t)) return null;
+    return Math.round(t / 86400000) + 25569;
+  }
+  function toBday(v) {
+    if (v == null || v === '') return null;
+    if (typeof v === 'number') { const d = new Date((Math.round(v) - 25569) * 864e5); return { d: d.getUTCDate(), m: d.getUTCMonth() + 1, y: d.getUTCFullYear() }; }
+    const full = String(v).trim().match(/^(\d{1,2})[\s\-\/.]*([A-Za-z]{3,}|\d{1,2})[\s\-\/.]*(\d{4})$/);
+    const m = String(v).trim().match(/^(\d{1,2})[\s\-\/.]*([A-Za-z]{3,})/) || String(v).trim().match(/^(\d{1,2})[\-\/.](\d{1,2})$/);
+    if (!m) return null;
+    const mo = /^\d+$/.test(m[2]) ? +m[2] : MON.findIndex(x => m[2].toLowerCase().startsWith(x.toLowerCase())) + 1;
+    const y = full ? +full[3] : undefined;
+    return mo >= 1 && mo <= 12 && +m[1] >= 1 && +m[1] <= 31 ? (y ? { d: +m[1], m: mo, y } : { d: +m[1], m: mo }) : null;
+  }
+  const bdayText = b => b ? String(b.d).padStart(2, '0') + '-' + MON[b.m - 1] : '';
+  const fmtDate = s => { const d = new Date((s - 25569) * 864e5); return d.getUTCDate() + ' ' + MON[d.getUTCMonth()] + ' ' + d.getUTCFullYear(); };
+  // Was this person a member on this date? (Active and Sabbatical stay members; Deceased/Resigned stop on their Left date)
+  function isMember(p, s) {
+    if (p.joined && s < p.joined) return false;
+    if ((p.status === 'Deceased' || p.status === 'Resigned') && p.left && s >= p.left) return false;
+    if ((p.status === 'Deceased' || p.status === 'Resigned') && !p.left) return false;
+    return true;
+  }
+  function isAway(p, s) { return p.status === 'Sabbatical' && p.left != null && s >= p.left && (!p.ret || s < p.ret); }
+  const isExpected = (p, s) => isMember(p, s) && !isAway(p, s);
+  // Membership length in days up to `s`, optionally leaving out the recorded sabbatical
+  function memberDays(p, s, countSab) {
+    if (!p.joined || s < p.joined) return null;
+    let end = s; if ((p.status === 'Deceased' || p.status === 'Resigned') && p.left) end = Math.min(end, p.left);
+    let days = end - p.joined;
+    if (!countSab && p.status === 'Sabbatical' && p.left) days -= Math.max(0, Math.min(end, p.ret || end) - Math.max(p.left, p.joined));
+    return Math.max(0, days);
+  }
+  function yearsOf(p, s, countSab) { const d = memberDays(p, s, countSab); return d == null ? null : Math.floor(d / 365.25); }
+  // Next 5-year milestone from day `s`: {years, serial}
+  function nextPin(p, s, countSab) {
+    if (!p.joined || !isMember(p, s)) return null;
+    const off = countSab || p.status !== 'Sabbatical' || !p.left ? 0 : Math.max(0, Math.min(s, p.ret || s) - Math.max(p.left, p.joined));
+    const j = new Date((p.joined - 25569) * 864e5);
+    for (let y = 5; y <= 80; y += 5) {
+      const ann = Math.round(Date.UTC(j.getUTCFullYear() + y, j.getUTCMonth(), j.getUTCDate()) / 864e5) + 25569 + off;
+      if (ann >= s) return { years: y, serial: ann };
+    }
+    return null;
+  }
+  function ageOn(p, s) { if (!p.bday || !p.bday.y) return null; const d = new Date((s - 25569) * 864e5);
+    return d.getUTCFullYear() - p.bday.y - ((d.getUTCMonth() + 1 < p.bday.m || (d.getUTCMonth() + 1 === p.bday.m && d.getUTCDate() < p.bday.d)) ? 1 : 0); }
+  function nextBirthday(p, s) {
+    if (!p.bday) return null;
+    const t = new Date((s - 25569) * 864e5);
+    for (const y of [t.getUTCFullYear(), t.getUTCFullYear() + 1]) {
+      let d = p.bday.d; if (p.bday.m === 2 && d === 29 && !(y % 4 === 0 && (y % 100 !== 0 || y % 400 === 0))) d = 28;
+      const ser = Math.round(Date.UTC(y, p.bday.m - 1, d) / 864e5) + 25569;
+      if (ser >= s) return ser;
+    }
+    return null;
+  }
   const ROW_RE = /<row r="(\d+)"[^>]*?(?:\/>|>[\s\S]*?<\/row>)/g;
 
   function parseSST(xml) {
@@ -378,8 +497,15 @@ const ATT = (() => {
     }
     if (legend.length < 2) legend.splice(0, legend.length, { sym: '✓', label: 'Attended' }, { sym: '~', label: 'Apologies received' }, { sym: '✗', label: "Didn't Attend" });
 
+    // membership columns (Status, Joined, Left, Return, Birthday, Note) sit between First Name and the dates
+    const mcol = {}; let firstDateCol = 3;
+    for (let c = 3; c < 30; c++) {
+      const v = get(colName(c) + hdr);
+      if (typeof v === 'string' && MEMBER_COLS.includes(v.trim())) { mcol[v.trim()] = colName(c); firstDateCol = c + 1; }
+      else break;
+    }
     const dates = []; let prev = null, hasFormulas = false;
-    for (let c = 3; c < 2000; c++) {
+    for (let c = firstDateCol; c < 2000; c++) {
       const ref = colName(c) + hdr, cell = cells[ref];
       if (!cell) break;
       if (cell.f) hasFormulas = true;
@@ -397,9 +523,13 @@ const ATT = (() => {
       blanks = 0;
       const marks = {};
       for (const d of dates) { const v = get(d.col + r); if (v != null && String(v).trim() !== '') marks[d.col] = String(v).trim(); }
-      people.push({ row: r, last: String(last || '').trim(), first: String(first || '').trim(), marks });
+      const m = k => mcol[k] ? get(mcol[k] + r) : null;
+      const st = String(m('Status') || '').trim();
+      people.push({ row: r, last: String(last || '').trim(), first: String(first || '').trim(), marks,
+        status: normStatus(st), joined: toSerial(m('Joined')), left: toSerial(m('Left')), ret: toSerial(m('Return')),
+        bday: toBday(m('Birthday')), note: m('Note') == null ? '' : String(m('Note')).trim() });
     }
-    Object.assign(wb, { title: String(get('A1') || '').trim(), legend, dates, people, hdr, typeRow, hasFormulas,
+    Object.assign(wb, { title: String(get('A1') || '').trim(), legend, dates, people, hdr, typeRow, hasFormulas, mcol, firstDateCol,
       hdrStyle: cells[(dates[0] ? dates[0].col : 'C') + hdr] ? cells[(dates[0] ? dates[0].col : 'C') + hdr].s : null,
       labelStyle: cells['A' + hdr] ? cells['A' + hdr].s : null });
   }
@@ -418,10 +548,10 @@ const ATT = (() => {
   }
 
   // set a cell to a text value (or null to clear), keeping its style
-  function setMark(wb, col, row, sym) {
+  function setMark(wb, col, row, sym, num) {
     const ref = col + row;
-    const idx = sym ? sstIndex(wb, sym) : null;
-    const build = s => idx == null ? `<c r="${ref}"${s}/>` : `<c r="${ref}"${s} t="s"><v>${idx}</v></c>`;
+    const idx = num == null && sym ? sstIndex(wb, sym) : null;
+    const build = s => num != null ? `<c r="${ref}"${s}><v>${num}</v></c>` : idx == null ? `<c r="${ref}"${s}/>` : `<c r="${ref}"${s} t="s"><v>${idx}</v></c>`;
     const xml = wb.sheetXml;
     const rowRe = new RegExp(`<row r="${row}"(?=[\\s>/])[^>]*?(?:/>|>[\\s\\S]*?</row>)`);
     const rm = xml.match(rowRe);
@@ -452,6 +582,11 @@ const ATT = (() => {
     if (wb.typeRow && row === wb.typeRow) { const d = wb.dates.find(d => d.col === col); if (d) d.type = sym || 'Rehearsal'; }
   }
 
+  // set a cell to a number (dates are stored as Excel day numbers), keeping its style
+  function setNum(wb, col, row, num) {
+    setMark(wb, col, row, null, num);
+  }
+
   // ---------- structural helpers ----------
   function fixDimension(wb) {
     let maxC = 1, maxR = 1; const re = /<c r="([A-Z]+)(\d+)"/g; let m;
@@ -465,13 +600,22 @@ const ATT = (() => {
   }
 
   // Move every row from `at` downwards by one, keeping drop-downs, merges and selections pointing at the same cells.
-  function shiftDown(x, at) {
+  function shiftRangeInside(ref, at) {
+    return ref.split(' ').map(part => {
+      const [a, b] = part.split(':'); if (!b) return shiftRangeRows(a, at, 1);
+      const ra = +a.match(/\d+/)[0];
+      return (ra > at ? shiftRangeRows(a, at, 1) : a) + ':' + shiftRangeRows(b, at, 1);
+    }).join(' ');
+  }
+  function shiftDown(x, at, inside) {
+    const sr = ref => inside ? shiftRangeInside(ref, at) : shiftRangeRows(ref, at, 1);
+    x = x.replace(/(<conditionalFormatting [^>]*sqref=")([^"]*)(")/g, (a, p, ref, q) => p + sr(ref) + q);
     x = x.replace(ROW_RE, row => {
       const r = +row.match(/^<row r="(\d+)"/)[1];
       if (r < at) return row;
       return row.replace(/^<row r="\d+"/, `<row r="${r + 1}"`).replace(/<c r="([A-Z]+)\d+"/g, (a, c) => `<c r="${c}${r + 1}"`);
     });
-    x = x.replace(/(<dataValidation [^>]*sqref=")([^"]*)(")/g, (a, p, ref, q) => p + shiftRangeRows(ref, at, 1) + q);
+    x = x.replace(/(<dataValidation [^>]*sqref=")([^"]*)(")/g, (a, p, ref, q) => p + sr(ref) + q);
     x = x.replace(/(<formula1>)([^<]*)(<\/formula1>)/g, (a, p, f, q) => f.trim().startsWith('"') ? a :
       p + f.replace(/(\$?)([A-Z]+)(\$?)(\d+)/g, (m, d1, c, d2, r) => +r >= at ? d1 + c + d2 + (+r + 1) : m) + q);
     x = x.replace(/(<mergeCell ref=")([^"]*)(")/g, (a, p, ref, q) => p + shiftRangeRows(ref, at, 1) + q);
@@ -486,7 +630,7 @@ const ATT = (() => {
   const oldAbsent = wb => wb.legend.find(l => /didn.?t\s*attend/i.test(l.label));
   const APOL = '\u{1F64F}';
   const oldApol = wb => wb.legend.find(l => /apolog/i.test(l.label) && l.sym !== APOL);
-  function needsUpgrade(wb) { return !wb.typeRow || wb.hasFormulas || !hasSick(wb) || !!oldAbsent(wb) || !!oldApol(wb); }
+  function needsUpgrade(wb) { return !wb.typeRow || wb.hasFormulas || !hasSick(wb) || !!oldAbsent(wb) || !!oldApol(wb) || !wb.mcol.Status; }
   async function upgrade(wb) {
     let x = stripSpans(wb.sheetXml);
     const hdr = wb.hdr;
@@ -561,6 +705,121 @@ const ATT = (() => {
       for (const p of wb.people) for (const d of wb.dates) if (p.marks[d.col] === old) setMark(wb, d.col, p.row, APOL);
       setMark(wb, 'A', ap.row, APOL); parse(wb);
     }
+    if (!wb.mcol.Status) await addMemberColumns(wb);
+  }
+
+  // Insert n empty columns at column number `at`, keeping everything else pointing at the same cells
+  function insertCols(x, at, n) {
+    const sh = c => colNum(c) >= at ? colName(colNum(c) + n) : c;
+    x = x.replace(/<c r="([A-Z]+)(\d+)"/g, (a, c, r) => `<c r="${sh(c)}${r}"`);
+    const shRef = ref => ref.replace(/(\$?)([A-Z]+)(\$?)(\d+)/g, (m, d1, c, d2, r) => d1 + sh(c) + d2 + r);
+    x = x.replace(/(<(?:dataValidation|conditionalFormatting) [^>]*sqref=")([^"]*)(")/g, (a, p, ref, q) => p + shRef(ref) + q);
+    x = x.replace(/(<mergeCell ref=")([^"]*)(")/g, (a, p, ref, q) => p + shRef(ref) + q);
+    x = x.replace(/(<(?:selection|pane)[^>]*?(?:activeCell|topLeftCell)=")([A-Z]+\d+)(")/g, (a, p, ref, q) => p + shRef(ref) + q);
+    x = x.replace(/(<selection[^>]*?sqref=")([^"]*)(")/g, (a, p, ref, q) => p + shRef(ref) + q);
+    x = x.replace(/<col min="(\d+)" max="(\d+)"/g, (a, mn, mx) => { mn = +mn; mx = +mx;
+      if (mn >= at) return `<col min="${mn + n}" max="${mx + n}"`; if (mx >= at) return `<col min="${mn}" max="${mx + n}"`; return a; });
+    return x;
+  }
+  // put a cell into a row's XML in column order
+  function putCell(rowXml, cellXml, col) {
+    const target = colNum(col); const cr = /<c r="([A-Z]+)\d+"/g; let m, pos = -1;
+    if (rowXml.endsWith('/>')) rowXml = rowXml.slice(0, -2) + '></row>';
+    while ((m = cr.exec(rowXml))) if (colNum(m[1]) > target) { pos = m.index; break; }
+    if (pos < 0) pos = rowXml.lastIndexOf('</row>');
+    return rowXml.slice(0, pos) + cellXml + rowXml.slice(pos);
+  }
+  async function addMemberColumns(wb) {
+    // styles: a date format, a text format (for birthdays) and a grey look for people who have left
+    const stP = 'xl/styles.xml'; let st = await wb.zip.file(stP).async('string');
+    if (!/formatCode="d mmm yyyy"/.test(st)) {
+      if (/<numFmts count="(\d+)">/.test(st)) st = st.replace(/<numFmts count="(\d+)">/, (a, n) => `<numFmts count="${+n + 1}"><numFmt numFmtId="190" formatCode="d mmm yyyy"/>`);
+      else st = st.replace(/(<styleSheet[^>]*>)/, '$1<numFmts count="1"><numFmt numFmtId="190" formatCode="d mmm yyyy"/></numFmts>');
+    }
+    const n0 = +st.match(/<cellXfs count="(\d+)">/)[1];
+    st = st.replace(/<cellXfs count="\d+">/, `<cellXfs count="${n0 + 3}">`).replace('</cellXfs>',
+      '<xf numFmtId="190" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1" applyAlignment="1"><alignment horizontal="left"/></xf>' +
+      '<xf numFmtId="49" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1" applyAlignment="1"><alignment horizontal="left"/></xf>' +
+      '<xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1" applyAlignment="1"><alignment horizontal="left" vertical="bottom"/></xf></cellXfs>');
+    const sDate = n0, sText = n0 + 1, sHead = n0 + 2;
+    let dxf = 0;
+    const grey = '<dxf><font><color rgb="FF8C8C8C"/></font><fill><patternFill><bgColor rgb="FFEDEDED"/></patternFill></fill></dxf>';
+    if (/<dxfs count="0"\/>/.test(st)) st = st.replace(/<dxfs count="0"\/>/, `<dxfs count="1">${grey}</dxfs>`);
+    else if (/<dxfs count="(\d+)">/.test(st)) { dxf = +st.match(/<dxfs count="(\d+)">/)[1]; st = st.replace(/<dxfs count="\d+">/, `<dxfs count="${dxf + 1}">`).replace('</dxfs>', grey + '</dxfs>'); }
+    else st = st.replace('</cellXfs>', '</cellXfs>').replace(/(<\/cellStyles>|<cellStyles[^>]*\/>)/, `$1<dxfs count="1">${grey}</dxfs>`);
+    wb.zip.file(stP, st);
+
+    const at = 3, n = MEMBER_COLS.length, hdr = wb.hdr;
+    let x = insertCols(stripSpans(wb.sheetXml), at, n);
+    const people = new Set(wb.people.map(p => p.row));
+    x = x.replace(ROW_RE, row => {
+      const r = +row.match(/^<row r="(\d+)"/)[1];
+      if (r === hdr) MEMBER_COLS.forEach((lab, i) => { row = putCell(row, `<c r="${colName(at + i)}${r}" s="${sHead}" t="s"><v>${sstIndex(wb, lab)}</v></c>`, colName(at + i)); });
+      else if (people.has(r)) MEMBER_COLS.forEach((lab, i) => {
+        const c = colName(at + i), s = lab === 'Joined' || lab === 'Left' || lab === 'Return' || lab === 'Birthday' ? sDate : sText;
+        row = putCell(row, lab === 'Status' ? `<c r="${c}${r}" s="${sText}" t="s"><v>${sstIndex(wb, 'Active')}</v></c>` : `<c r="${c}${r}" s="${s}"/>`, c);
+      });
+      return row;
+    });
+    // column widths for the new columns
+    const widths = [10.5, 11.5, 11.5, 11.5, 8.5, 16];
+    const cols = widths.map((w, i) => `<col min="${at + i}" max="${at + i}" width="${w}" customWidth="1"/>`).join('');
+    if (/<cols>/.test(x)) {
+      x = x.replace(/<cols>([\s\S]*?)<\/cols>/, (a, inner) => {
+        const list = (inner.match(/<col [^>]*\/>/g) || []).concat(cols.match(/<col [^>]*\/>/g));
+        list.sort((p, q) => +p.match(/min="(\d+)"/)[1] - +q.match(/min="(\d+)"/)[1]);
+        return '<cols>' + list.join('') + '</cols>';
+      });
+    } else x = x.replace('<sheetData', '<cols>' + cols + '</cols><sheetData');
+    // drop-down for Status, and grey rows for people who have left
+    const first = hdr + 1, lastRow = 400, sc = colName(at);
+    const dv = `<dataValidation type="list" allowBlank="1" showErrorMessage="1" sqref="${sc}${first}:${sc}${lastRow}"><formula1>"${STATUSES.join(',')}"</formula1></dataValidation>`;
+    if (/<dataValidations count="(\d+)">/.test(x)) x = x.replace(/<dataValidations count="(\d+)">/, (a, k) => `<dataValidations count="${+k + 1}">${dv}`);
+    else x = x.replace('</sheetData>', `</sheetData><dataValidations count="1">${dv}</dataValidations>`);
+    const cf = `<conditionalFormatting sqref="A${first}:${colName(400)}${lastRow}"><cfRule type="expression" dxfId="${dxf}" priority="1"><formula>OR($${sc}${first}="Deceased",$${sc}${first}="Resigned")</formula></cfRule></conditionalFormatting>`;
+    x = x.replace('<dataValidations', cf + '<dataValidations');
+    wb.sheetXml = x; fixDimension(wb); parse(wb);
+  }
+
+  // Update one person's membership fields: {status, joined, left, ret, bday, note} (undefined = leave as is)
+  function setMember(wb, p, f) {
+    const c = wb.mcol; if (!c.Status) throw new Error('upgrade first');
+    if (f.status !== undefined) setMark(wb, c.Status, p.row, f.status);
+    for (const [k, col] of [['joined', 'Joined'], ['left', 'Left'], ['ret', 'Return']]) if (f[k] !== undefined) setNum(wb, c[col], p.row, f[k]);
+    if (f.bday !== undefined) {
+      if (f.bday && f.bday.y) {
+        setNum(wb, c.Birthday, p.row, Math.round(Date.UTC(f.bday.y, f.bday.m - 1, f.bday.d) / 864e5) + 25569);
+        // use the same date style as the Joined cell (older layouts had a text style here)
+        const js = (wb.sheetXml.match(new RegExp(`<c r="${c.Joined}${p.row}"[^>]*?\\ss="(\\d+)"`)) || [])[1];
+        if (js) wb.sheetXml = wb.sheetXml.replace(new RegExp(`<c r="${c.Birthday}${p.row}"([^>]*?)\\ss="\\d+"`), `<c r="${c.Birthday}${p.row}"$1 s="${js}"`);
+      } else setMark(wb, c.Birthday, p.row, f.bday ? bdayText(f.bday) : null);
+    }
+    if (f.note !== undefined) setMark(wb, c.Note, p.row, f.note || null);
+    parse(wb);
+  }
+  // Add a new singer in alphabetical order, with the row looking like its neighbours
+  function addMember(wb, f) {
+    if (!wb.mcol.Status) throw new Error('upgrade first');
+    const key = p => (p.last + ' ' + p.first).toLowerCase();
+    const k = key(f);
+    if (wb.people.some(p => key(p) === k)) throw new Error('exists');
+    const after = wb.people.find(p => key(p) > k);
+    const at = after ? after.row : (wb.people.length ? wb.people[wb.people.length - 1].row + 1 : wb.hdr + 1);
+    const tplRow = after ? after.row : (wb.people.length ? wb.people[wb.people.length - 1].row : null);
+    let x = stripSpans(wb.sheetXml);
+    const tpl = tplRow ? (x.match(new RegExp(`<row r="${tplRow}"(?=[\\s>/])[^>]*?(?:/>|>[\\s\\S]*?</row>)`)) || [''])[0] : '';
+    x = shiftDown(x, at, true);
+    let row = tpl ? tpl.replace(/^<row r="\d+"/, `<row r="${at}"`).replace(/<c r="([A-Z]+)\d+"([^>]*?)(?:\/>|>[\s\S]*?<\/c>)/g,
+      (a, c, attrs) => `<c r="${c}${at}"${(attrs.match(/\ss="\d+"/) || [''])[0]}/>`) : `<row r="${at}"></row>`;
+    const pos = x.search(new RegExp(`<row r="${at + 1}"[\\s>/]`));
+    x = pos < 0 ? x.replace('</sheetData>', row + '</sheetData>') : x.slice(0, pos) + row + x.slice(pos);
+    wb.sheetXml = x;
+    setMark(wb, 'A', at, f.last); setMark(wb, 'B', at, f.first);
+    parse(wb);
+    const p = wb.people.find(q => q.row === at);
+    setMember(wb, p, { status: 'Active', joined: f.joined || null, left: null, ret: null, bday: f.bday || null, note: f.note || null });
+    fixDimension(wb); parse(wb);
+    return wb.people.find(q => q.row === at);
   }
 
   // Insert a new date column (Concert/Event/Rehearsal) in date order. Requires an upgraded sheet.
@@ -568,7 +827,7 @@ const ATT = (() => {
     if (needsUpgrade(wb)) throw new Error('upgrade first');
     if (wb.dates.some(d => d.serial === serial && d.type === type)) throw new Error('exists');
     const after = wb.dates.find(d => d.serial > serial);
-    const at = after ? colNum(after.col) : (wb.dates.length ? colNum(wb.dates[wb.dates.length - 1].col) + 1 : 3);
+    const at = after ? colNum(after.col) : (wb.dates.length ? colNum(wb.dates[wb.dates.length - 1].col) + 1 : wb.firstDateCol || 3);
     const nc = colName(at);
     let x = stripSpans(wb.sheetXml);
     x = x.replace(ROW_RE, row => {
@@ -610,7 +869,8 @@ const ATT = (() => {
   const serialToISO = s => new Date(Math.round((s - 25569) * 86400000)).toISOString().slice(0, 10);
   const isoToSerial = iso => Math.round(Date.parse(iso + 'T00:00:00Z') / 86400000) + 25569;
 
-  return { load, setMark, save, serialToISO, isoToSerial, needsUpgrade, upgrade, insertDate, TYPES };
+  return { load, setMark, save, serialToISO, isoToSerial, needsUpgrade, upgrade, insertDate, TYPES,
+    STATUSES, setMember, addMember, isMember, isAway, isExpected, yearsOf, nextPin, nextBirthday, ageOn, fmtDate, bdayText, toBday };
 })();
 if (typeof module !== 'undefined') module.exports = ATT;
 </script>
@@ -770,15 +1030,17 @@ function render(){
   $('legend').innerHTML=wb.legend.map(l=>`<span><b>${E(l.sym)}</b> ${E(l.label)}</span>`).join('');
   const list=$('list'); list.innerHTML='';
   const legend=wb.legend.slice(0,5), counts=legend.map(()=>0); let blank=0;
-  wb.people.forEach(p=>{
+  const ds = col ? col.serial : ATT.isoToSerial(L.date);
+  wb.people.filter(p=>ATT.isMember(p, ds)).forEach(p=>{
+    const away=ATT.isAway(p, ds);
     const cur=col?p.marks[col.col]:undefined, ki=legend.findIndex(l=>l.sym===cur);
-    if(ki>=0) counts[ki]++; else blank++;
-    const el=document.createElement('div'); el.className='person';
-    el.innerHTML=`<div class="name">${E(p.first)} ${E(p.last)}${cur&&ki<0?`<small>Cell holds “${E(cur)}”</small>`:''}</div>`;
+    if(ki>=0) counts[ki]++; else if(!away) blank++;
+    const el=document.createElement('div'); el.className='person'+(away?' away':'');
+    el.innerHTML=`<div class="name">${E(p.first)} ${E(p.last)}${away?`<small class="awaytag">On sabbatical${p.ret?' until '+E(fmtDM(p.ret)):''}</small>`:''}${cur&&ki<0?`<small>Cell holds “${E(cur)}”</small>`:''}</div>`;
     const m=document.createElement('div'); m.className='marks';
     legend.forEach(l=>{
       const b=document.createElement('button'); b.className='mk k-'+kindOf(l)+(isEmoji(l.sym)?' emoji':'')+(cur===l.sym?' on':''); b.textContent=l.sym;
-      b.title=l.label; b.setAttribute('aria-label',`${p.first} ${p.last}: ${l.label}`); b.disabled=!col;
+      b.title=l.label; b.setAttribute('aria-label',`${p.first} ${p.last}: ${l.label}`); b.disabled=!col||away;
       b.onclick=()=>mark(col.col, p.row, cur===l.sym?null:l.sym);
       m.appendChild(b);
     });
@@ -787,7 +1049,7 @@ function render(){
   $('tally').innerHTML=col?legend.map((l,k)=>`<span>${E(l.sym)} ${counts[k]}</span>`).join('')+`<span>blank ${blank}</span>`:'';
   $('fillBtn').disabled=!col||blank===0;
   renderGrid(col);
-  $('leadSummary').innerHTML = `<p class="lbl" style="margin:0 0 6px">${E(L.label)} section summary</p>` + sectionCardHTML(L.label, L.wb, true);
+  $('leadSummary').innerHTML = `<p class="lbl" style="margin:0 0 6px">${E(L.label)} section summary</p>` + sectionCardHTML(L.label, L.wb, true, {lead:true});
 }
 function renderGrid(col){
   const wb=L.wb, ds=wb.dates; if(!ds.length){ $('gridBody').innerHTML=''; $('gridNav').classList.add('hidden'); return; }
@@ -801,10 +1063,11 @@ function renderGrid(col){
   const d=s=>new Date((s-25569)*864e5).toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'});
   const dy=s=>new Date((s-25569)*864e5).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'});
   let h='<table><tr><th></th>'+cols.map(c=>`<th${col&&c===col?' class="cur"':''}>${d(c.serial)}<small class="tt${c.type==='Rehearsal'?' reh':''}">${c.type==='Rehearsal'?'Reh.':E(c.type)}</small></th>`).join('')+'</tr>';
-  for (const p of wb.people){
+  for (const p of wb.people.filter(p=>cols.some(c=>ATT.isMember(p, c.serial)))){
     h+=`<tr><td>${E(p.first?p.first[0]+'. ':'')}${E(p.last)}</td>`+cols.map(c=>{
       const v=p.marks[c.col]||'', k=wb.legend.findIndex(l=>l.sym===v);
-      return `<td class="${col&&c===col?'cur ':''}${k>=0?'g-'+kindOf(wb.legend[k]):''}">${E(v)}</td>`;
+      const off=!ATT.isMember(p, c.serial)?' off':ATT.isAway(p, c.serial)?' awaycell':'';
+      return `<td class="${col&&c===col?'cur ':''}${k>=0?'g-'+kindOf(wb.legend[k]):''}${off}">${E(v)}</td>`;
     }).join('')+'</tr>';
   }
   $('gridBody').innerHTML=h+'</table>';
@@ -897,7 +1160,7 @@ $('date').onchange=e=>{ if(e.target.value){ L.date=e.target.value; render(); } }
 $('todayBtn').onclick=()=>{ L.date=todayISO(); render(); };
 $('fillBtn').onclick=()=>{
   const col=currentCol(); if(!col) return; const sym=L.wb.legend[0].sym;
-  L.wb.people.forEach(p=>{ if(!p.marks[col.col]){ ATT.setMark(L.wb,col.col,p.row,sym); L.pending.set(pkey(col, personKey(p)),sym); } });
+  L.wb.people.forEach(p=>{ if(ATT.isExpected(p, col.serial) && !p.marks[col.col]){ ATT.setMark(L.wb,col.col,p.row,sym); L.pending.set(pkey(col, personKey(p)),sym); } });
   render(); queueSave(800);
 };
 window.addEventListener('beforeunload', e=>{ if(L.pending.size){ e.preventDefault(); e.returnValue=''; } });
@@ -945,6 +1208,10 @@ function committeeRender(){
   $('comCopy').onclick=async()=>{ try{ await navigator.clipboard.writeText(link); $('comCopy').textContent='Copied \u2713'; setTimeout(()=>$('comCopy').textContent='Copy committee link',2000); }catch(e){ $('comCopy').textContent='Copy failed \u2014 select the text'; } };
 }
 $('comCreate').onclick=()=>adminConnect('committee');
+$('memSheet').onchange=()=>{ memSheet=+$('memSheet').value; memEdit=null; renderMembers(); };
+$('amAdd').onclick=addMemberSubmit;
+$('setSave').onclick=saveSettings;
+
 $('comCancel').onclick=()=>confirmBox('Cancel the committee link? It stops working straight away. Lead links and your organiser link are not affected.', async()=>{
   const a=adminStore.get(); try{ await dbx({key:a.key, refresh:a.committee},'rpc','auth/token/revoke'); }catch(e){}
   adminStore.patch({committee:null}); committeeRender();
@@ -962,6 +1229,7 @@ async function viewStart(p){
     const o=n=>{ n=n.toLowerCase(); return n.includes('bass')?0:n.includes('bari')?1:n.includes('top')?2:n.includes('second')?3:9; };
     const files=entries.filter(e=>e['.tag']==='file' && /\.xlsx$/i.test(e.name) && !/^\/backups\//i.test(e.path_display||'')).sort((x,y)=>o(x.name)-o(y.name)||x.name.localeCompare(y.name));
     adminSheets=[];
+    await loadSettings(auth);
     for (const f of files){
       try{ const wb=await ATT.load(JSZip, await dbx(auth,'download','files/download',{path:f.id})); adminSheets.push({f, label:labelFor(wb,f.name), wb}); }
       catch(e){ if (e.auth||e.net) throw e; }
@@ -1039,15 +1307,16 @@ function renderEventList(){
 }
 async function adminPrepare(files){
   const auth=adminAuth(); adminSheets=[]; $('prepNote').textContent='Checking the sheets\u2026';
+  try{ await loadSettings(auth); }catch(e){}
   let upgraded=0, failed=[];
   for (const f of files){
     try{ const r=await processSheet(auth, f, null); if (r.saved) upgraded++; adminSheets.push({f, label:labelFor(r.wb, f.name), wb:r.wb}); }
     catch(e){ if (e.auth){ adminStore.patch({refresh:null}); await adminRender(); $('adminErr').textContent='That connection no longer works (it was disconnected or replaced). Connect again, then bookmark the new organiser link.'; return; } failed.push(f.name); }
   }
-  $('prepNote').innerHTML = (upgraded?`<span class="ok">\u2713 Prepared ${upgraded} sheet${upgraded>1?'s':''}</span>: brought the layout up to date (Type row, plain dates, 🙏 Apologies, 🤒 Sick, “Absent”). Originals saved in the app folder\u2019s <b>Backups</b> folder. `:'')
+  $('prepNote').innerHTML = (upgraded?`<span class="ok">\u2713 Prepared ${upgraded} sheet${upgraded>1?'s':''}</span>: brought the layout up to date (Type row, plain dates, 🙏 Apologies, 🤒 Sick, “Absent”, membership columns). Originals saved in the app folder\u2019s <b>Backups</b> folder. `:'')
     + (failed.length?`<span class="warn">Couldn\u2019t read: ${E(failed.join(', '))}.</span>`:'');
   $('aDates').classList.toggle('hidden', !adminSheets.length);
-  renderEventList(); renderStats();
+  renderEventList(); renderStats(); renderMembers(); renderSettings();
 }
 async function adminApplyDate(){
   const iso=$('evDate').value, type=$('evType').value;
@@ -1073,11 +1342,31 @@ async function adminApplyDate(){
   $('evApply').disabled=false; renderEventList(); renderStats();
 }
 // =====================================================================
+// MEMBERSHIP helpers shared by all pages
+// =====================================================================
+const MON3=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const fmtLong = s => ATT.fmtDate(s);                       // 12 Mar 2019
+const fmtDM = s => { const d=new Date((s-25569)*864e5); return d.getUTCDate()+' '+MON3[d.getUTCMonth()]; };
+let adminSettings = {countSabbatical:true, lookahead:60};
+function statusLabel(p){
+  if (p.status==='Deceased') return 'In memoriam'+(p.left?' \u00b7 '+fmtLong(p.left):'');
+  if (p.status==='Resigned') return 'Resigned'+(p.left?' \u00b7 '+fmtLong(p.left):'');
+  if (p.status==='Sabbatical') return 'Sabbatical'+(p.left?' \u00b7 from '+fmtLong(p.left):'')+(p.ret?' to '+fmtLong(p.ret):'');
+  return 'Active'+(p.joined?' \u00b7 Joined '+fmtLong(p.joined):'');
+}
+const statusClass = p => p.status==='Deceased'?'mem':p.status==='Resigned'?'res':p.status==='Sabbatical'?'sab':'act';
+async function loadSettings(auth){
+  try{ const b=await dbx(auth,'download','files/download',{path:'/settings.json'}); const j=JSON.parse(new TextDecoder().decode(b));
+       adminSettings={countSabbatical: j.countSabbatical!==false, lookahead: Math.min(365, Math.max(7, +j.lookahead||60))}; }
+  catch(e){ if (e.auth||e.net) throw e; }   // no settings file yet: keep the defaults
+}
+
+// =====================================================================
 // SECTION SUMMARY CARD — used on the organiser page (all sections) and the lead page (own section)
 // =====================================================================
 const KIND_COL = {yes:'var(--yes)', apol:'var(--apol)', sick:'var(--sick)', no:'var(--no)', other:'var(--muted)'};
 const KIND_NAME = {yes:'Attended', apol:'Apologies', sick:'Sick', no:'Absent', other:'Other'};
-function sectionSummary(wb){
+function sectionSummary(wb, opts={}){
   const today=todaySerial(), from=today-365;
   const kindOfMark = v => { const l=wb.legend.find(x=>x.sym===v); return l?kindOf(l):null; };
   const past = wb.dates.filter(d=>d.serial<=today && d.serial>from);
@@ -1086,7 +1375,7 @@ function sectionSummary(wb){
   const rehMarked = reh.filter(marked);
   const firstMarked = rehMarked.length ? rehMarked[0].serial : null;
   const tally = (dates, people=wb.people) => { const t={yes:0,apol:0,sick:0,no:0,other:0,r:0};
-    for (const d of dates) for (const p of people){ const k=kindOfMark(p.marks[d.col]); if(!k) continue; t[k]++; t.r++; } return t; };
+    for (const d of dates) for (const p of people){ if (!ATT.isExpected(p, d.serial)) continue; const k=kindOfMark(p.marks[d.col]); if(!k) continue; t[k]++; t.r++; } return t; };
   const all = tally(rehMarked);
   const win = (a,b) => tally(rehMarked.filter(d=>d.serial>a && d.serial<=b));
   const recent = win(today-91, today), prior = win(today-182, today-91);
@@ -1094,18 +1383,25 @@ function sectionSummary(wb){
   const last8 = rehMarked.slice(-8).map(d=>{ const t=tally([d]); return {d, p:pct(t.yes,t.r), t}; });
   const ev = tally(past.filter(d=>d.type!=='Rehearsal' && marked(d)));
   const last6 = rehMarked.slice(-6), last4 = rehMarked.slice(-4);
-  const singers = wb.people.map(p=>{
+  const inPeriod = p => ATT.isMember(p, today) || rehMarked.some(d=>ATT.isMember(p, d.serial));
+  const gone = p => !ATT.isMember(p, today);
+  const singers = wb.people.filter(p=>inPeriod(p) && !(opts.lead && gone(p))).map(p=>{
     const t=tally(rehMarked,[p]);
-    const noCount = last6.filter(d=>kindOfMark(p.marks[d.col])==='no').length;
+    const mine = rehMarked.filter(d=>ATT.isExpected(p, d.serial)).slice(-6);
+    const noCount = mine.filter(d=>kindOfMark(p.marks[d.col])==='no').length;
+    const nowAway = ATT.isAway(p, today);
     return {name:(p.first?p.first+' ':'')+p.last, short:(p.first?p.first[0]+'. ':'')+p.last, p:pct(t.yes,t.r), r:t.r,
-            last4:last4.map(d=>({d, k:kindOfMark(p.marks[d.col]), v:p.marks[d.col]||''})), nudge:noCount>=3, noCount};
+            last4:last4.map(d=>({d, k:ATT.isExpected(p, d.serial)?kindOfMark(p.marks[d.col]):null, off:!ATT.isExpected(p, d.serial), v:p.marks[d.col]||''})),
+            nudge:!gone(p) && !nowAway && noCount>=3, noCount, gone:gone(p), away:nowAway, label:gone(p)||nowAway?statusLabel(p):'',
+            years:ATT.yearsOf(p, today, adminSettings.countSabbatical)};
   });
   const unmarked = firstMarked==null ? [] : reh.filter(d=>d.serial>=firstMarked && !marked(d));
-  return {all, pct12:pct(all.yes,all.r), trend, last8, ev, evPct:pct(ev.yes,ev.r), singers, nudges:singers.filter(s=>s.nudge), unmarked, count:wb.people.length};
+  return {all, pct12:pct(all.yes,all.r), trend, last8, ev, evPct:pct(ev.yes,ev.r), singers, nudges:singers.filter(s=>s.nudge), unmarked,
+          count:wb.people.filter(p=>ATT.isMember(p, today)).length, sab:wb.people.filter(p=>ATT.isAway(p, today)).length};
 }
 const dShort = s => new Date((s-25569)*864e5).toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'});
-function sectionCardHTML(label, wb, openSingers){
-  const s=sectionSummary(wb);
+function sectionCardHTML(label, wb, openSingers, opts={}){
+  const s=sectionSummary(wb, opts), showYears=!opts.lead;
   if (!s.all.r) return `<div class="sc"><div class="sc-h"><b>${E(label)}</b></div><p class="sub" style="margin:6px 0 0">No rehearsal marks in the last 12 months yet.</p></div>`;
   const trend = s.trend==null ? '<span class="sc-chip">Not enough data yet</span>' :
     `<span class="sc-chip ${s.trend>0?'up':s.trend<0?'down':''}">${s.trend>0?'+':s.trend<0?'\u2212':''}${Math.abs(s.trend)} pts</span>`;
@@ -1117,11 +1413,12 @@ function sectionCardHTML(label, wb, openSingers){
   const lg = kinds.map(k=>`<span><i style="background:${KIND_COL[k]}"></i>${KIND_NAME[k]} ${pct(s.all[k],s.all.r)}%</span>`).join('');
   const nudge = s.nudges.length ? `<span class="warn">${s.nudges.length} singer${s.nudges.length>1?'s':''}: ${E(s.nudges.map(n=>n.short).join(', '))}</span>` : '<span class="ok">None \u2014 all good</span>';
   const unm = s.unmarked.length ? `<span class="warn">${E(s.unmarked.slice(-3).map(d=>dShort(d.serial)).join(', '))}${s.unmarked.length>3?` and ${s.unmarked.length-3} more`:''}</span>` : '<span class="ok">All rehearsals marked</span>';
-  const rows = s.singers.slice().sort((a,b)=>(b.nudge-a.nudge)||((a.p??101)-(b.p??101))).map(x=>
-    `<tr${x.nudge?' class="nudge"':''}><td>${x.nudge?'\u26a0\ufe0e ':''}${E(x.name)}</td><td class="n">${x.p==null?'\u2013':x.p+'%'}</td><td class="n">${
-      x.last4.map(m=>`<span class="sq" style="background:${m.k?KIND_COL[m.k]:'transparent'};${m.k?'':'border:1px dashed var(--line)'}" title="${E(dShort(m.d.serial))}: ${m.k?KIND_NAME[m.k]:'not marked'}"></span>`).join('')}</td></tr>`).join('');
+  const yrs = y => y==null ? '\u2013' : y<1 ? '&lt; 1 yr' : y+' yr'+(y===1?'':'s');
+  const rows = s.singers.slice().sort((a,b)=>(a.gone-b.gone)||(b.nudge-a.nudge)||((a.p??101)-(b.p??101))).map(x=>
+    `<tr class="${x.nudge?'nudge':''}${x.gone||x.away?' former':''}"><td>${x.nudge?'\u26a0\ufe0e ':''}${E(x.name)}${x.label?`<small>${E(x.label)}</small>`:''}</td>${showYears?`<td class="n">${yrs(x.years)}</td>`:''}<td class="n">${x.p==null?'\u2013':x.p+'%'}</td><td class="n">${
+      x.last4.map(m=>`<span class="sq" style="background:${m.k?KIND_COL[m.k]:'transparent'};${m.k?'':m.off?'border:1px solid var(--line);opacity:.35':'border:1px dashed var(--line)'}" title="${E(dShort(m.d.serial))}: ${m.k?KIND_NAME[m.k]:m.off?'not a member / away':'not marked'}"></span>`).join('')}</td></tr>`).join('');
   return `<div class="sc">
-    <div class="sc-h"><b>${E(label)}</b><span class="sub">${s.count} singers</span></div>
+    <div class="sc-h"><b>${E(label)}</b><span class="sub">${s.count} singers${s.sab?` \u00b7 ${s.sab} on sabbatical`:''}</span></div>
     <div class="sc-grid">
       <div><div class="sc-t">Rehearsal attendance, last 12 months</div><div class="sc-big">${s.pct12}%</div></div>
       <div><div class="sc-t">Last 3 months vs the 3 before</div>${trend}</div>
@@ -1141,7 +1438,7 @@ function sectionCardHTML(label, wb, openSingers){
     <div class="sc-t">Rehearsals not marked yet</div><div class="sc-line">${unm}</div>
     <details class="sc-singers"${openSingers?' open':''}><summary>Singers</summary>
       <div class="sc-lg" style="margin:6px 0 0">${['yes','apol','sick','no'].map(k=>`<span><i style="background:${KIND_COL[k]}"></i>${KIND_NAME[k]}</span>`).join('')}<span>\u26a0\ufe0e needs a nudge</span></div>
-      <table><tr><th>Singer</th><th class="n">12 months</th><th class="n">Last 4 rehearsals</th></tr>${rows}</table>
+      <table class="${showYears?'yrs':''}"><tr><th>Singer</th>${showYears?'<th class="n">Member</th>':''}<th class="n">12 months</th><th class="n">Last 4</th></tr>${rows}</table>
     </details>
   </div>`;
 }
@@ -1154,7 +1451,7 @@ const VIZ_SERIES = ['var(--series-1)','var(--series-2)','var(--series-3)','var(-
 function markKind(wb, v){ const l=wb.legend.find(x=>x.sym===v); return l ? kindOf(l) : null; }
 function dateCounts(wb, d){
   let a=0, r=0;
-  for (const p of wb.people){ const v=p.marks[d.col]; if (!v) continue; const k=markKind(wb, v); if (!k) continue; r++; if (k==='yes') a++; }
+  for (const p of wb.people){ if (!ATT.isExpected(p, d.serial)) continue; const v=p.marks[d.col]; if (!v) continue; const k=markKind(wb, v); if (!k) continue; r++; if (k==='yes') a++; }
   return {a, r};
 }
 const pct = (a,r) => r ? Math.round(100*a/r) : null;
@@ -1295,12 +1592,33 @@ function statsTable(head, rows){
     rows.map(r=>'<tr>'+r.map((c,i)=>i===0?`<td>${c}</td>`:`<td>${c}</td>`).join('')+'</tr>').join('')+'</table></div>';
 }
 const cell = x => { const p=pct(x.a,x.r); return p==null ? '<span class="mut">–</span>' : `${p}%<small>${x.a}/${x.r}</small>`; };
+// ---- Coming up: birthdays and 5-year membership pins (organiser + committee only) ----
+function comingUpHTML(){
+  const today=todaySerial(), until=today+adminSettings.lookahead, items=[];
+  for (const sh of adminSheets) for (const p of sh.wb.people){
+    if (!ATT.isMember(p, today)) continue;
+    const name=(p.first?p.first+' ':'')+p.last;
+    const b=ATT.nextBirthday(p, today);
+    if (b!=null && b<=until){ const age=ATT.ageOn(p, b), major=age!=null && age>0 && age%5===0;
+      items.push({days:b-today, icon:'\ud83c\udf82', cls:'bd'+(major?' major':''), name, major, sub:`${sh.label} \u00b7 ${age!=null?`turns ${age} on `:'birthday '}${fmtDM(b)}`}); }
+    const pin=ATT.nextPin(p, today, adminSettings.countSabbatical);
+    if (pin && pin.serial<=until) items.push({days:pin.serial-today, icon:'\ud83c\udfc5', cls:'pn', name, sub:`${sh.label} \u00b7 ${pin.years}-year pin \u00b7 joined ${fmtLong(p.joined)}`});
+  }
+  items.sort((a,b)=>a.days-b.days || a.name.localeCompare(b.name));
+  const body = items.length ? items.map(i=>`<div class="cu-it"><span class="cu-ic ${i.cls}">${i.icon}</span><div class="cu-nm">${E(i.name)}${i.major?' <span class="cu-major">Milestone birthday</span>':''}<small>${E(i.sub)}</small></div>
+      <div class="cu-cnt">${i.days===0?'<span class="cu-today">Today</span>':`<b>${i.days}</b><small>day${i.days===1?'':'s'}</small>`}</div></div>`).join('')
+    : `<p class="sub" style="margin:6px 0 0">Nothing in the next ${adminSettings.lookahead} days. Birthdays and pins appear once Joined dates and birthdays are filled in.</p>`;
+  return `<div class="sc"><div class="sc-h"><b>Coming up</b><span class="sub">next ${adminSettings.lookahead} days</span></div>
+    <div class="sc-t" style="margin-top:2px">Birthdays (milestone every 5 years) and long-service pins (every 5 years of membership)</div>${body}</div>`;
+}
+
 function renderStats(){
   if (!adminSheets.length){ $('aStats').classList.add('hidden'); return; }
   $('aStats').classList.remove('hidden');
   const st=computeStats();
   drawMonthly($('chartMonthly'), st); drawEvents($('chartEvents'), st);
   $('secCards').innerHTML = adminSheets.map(sh=>sectionCardHTML(sh.label, sh.wb, false)).join('');
+  $('comingUp').innerHTML = comingUpHTML();
   const head=['', ...st.sections.map(s=>s.name), 'All'];
   $('tblMonthly').innerHTML = statsTable(head, st.monthly.slice().reverse().map(mm=>[
     new Date(Date.UTC(+mm.m.slice(0,4), +mm.m.slice(5)-1,1)).toLocaleDateString('en-GB',{month:'short',year:'2-digit',timeZone:'UTC'}),
@@ -1313,6 +1631,96 @@ function renderStats(){
   $('monthlyTitle').textContent = 'Rehearsals \u2014 monthly average' + (st.monthly.length>=12 ? ', last 12 months' : '');
 }
 let statsResize; window.addEventListener('resize', ()=>{ clearTimeout(statsResize); statsResize=setTimeout(()=>{ if(adminSheets.length && !$('vAdmin').classList.contains('hidden')) renderStats(); }, 200); });
+
+// =====================================================================
+// ORGANISER: Members and Settings
+// =====================================================================
+let memSheet = 0, memEdit = null;
+const isoOf = s => s==null ? '' : ATT.serialToISO(s);
+const serOf = v => v ? ATT.isoToSerial(v) : null;
+function bdaySelects(idp, b){
+  return `<div class="row" style="gap:6px"><select id="${idp}D" aria-label="Birthday day"><option value="">Day</option>${Array.from({length:31},(_,i)=>`<option${b&&b.d===i+1?' selected':''}>${i+1}</option>`).join('')}</select>
+    <select id="${idp}M" aria-label="Birthday month"><option value="">Month</option>${MON3.map((m,i)=>`<option value="${i+1}"${b&&b.m===i+1?' selected':''}>${m}</option>`).join('')}</select></div>`;
+}
+const readBday = id => { const v=$(id).value; if(!v) return null; const [y,m,d]=v.split('-').map(Number); return {d,m,y}; };
+function renderMembers(){
+  if (!adminSheets.length){ $('aMembers').classList.add('hidden'); return; }
+  $('aMembers').classList.remove('hidden');
+  if (!$('amJoined').value) $('amJoined').value=todayISO();
+  memSheet=Math.min(memSheet, adminSheets.length-1);
+  const sh=adminSheets[memSheet];
+  $('memSheet').innerHTML=adminSheets.map((x,i)=>`<option value="${i}"${i===memSheet?' selected':''}>${E(x.label)}</option>`).join('');
+  $('memVoice').innerHTML=$('memSheet').innerHTML;
+  const list=$('memList'); list.innerHTML='';
+  if (!sh.wb.mcol.Status){ list.innerHTML='<p class="sub">This sheet hasn\u2019t been prepared yet. Tap Refresh list above.</p>'; return; }
+  sh.wb.people.forEach(p=>{
+    const row=document.createElement('button'); row.className='mem-row'; row.type='button';
+    row.innerHTML=`<span>${E(p.first)} ${E(p.last)}</span><span class="pill ${statusClass(p)}">${E(statusLabel(p))}</span>`;
+    row.onclick=()=>{ memEdit=p.last+'|'+p.first; renderMemberForm(); $('memForm').scrollIntoView({block:'nearest'}); };
+    list.appendChild(row);
+  });
+  renderMemberForm();
+}
+function renderMemberForm(){
+  const sh=adminSheets[memSheet], f=$('memForm');
+  const p=memEdit && sh.wb.people.find(q=>q.last+'|'+q.first===memEdit);
+  if (!p){ f.classList.add('hidden'); return; }
+  f.classList.remove('hidden');
+  f.innerHTML=`<h3 class="viz-h" style="margin:0 0 6px">Edit \u2014 ${E(p.first)} ${E(p.last)}</h3>
+    <div class="mem-grid">
+      <label>Status<select id="mfStatus">${ATT.STATUSES.map(s=>`<option value="${s}"${s===p.status?' selected':''}>${s==='Deceased'?'In memoriam (Deceased)':s}</option>`).join('')}</select></label>
+      <label>Joined<input type="date" id="mfJoined" value="${isoOf(p.joined)}"></label>
+      <label id="mfFromL">From<input type="date" id="mfFrom" value="${isoOf(p.left)}"></label>
+      <label id="mfRetL">Expected return<input type="date" id="mfRet" value="${isoOf(p.ret)}"></label>
+      <label>Date of birth<input type="date" id="mfB" value="${p.bday&&p.bday.y?ATT.serialToISO(Math.round(Date.UTC(p.bday.y,p.bday.m-1,p.bday.d)/864e5)+25569):''}">${p.bday&&!p.bday.y?`<small class="sub">Sheet has ${p.bday.d} ${MON3[p.bday.m-1]} with no year</small>`:''}</label>
+      <label>Note (optional)<input type="text" id="mfNote" value="${E(p.note||'')}" maxlength="80"></label>
+    </div>
+    <div class="warn" id="mfErr" style="margin-top:8px"></div>
+    <div class="row" style="margin-top:10px"><button class="btn primary" id="mfSave">Save</button><button class="btn" id="mfCancel">Cancel</button></div>`;
+  const sync=()=>{ const s=$('mfStatus').value; $('mfFromL').classList.toggle('hidden', s==='Active'); $('mfRetL').classList.toggle('hidden', s!=='Sabbatical'); };
+  $('mfStatus').onchange=sync; sync();
+  $('mfCancel').onclick=()=>{ memEdit=null; renderMemberForm(); };
+  $('mfSave').onclick=()=>saveMember(sh, p);
+}
+async function saveMember(sh, p){
+  const status=$('mfStatus').value, from=serOf($('mfFrom').value), ret=serOf($('mfRet').value);
+  if (status!=='Active' && !from){ $('mfErr').textContent='Enter the date this takes effect from.'; return; }
+  if (status==='Sabbatical' && ret!=null && ret<=from){ $('mfErr').textContent='The return date must be after the start date.'; return; }
+  const f={status, joined:serOf($('mfJoined').value), left:status==='Active'?null:from, ret:status==='Sabbatical'?ret:null, bday:$('mfB').value?readBday('mfB'):(p.bday&&!p.bday.y?p.bday:null), note:$('mfNote').value.trim()};
+  $('mfSave').disabled=true; $('mfErr').textContent='';
+  const key=p.last+'|'+p.first;
+  try{
+    const r=await processSheet(adminAuth(), sh.f, wb=>{ const q=wb.people.find(x=>x.last+'|'+x.first===key); if(!q) throw new Error('missing'); ATT.setMember(wb, q, f); return {changed:true}; });
+    sh.wb=r.wb; memEdit=null; renderMembers(); renderStats();
+    $('memMsg').innerHTML=`<span class="ok">\u2713 Saved ${E(p.first)} ${E(p.last)}</span>`;
+  }catch(e){ $('mfSave').disabled=false; $('mfErr').textContent = e.net ? 'No connection \u2014 not saved.' : 'Couldn\u2019t save \u2014 please try again.'; }
+}
+async function addMemberSubmit(){
+  const first=$('amFirst').value.trim(), last=$('amLast').value.trim(), sh=adminSheets[+$('memVoice').value];
+  if (!first || !last){ $('amErr').textContent='Enter a first and last name.'; return; }
+  $('amErr').textContent=''; $('amAdd').disabled=true;
+  const f={first, last, joined:serOf($('amJoined').value), bday:readBday('amB')};
+  try{
+    const r=await processSheet(adminAuth(), sh.f, wb=>{ ATT.addMember(wb, f); return {changed:true}; });
+    sh.wb=r.wb; memSheet=adminSheets.indexOf(sh); renderMembers(); renderStats();
+    $('memMsg').innerHTML=`<span class="ok">\u2713 Added ${E(first)} ${E(last)} to ${E(sh.label)}</span>`;
+    $('amFirst').value=''; $('amLast').value=''; $('amB').value='';
+  }catch(e){ $('amErr').textContent = e.message==='exists' ? 'Someone with that name is already in this sheet.' : e.net ? 'No connection \u2014 not added.' : 'Couldn\u2019t add \u2014 please try again.'; }
+  $('amAdd').disabled=false;
+}
+function renderSettings(){
+  $('aSettings').classList.toggle('hidden', !adminSheets.length);
+  $('setSab').checked=adminSettings.countSabbatical; $('setLook').value=adminSettings.lookahead;
+}
+async function saveSettings(){
+  const look=Math.round(+$('setLook').value);
+  if (!(look>=7 && look<=365)){ $('setMsg').innerHTML='<span class="warn">Choose between 7 and 365 days.</span>'; return; }
+  const next={countSabbatical:$('setSab').checked, lookahead:look};
+  try{
+    await dbx(adminAuth(),'upload','files/upload',{path:'/settings.json', mode:'overwrite', mute:true}, new TextEncoder().encode(JSON.stringify(next)));
+    adminSettings=next; renderStats(); $('setMsg').innerHTML='<span class="ok">\u2713 Saved \u2014 the committee page uses these too.</span>';
+  }catch(e){ $('setMsg').innerHTML='<span class="warn">'+(e.net?'No connection \u2014 not saved.':'Couldn\u2019t save \u2014 please try again.')+'</span>'; }
+}
 
 async function adminFiles(){
   const out=$('fileList'); out.innerHTML='<p class="sub">Looking in the app folder…</p>';
