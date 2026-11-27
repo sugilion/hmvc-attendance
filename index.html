@@ -171,6 +171,66 @@ body.viewonly #aKey,body.viewonly #aConnect,body.viewonly #aLinks,body.viewonly 
 .mem-grid .row select{flex:1}
 .set-row{display:flex;align-items:center;gap:8px;font-size:14.5px;margin:8px 0;flex-wrap:wrap}
 .set-row input[type=number]{font:500 15px Inter,sans-serif;padding:5px 7px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.phr{font:500 15px ui-monospace,Menlo,monospace;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);flex:1;min-width:0}
+body.viewonly #aEM{display:none!important}
+.evt{width:100%;border-collapse:collapse;font-size:13.5px;table-layout:fixed}
+.evt th{font-size:12px;font-weight:500;color:var(--muted);padding:4px 2px;text-align:left} .evt th:first-child{width:30%}
+.evt td{padding:6px 2px;border-top:1px solid var(--line)} .evt .n{text-align:center} .evt tr.tot td{font-weight:600}
+.evr{border-top:1px solid var(--line)}
+.evr-main{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;background:none;border:0;padding:9px 2px;text-align:left;font:14px Inter,sans-serif;color:var(--ink);cursor:pointer}
+.evr-main small{font-size:11px;margin-left:4px} .evr-main small.nt{display:block;margin:2px 0 0;color:var(--muted)}
+.evr-main small.chg{color:var(--muted)} .evr-main small.late{color:var(--no);font-weight:600}
+.evr-pills{display:flex;gap:4px;flex:none}
+.evr.away .evr-main{color:var(--muted);cursor:default}
+.evr-ed{padding:4px 2px 12px}
+.evr-ed .evr-note{width:100%;margin-top:8px;font:14px Inter,sans-serif;padding:7px 8px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink)}
+.rb{padding:6px 10px;font-size:13px} .rb.on.can{background:var(--yes-soft);border-color:var(--yes);color:var(--yes)} .rb.on.may{background:var(--apol-soft);border-color:var(--apol);color:var(--apol)}
+.rb.on.cant{background:var(--no-soft);border-color:var(--no);color:var(--no)} .rb.on.nr{background:var(--line)}
+.pill.can{background:var(--yes-soft);color:var(--yes)} .pill.may{background:var(--apol-soft);color:var(--apol)} .pill.cant{background:var(--no-soft);color:var(--no)} .pill.nr{background:var(--line);color:var(--muted)} .pill.att{background:var(--sick-soft);color:var(--sick)}
+.btn.sent{opacity:.6}
+.evstatus.ok{color:var(--yes)} .evstatus.err{color:var(--no)} .evstatus.busy{color:var(--apol)}
+.stackwrap{overflow-x:auto;margin-top:6px}
+.stk{display:grid;gap:3px;min-width:100%;font-size:11px}
+.stk-rl{font-size:11px;color:var(--muted);align-self:center;padding-right:6px;white-space:nowrap}
+.stk-c{border-radius:6px;padding:4px 1px;text-align:center;line-height:1.15;min-width:0;overflow:hidden}
+.stk-c b{display:block;font-size:12px;font-weight:700} .stk-c small{display:none;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (min-width:700px){ .stk-c small{display:block} .stk-c{padding:5px 2px} }
+.stk-c.empty{background:transparent}
+.sec-TT{background:#ecebfb;color:#3c3489} .sec-ST{background:#e1f5ee;color:#085041} .sec-BR{background:#faece7;color:#712b13} .sec-BS{background:#e6f1fb;color:#0c447c}
+.stk-c.maybe{opacity:.45;outline:1px dashed currentColor;outline-offset:-2px}
+.stk-sec{text-align:center;font-size:11.5px;color:var(--muted);padding-top:4px;border-top:2px solid var(--line)}
+.stk-aud{text-align:center;font-size:12px;color:var(--muted);margin-top:6px;letter-spacing:.08em;text-transform:uppercase}
+#printArea{display:none}
+@media print{
+  @page{size:A4 landscape;margin:12mm}
+  body.printing>*:not(#printArea){display:none!important}
+  html,body.printing{background:#fff!important}
+  body.printing #printArea{display:block!important;color:#000;font-family:Inter,Arial,sans-serif}
+  #printArea h1{font:600 24pt Fraunces,Georgia,serif;margin:0 0 2mm} #printArea p{margin:0 0 5mm;font-size:12pt}
+  #printArea .stk2{gap:2mm;width:100%} #printArea .st-seats{gap:1.5mm} #printArea .st-rl .lt{display:inline!important} #printArea .st-seats.half{padding-left:calc(var(--cw) + 1.5mm)}
+  #printArea .st-c{height:13mm;-webkit-print-color-adjust:exact;print-color-adjust:exact} #printArea .st-c.blank{border:none}
+  #printArea .st-c b{font-size:12pt} #printArea .st-c small{display:block;font-size:8.5pt}
+  #printArea .st-rl,#printArea .stk-aud,#printArea .st-counts{font-size:10pt;color:#444} #printArea .st-rl{width:20mm}
+  #printArea .pfoot{margin-top:5mm;font-size:9pt;color:#666}
+}
+.stk2{display:flex;flex-direction:column;gap:4px;min-width:max-content;margin:0 auto;padding:2px}
+.st-row{display:flex;align-items:center}
+.st-rl{width:62px;flex:none;font-size:11px;color:var(--muted)} .st-rl b{font-weight:600}
+.stk2.narrow .st-rl{width:22px} .stk2.narrow .st-rl .lt{display:none}
+.stk2{--cw:28px} .st-seats{flex:1;display:flex;justify-content:center;gap:3px}
+.st-seats.half{padding-left:calc(var(--cw) + 3px)}
+.st-c{width:var(--cw);height:34px;flex:none;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;position:relative;cursor:pointer;user-select:none;-webkit-user-select:none;overflow:hidden}
+.st-c b{font-size:11.5px;font-weight:700} .st-c small{display:none;font-size:10px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px}
+.stk2.named .st-c{height:40px} .stk2.named .st-c small{display:block}
+.st-c.blank{border:1.5px dashed var(--line);background:transparent}
+.st-c.blank.target{border-color:var(--ink);background:var(--bg)}
+.st-c.maybe{opacity:.45;outline:1px dashed currentColor;outline-offset:-2px}
+.st-c.sel{outline:2.5px solid var(--ink);outline-offset:1px;opacity:1}
+.st-c.over{outline:2px dashed var(--ink)}
+.st-c.moved::after{content:'';position:absolute;top:3px;right:3px;width:6px;height:6px;border-radius:50%;background:#d85a30}
+.st-c.fresh::before{content:'new';position:absolute;bottom:1px;left:0;right:0;font-size:8px;font-weight:700;text-transform:uppercase;color:var(--no);text-align:center}
+.st-counts{text-align:center;font-size:11.5px;color:var(--muted);margin-top:2px}
+.rb2{min-width:36px;padding:5px 8px} .rb2.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 .cu-it{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
 .cu-ic{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;font-size:18px}
 .cu-ic.bd{background:#fbeaf0} .cu-major{display:inline-block;font-size:11px;font-weight:600;background:var(--accent);color:var(--on-accent);border-radius:999px;padding:1px 7px;vertical-align:1px} .cu-ic.pn{background:var(--apol-soft)}
@@ -232,9 +292,11 @@ body.viewonly #aStats{margin-top:0!important}
       <div class="warn" id="adminErr" style="margin-top:10px"></div>
       <div id="orgLinkBox" class="hidden" style="margin-top:12px">
         <p class="lbl" style="margin:0 0 4px">Your organiser link</p>
-        <p class="sub" style="margin:0 0 6px">Bookmark this, or add it to your home screen. It opens this page on any device, already connected, with no key or sign-in needed. Keep it private: like the lead links, it gives access to the sheets.</p>
-        <div class="linkbox" id="orgLink"></div>
-        <div class="row" style="margin-top:8px"><button class="btn primary" id="orgCopy">Copy organiser link</button></div>
+        <p class="sub" style="margin:0 0 6px">Bookmark this, or add it to your home screen. It opens this page on any device. It’s locked with a passphrase that is never part of the link, so a forwarded link is no use without it.</p>
+        <div id="orgPhraseBox"></div>
+        <div class="row" style="margin-top:8px"><button class="btn primary" id="orgMake">Create locked organiser link</button></div>
+        <div id="orgHas" class="hidden" style="margin-top:10px"><div class="linkbox" id="orgLink"></div>
+          <div class="row" style="margin-top:8px"><button class="btn primary" id="orgCopy">Copy organiser link</button></div></div>
       </div>
     </div>
     <div class="card hidden" id="aLinks" style="margin-top:12px">
@@ -245,10 +307,10 @@ body.viewonly #aStats{margin-top:0!important}
       <p class="sub" id="prepNote" style="margin:10px 0 0"></p>
     </div>
     <div class="card hidden" id="aDates" style="margin-top:12px">
-      <h2>4. Add a concert or event</h2>
-      <p class="sub" style="margin-bottom:10px">Goes into every sheet in date order. If that date is already in a sheet (e.g. a Wednesday rehearsal that becomes a concert), its type is changed instead of adding a new column.</p>
-      <div class="row"><input type="date" id="evDate" aria-label="Date"><select id="evType" aria-label="Type"><option>Concert</option><option>Event</option><option>Rehearsal</option></select></div>
-      <div class="row" style="margin-top:10px"><button class="btn primary" id="evApply">Add to all sheets</button></div>
+      <h2>4. Concerts and events</h2>
+      <p class="sub" style="margin-bottom:10px">Concerts and events are now created on the Events Manager page, which also adds each date to all four sheets.</p>
+      <div class="row"><a class="btn primary" id="openEvPage" target="_blank" rel="noopener">Open Events Manager page</a></div>
+      <div class="hidden"><input type="date" id="evDate"><select id="evType"><option>Concert</option></select><button id="evApply"></button></div>
       <div id="evResult" style="margin-top:10px;font-size:14px"></div>
       <div id="evList" style="margin-top:12px"></div>
     </div>
@@ -261,13 +323,29 @@ body.viewonly #aStats{margin-top:0!important}
         <div class="row" style="margin-top:8px"><button class="btn primary" id="comCopy">Copy committee link</button><a class="btn" id="comOpen" target="_blank" rel="noopener">Open</a><button class="btn link" id="comCancel">Cancel this link</button></div>
       </div>
     </div>
+    <div class="card hidden" id="aEM" style="margin-top:12px">
+      <h2>6. Events Manager link</h2>
+      <p class="sub" style="margin-bottom:10px">For the Events Manager’s page. Locked with a passphrase that is never part of the link — send the link and the passphrase separately. It has its own Dropbox access, so cancelling it affects no other link.</p>
+      <div id="emNone"><div id="emPhraseBox"></div><div class="row" style="margin-top:8px"><button class="btn primary" id="emCreate">Create Events Manager link</button></div>
+        <p class="sub" style="margin:8px 0 0">You’ll be taken to Dropbox once to approve it. Note the passphrase before you go.</p></div>
+      <div id="emHas" class="hidden">
+        <div class="linkbox" id="emLink"></div>
+        <div class="row" style="margin-top:8px"><button class="btn primary" id="emCopy">Copy link</button><button class="btn" id="emChange">Change passphrase</button><button class="btn link" id="emCancel">Cancel this link</button></div>
+        <p class="sub" style="margin:8px 0 0">Changing the passphrase creates a new link and stops the old one.</p>
+      </div>
+    </div>
     <div class="card hidden" id="aMembers" style="margin-top:12px">
-      <h2>6. Members</h2>
+      <h2>7. Members</h2>
       <p class="sub" style="margin-bottom:10px">Changing a status never deletes attendance — past marks stay in the sheet. Tap a singer to edit.</p>
       <select id="memSheet" aria-label="Voice part" style="width:100%"></select>
+      <div id="memDup" style="margin-top:6px;font-size:14px"></div>
       <div id="memList" style="margin-top:6px"></div>
       <div id="memForm" class="hidden mem-form"></div>
       <div id="memMsg" style="margin-top:8px;font-size:14px"></div>
+      <h3 class="viz-h" style="margin-top:18px">Member IDs</h3>
+      <p class="sub" style="margin:0 0 8px">Each singer has a choir-wide ID (M001, M002 …) that links them to their event replies and stack places. New members get the next number automatically. You can change one in the edit form, or renumber everyone in order of joining.</p>
+      <div class="row"><button class="btn" id="idRenumber">Number members by joining date</button></div>
+      <div id="idMsg" style="margin-top:8px;font-size:14px"></div>
       <h3 class="viz-h" style="margin-top:18px">Add a new member</h3>
       <div class="mem-grid">
         <label>First name<input type="text" id="amFirst" autocomplete="off"></label>
@@ -275,19 +353,21 @@ body.viewonly #aStats{margin-top:0!important}
         <label>Voice part<select id="memVoice"></select></label>
         <label>Joined<input type="date" id="amJoined"></label>
         <label>Date of birth<input type="date" id="amB"></label>
+        <label>Preferred stack row<select id="amRow"><option value="">Any</option><option value="1">1-Front</option><option value="2">2-Second</option><option value="3">3-Third</option><option value="4">4-Fourth</option><option value="5">5-Fifth</option></select></label>
+        <label>Mobile<input type="tel" id="amMob"></label>
       </div>
       <div class="warn" id="amErr" style="margin-top:8px"></div>
       <div class="row" style="margin-top:10px"><button class="btn primary" id="amAdd">Add member</button></div>
     </div>
     <div class="card hidden" id="aSettings" style="margin-top:12px">
-      <h2>7. Settings</h2>
+      <h2>8. Settings</h2>
       <label class="set-row"><input type="checkbox" id="setSab"> Count sabbaticals towards years of membership</label>
       <label class="set-row">Show birthdays and pins coming up in the next <input type="number" id="setLook" min="7" max="365" step="1" style="width:5em"> days</label>
       <div class="row" style="margin-top:10px"><button class="btn primary" id="setSave">Save settings</button></div>
       <div id="setMsg" style="margin-top:8px;font-size:14px"></div>
     </div>
     <div class="card hidden viz-root" id="aStats" style="margin-top:12px">
-      <h2 id="statsTitle">8. Attendance summary</h2>
+      <h2 id="statsTitle">9. Attendance summary</h2>
       <p class="sub" style="margin-bottom:8px">Attendance = singers marked ✓ as a share of everyone with a mark for that date (blank cells don’t count). Tap or hover a chart for figures.</p>
       <p id="statsHead" class="viz-head"></p>
       <div id="comingUp" style="margin-top:10px"></div>
@@ -301,6 +381,54 @@ body.viewonly #aStats{margin-top:0!important}
       <details class="viz-fig"><summary>Show figures</summary><div id="tblEvents"></div></details>
     </div>
     <div class="foot"><span id="adminWho"></span><button class="btn link hidden" id="disconnectBtn">Disconnect &amp; cancel all links</button></div>
+  </div>
+
+  <!-- Passphrase unlock -->
+  <div id="vLock" class="card center hidden">
+    <div style="font-size:26px">&#128274;</div>
+    <h2 id="lockTitle">Choir events</h2>
+    <p>Enter the passphrase you were given.</p>
+    <input type="text" id="lockIn" class="phr" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Passphrase" style="width:100%;text-align:center">
+    <label class="set-row" id="lockRememberRow" style="justify-content:center"><input type="checkbox" id="lockRemember" checked> Remember on this device</label>
+    <button class="btn primary big" id="lockBtn">Unlock</button>
+    <div class="warn" id="lockErr" style="margin-top:10px"></div>
+  </div>
+
+  <!-- Events Manager -->
+  <div id="vEv" class="hidden">
+    <div class="card">
+      <div class="row" style="gap:8px;flex-wrap:nowrap"><select id="evPick" aria-label="Event" style="flex:1;min-width:0"></select><button class="btn" id="evEditBtn">Edit</button></div>
+      <div class="row" style="margin-top:8px"><button class="btn primary" id="evNewBtn">+ New concert or event</button><button class="btn link" id="evRefresh">Refresh</button></div>
+      <div id="evForm" class="hidden mem-form"></div>
+    </div>
+    <div id="evEmpty" class="card center hidden" style="margin-top:12px"><h2>No events yet</h2><p>Create the first concert or event above.</p></div>
+    <div id="evMain">
+      <div class="card" style="margin-top:12px">
+        <div id="evHead"></div>
+        <div class="sc-t" style="margin-top:14px">Replies by section</div>
+        <div id="evSummary"></div>
+        <div class="row" style="margin-top:12px"><button class="btn primary" id="postBtn">Post to Community</button><button class="btn" id="remindBtn">Remind no-replies</button></div>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <h2 style="margin-bottom:2px">Replies</h2>
+        <p class="sub" style="margin:0">Tap a name to record or change what they sent.</p>
+        <div id="evReplies"></div>
+      </div>
+      <div class="card" id="stackCard" style="margin-top:12px">
+        <div class="sc-h"><b>Stack</b><span class="sub" id="stackNote"></span></div>
+        <div class="set-row">Rows at venue <span id="stackRows" class="row" style="gap:4px"></span></div>
+        <label class="set-row"><input type="checkbox" id="maybeToggle" checked> Include Maybes (shown faded)</label>
+        <div id="stackBox" class="stackwrap"></div>
+        <p class="sub" id="stackHint" style="margin:8px 0 0;min-height:1.2em"></p>
+        <div class="row" style="margin-top:10px"><button class="btn" id="printBtn">Print or save as PDF</button><button class="btn" id="stackGaps">Close gaps</button><button class="btn link" id="stackAfresh">Start afresh</button></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <h2>Your WhatsApp number</h2>
+      <p class="sub" style="margin-bottom:8px">The Can / Maybe / Can't links in the Community post open a chat with this number.</p>
+      <div class="row" style="flex-wrap:nowrap"><input type="tel" id="emMobile" class="phr" placeholder="07700 900123" style="flex:1;min-width:0"><button class="btn" id="emMobileSave">Save</button></div>
+    </div>
+    <div class="foot"><span id="evStatus" class="evstatus"></span><button class="btn link" id="evForget">Forget passphrase on this device</button></div>
   </div>
 
   <!-- Lead: marking -->
@@ -335,6 +463,19 @@ body.viewonly #aStats{margin-top:0!important}
   <button class="btn hidden" id="retryBtn">Try again</button>
 </div></div>
 
+<div class="modal hidden" id="postModal"><div class="card" style="max-width:460px">
+  <h2 style="margin-bottom:6px">Community post</h2>
+  <p class="sub" style="margin:0 0 8px">Open WhatsApp and choose the choir Community announcements, or copy the text.</p>
+  <textarea id="postText" rows="11" style="width:100%;font:14px Inter,sans-serif;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)"></textarea>
+  <div class="row" style="margin-top:10px"><a class="btn primary" id="postOpen" target="_blank" rel="noopener">Open WhatsApp</a><button class="btn" id="postCopy">Copy text</button><button class="btn link" id="postClose">Close</button></div>
+</div></div>
+<div class="modal hidden" id="remindModal"><div class="card" style="max-width:460px;max-height:85vh;overflow:auto">
+  <h2 style="margin-bottom:6px">Reminders</h2>
+  <p class="sub" style="margin:0 0 8px">Each button opens that singer's WhatsApp chat with a reminder ready to send.</p>
+  <div id="remindList"></div>
+  <div class="row" style="margin-top:10px"><button class="btn" id="remindClose">Done</button></div>
+</div></div>
+<div id="printArea"></div>
 <div class="modal hidden" id="modal"><div class="card">
   <p id="modalText"></p>
   <div class="row" style="justify-content:flex-end"><button class="btn" id="modalNo">Cancel</button><button class="btn primary" id="modalYes">OK</button></div>
@@ -361,7 +502,19 @@ const ATT = (() => {
   const colName = n => { let s = ''; while (n > 0) { const m = (n - 1) % 26; s = String.fromCharCode(65 + m) + s; n = Math.floor((n - 1) / 26); } return s; };
   const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const TYPES = ['Rehearsal', 'Concert', 'Event'];
-  const MEMBER_COLS = ['Status', 'Joined', 'Left', 'Return', 'Birthday', 'Note'];
+  const BASE_COLS = ['Status', 'Joined', 'Left', 'Return', 'Birthday', 'Note'];
+  const EXTRA_COLS = ['Row', 'Initials', 'Mobile', 'ID'];
+  const MEMBER_COLS = BASE_COLS.concat(EXTRA_COLS);
+  const sectionCode = t => { t = (t || '').toLowerCase(); return /top/.test(t) ? 'TT' : /second/.test(t) ? 'ST' : /bari/.test(t) ? 'BR' : /bass/.test(t) ? 'BS' : 'XX'; };
+  const autoInitials = p => ((p.first || '').trim()[0] || '').toUpperCase() + ((p.last || '').replace(/^(mc|mac|o['\u2019])/i, m => m[0]).trim()[0] || '').toUpperCase();
+  // initials nobody else in the choir has: JS, then JSm (2nd letter of surname), then JoS (2nd letter of first name), then longer, then a number
+  function uniqueInitials(p, taken) {
+    const f = (p.first || '').trim(), l = (p.last || '').replace(/^(mc|mac|o['\u2019])/i, m => m[0]).replace(/[^A-Za-z]/g, '');
+    const F = (f[0] || '').toUpperCase(), L = (l[0] || '').toUpperCase(), up = new Set([...taken].map(t => String(t).toUpperCase()));
+    const c = [F + L, F + L + (l[1] || '').toLowerCase(), F + (f[1] || '').toLowerCase() + L, F + L + l.slice(1, 3).toLowerCase(), F + f.slice(1, 3).toLowerCase() + L];
+    for (const x of c) if (x.length >= 2 && !up.has(x.toUpperCase())) return x;
+    for (let n = 2; ; n++) if (!up.has((F + L + n).toUpperCase())) return F + L + n;
+  }
   const STATUSES = ['Active', 'Sabbatical', 'Resigned', 'Deceased'];
   const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   function normStatus(s) {
@@ -527,7 +680,11 @@ const ATT = (() => {
       const st = String(m('Status') || '').trim();
       people.push({ row: r, last: String(last || '').trim(), first: String(first || '').trim(), marks,
         status: normStatus(st), joined: toSerial(m('Joined')), left: toSerial(m('Left')), ret: toSerial(m('Return')),
-        bday: toBday(m('Birthday')), note: m('Note') == null ? '' : String(m('Note')).trim() });
+        bday: toBday(m('Birthday')), note: m('Note') == null ? '' : String(m('Note')).trim(),
+        prow: (() => { const v = parseInt(String(m('Row') == null ? '' : m('Row')), 10); return v >= 1 && v <= 4 ? v : null; })(),
+        initials: m('Initials') == null ? '' : String(m('Initials')).trim(),
+        mobile: (() => { let v = m('Mobile'); if (v == null) return ''; v = String(v).trim(); if (/^7\d{9}$/.test(v)) v = '0' + v; return v; })(),
+        id: m('ID') == null ? '' : String(m('ID')).trim() });
     }
     Object.assign(wb, { title: String(get('A1') || '').trim(), legend, dates, people, hdr, typeRow, hasFormulas, mcol, firstDateCol,
       hdrStyle: cells[(dates[0] ? dates[0].col : 'C') + hdr] ? cells[(dates[0] ? dates[0].col : 'C') + hdr].s : null,
@@ -630,7 +787,7 @@ const ATT = (() => {
   const oldAbsent = wb => wb.legend.find(l => /didn.?t\s*attend/i.test(l.label));
   const APOL = '\u{1F64F}';
   const oldApol = wb => wb.legend.find(l => /apolog/i.test(l.label) && l.sym !== APOL);
-  function needsUpgrade(wb) { return !wb.typeRow || wb.hasFormulas || !hasSick(wb) || !!oldAbsent(wb) || !!oldApol(wb) || !wb.mcol.Status; }
+  function needsUpgrade(wb) { return !wb.typeRow || wb.hasFormulas || !hasSick(wb) || !!oldAbsent(wb) || !!oldApol(wb) || !wb.mcol.Status || !wb.mcol.ID; }
   async function upgrade(wb) {
     let x = stripSpans(wb.sheetXml);
     const hdr = wb.hdr;
@@ -706,6 +863,7 @@ const ATT = (() => {
       setMark(wb, 'A', ap.row, APOL); parse(wb);
     }
     if (!wb.mcol.Status) await addMemberColumns(wb);
+    if (!wb.mcol.ID) addExtraColumns(wb);
   }
 
   // Insert n empty columns at column number `at`, keeping everything else pointing at the same cells
@@ -749,13 +907,13 @@ const ATT = (() => {
     else st = st.replace('</cellXfs>', '</cellXfs>').replace(/(<\/cellStyles>|<cellStyles[^>]*\/>)/, `$1<dxfs count="1">${grey}</dxfs>`);
     wb.zip.file(stP, st);
 
-    const at = 3, n = MEMBER_COLS.length, hdr = wb.hdr;
+    const at = 3, n = BASE_COLS.length, hdr = wb.hdr;
     let x = insertCols(stripSpans(wb.sheetXml), at, n);
     const people = new Set(wb.people.map(p => p.row));
     x = x.replace(ROW_RE, row => {
       const r = +row.match(/^<row r="(\d+)"/)[1];
-      if (r === hdr) MEMBER_COLS.forEach((lab, i) => { row = putCell(row, `<c r="${colName(at + i)}${r}" s="${sHead}" t="s"><v>${sstIndex(wb, lab)}</v></c>`, colName(at + i)); });
-      else if (people.has(r)) MEMBER_COLS.forEach((lab, i) => {
+      if (r === hdr) BASE_COLS.forEach((lab, i) => { row = putCell(row, `<c r="${colName(at + i)}${r}" s="${sHead}" t="s"><v>${sstIndex(wb, lab)}</v></c>`, colName(at + i)); });
+      else if (people.has(r)) BASE_COLS.forEach((lab, i) => {
         const c = colName(at + i), s = lab === 'Joined' || lab === 'Left' || lab === 'Return' || lab === 'Birthday' ? sDate : sText;
         row = putCell(row, lab === 'Status' ? `<c r="${c}${r}" s="${sText}" t="s"><v>${sstIndex(wb, 'Active')}</v></c>` : `<c r="${c}${r}" s="${s}"/>`, c);
       });
@@ -781,6 +939,42 @@ const ATT = (() => {
     wb.sheetXml = x; fixDimension(wb); parse(wb);
   }
 
+  // Second batch of member columns: preferred stack row, initials, mobile, and a member ID that links event replies
+  function addExtraColumns(wb) {
+    const at = wb.firstDateCol, n = EXTRA_COLS.length, hdr = wb.hdr;
+    const x0 = wb.sheetXml;
+    const styleOf = ref => (x0.match(new RegExp(`<c r="${ref}"[^>]*?\\ss="(\\d+)"`)) || [])[1];
+    const sHead = styleOf(wb.mcol.Status + hdr), p0 = wb.people[0];
+    const sText = p0 ? styleOf(wb.mcol.Note + p0.row) : null;
+    const code = sectionCode(wb.title);
+    let next = 1;
+    let x = insertCols(stripSpans(x0), at, n);
+    const byRow = new Map(wb.people.map(p => [p.row, p]));
+    x = x.replace(ROW_RE, row => {
+      const r = +row.match(/^<row r="(\d+)"/)[1];
+      if (r === hdr) EXTRA_COLS.forEach((lab, i) => { row = putCell(row, `<c r="${colName(at + i)}${r}"${sHead ? ` s="${sHead}"` : ''} t="s"><v>${sstIndex(wb, lab)}</v></c>`, colName(at + i)); });
+      else if (byRow.has(r)) {
+        const p = byRow.get(r), st = sText ? ` s="${sText}"` : '';
+        const vals = { Row: null, Initials: null, Mobile: null, ID: null };   // IDs and initials are given choir-wide afterwards
+        EXTRA_COLS.forEach((lab, i) => { const c = colName(at + i), v = vals[lab];
+          row = putCell(row, v ? `<c r="${c}${r}"${st} t="s"><v>${sstIndex(wb, v)}</v></c>` : `<c r="${c}${r}"${st}/>`, c); });
+      }
+      return row;
+    });
+    const widths = [5, 8, 13, 8];
+    x = x.replace(/<cols>([\s\S]*?)<\/cols>/, (a, inner) => {
+      const list = (inner.match(/<col [^>]*\/>/g) || []).concat(widths.map((w, i) => `<col min="${at + i}" max="${at + i}" width="${w}" customWidth="1"/>`));
+      list.sort((p, q) => +p.match(/min="(\d+)"/)[1] - +q.match(/min="(\d+)"/)[1]);
+      return '<cols>' + list.join('') + '</cols>';
+    });
+    wb.sheetXml = x; fixDimension(wb); parse(wb);
+  }
+  function nextId(wb) {
+    const code = sectionCode(wb.title);
+    const max = wb.people.reduce((m, p) => { const k = (p.id || '').match(/(\d+)$/); return k ? Math.max(m, +k[1]) : m; }, 0);
+    return code + '-' + String(max + 1).padStart(3, '0');
+  }
+
   // Update one person's membership fields: {status, joined, left, ret, bday, note} (undefined = leave as is)
   function setMember(wb, p, f) {
     const c = wb.mcol; if (!c.Status) throw new Error('upgrade first');
@@ -795,6 +989,12 @@ const ATT = (() => {
       } else setMark(wb, c.Birthday, p.row, f.bday ? bdayText(f.bday) : null);
     }
     if (f.note !== undefined) setMark(wb, c.Note, p.row, f.note || null);
+    if (c.ID) {
+      if (f.prow !== undefined) setMark(wb, c.Row, p.row, f.prow ? String(f.prow) : null);
+      if (f.initials !== undefined) setMark(wb, c.Initials, p.row, f.initials || null);
+      if (f.mobile !== undefined) setMark(wb, c.Mobile, p.row, f.mobile || null);
+      if (f.id !== undefined) setMark(wb, c.ID, p.row, f.id || null);
+    }
     parse(wb);
   }
   // Add a new singer in alphabetical order, with the row looking like its neighbours
@@ -817,7 +1017,8 @@ const ATT = (() => {
     setMark(wb, 'A', at, f.last); setMark(wb, 'B', at, f.first);
     parse(wb);
     const p = wb.people.find(q => q.row === at);
-    setMember(wb, p, { status: 'Active', joined: f.joined || null, left: null, ret: null, bday: f.bday || null, note: f.note || null });
+    setMember(wb, p, { status: 'Active', joined: f.joined || null, left: null, ret: null, bday: f.bday || null, note: f.note || null,
+      ...(wb.mcol.ID ? { prow: f.prow || null, initials: f.initials || null, mobile: f.mobile || null, id: f.id || null } : {}) });
     fixDimension(wb); parse(wb);
     return wb.people.find(q => q.row === at);
   }
@@ -870,11 +1071,67 @@ const ATT = (() => {
   const isoToSerial = iso => Math.round(Date.parse(iso + 'T00:00:00Z') / 86400000) + 25569;
 
   return { load, setMark, save, serialToISO, isoToSerial, needsUpgrade, upgrade, insertDate, TYPES,
-    STATUSES, setMember, addMember, isMember, isAway, isExpected, yearsOf, nextPin, nextBirthday, ageOn, fmtDate, bdayText, toBday };
+    STATUSES, setMember, addMember, isMember, isAway, isExpected, yearsOf, nextPin, nextBirthday, ageOn, fmtDate, bdayText, toBday, sectionCode, autoInitials, uniqueInitials };
 })();
 if (typeof module !== 'undefined') module.exports = ATT;
 </script>
 
+<script>// =====================================================================
+// PASSPHRASE LOCK: a link carries its Dropbox access encrypted with a passphrase that is never in the link
+// =====================================================================
+const WORDS = ('acorn amber anchor apple arch aspen atlas badge banjo barley basil beacon berry birch biscuit bluebell bramble bridge brook bucket'
+ + ' button cabin candle canyon carpet castle cedar cello chalk cherry chestnut cider cinder clover cobalt comet copper coral cotton crane'
+ + ' cricket crystal daisy delta denim dolphin dove drum ember falcon fern fiddle field flint forest fossil fox garden garnet ginger glacier'
+ + ' gravel guitar hamlet harbour harp hazel heather hedge heron hollow honey horizon iris island ivory jasmine kettle kite lantern larch'
+ + ' lark lavender lemon lighthouse lily linen lotus lute magpie maple marble meadow melody meteor mint mist moss nutmeg oak oasis ocean'
+ + ' olive orchard otter oyster paddle pebble pepper piano pillow pine planet plum pond poppy prism quartz quill raven reed ribbon river'
+ + ' robin rowan saffron sail salmon sapphire scarlet shell shore silver sparrow spruce starling stone summit swallow thistle thrush tide'
+ + ' timber topaz tulip tunnel valley velvet violin walnut willow wren yarrow zephyr').split(' ');
+function suggestPhrase(){
+  const a=new Uint32Array(3); crypto.getRandomValues(a);
+  return Array.from(a, n=>WORDS[n % WORDS.length]).join('-');
+}
+const normPhrase = s => String(s||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const phraseOk = s => { const n=normPhrase(s); return n.length>=12 || n.split('-').length>=3; };
+const b64u = u8 => btoa(String.fromCharCode(...u8)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+const unb64u = s => Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/') + '==='.slice((s.length+3)%4)), c=>c.charCodeAt(0));
+async function phraseKey(phrase, salt){
+  const base=await crypto.subtle.importKey('raw', new TextEncoder().encode(normPhrase(phrase)), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2', salt, iterations:310000, hash:'SHA-256'}, base, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']);
+}
+async function lockToken(token, phrase){
+  const salt=crypto.getRandomValues(new Uint8Array(16)), iv=crypto.getRandomValues(new Uint8Array(12));
+  const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM', iv}, await phraseKey(phrase, salt), new TextEncoder().encode(token)));
+  const out=new Uint8Array(28+ct.length); out.set(salt,0); out.set(iv,16); out.set(ct,28);
+  return b64u(out);
+}
+async function unlockToken(x, phrase){
+  const b=unb64u(x);
+  const pt=await crypto.subtle.decrypt({name:'AES-GCM', iv:b.slice(16,28)}, await phraseKey(phrase, b.slice(0,16)), b.slice(28));
+  return new TextDecoder().decode(pt);
+}
+// Ask for the passphrase; resolves with the token (and whether to remember it on this device)
+function askPassphrase(x, title){
+  return new Promise(resolve=>{
+    $('lockTitle').textContent=title; $('lockIn').value=''; $('lockErr').textContent=''; show('vLock');
+    const go=async()=>{
+      $('lockBtn').disabled=true; $('lockErr').textContent='Checking…';
+      try{ const t=await unlockToken(x, $('lockIn').value); $('lockErr').textContent=''; resolve({token:t, remember:$('lockRemember').checked}); }
+      catch(e){ $('lockErr').textContent='That passphrase doesn’t match this link. Check it and try again.'; }
+      $('lockBtn').disabled=false;
+    };
+    $('lockBtn').onclick=go; $('lockIn').onkeydown=e=>{ if(e.key==='Enter') go(); };
+    setTimeout(()=>$('lockIn').focus(), 50);
+  });
+}
+// a passphrase box with a random suggestion and a "suggest another" button
+function phraseBox(id){
+  return `<div class="row" style="gap:6px;flex-wrap:nowrap"><input type="text" id="${id}" class="phr" value="${suggestPhrase()}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Passphrase">
+    <button class="btn" type="button" id="${id}New" title="Suggest another" aria-label="Suggest another passphrase">↻</button></div>
+    <p class="sub" style="margin:4px 0 0">Suggested at random. Type over it to use your own — at least 3 words or 12 characters.</p>`;
+}
+function wirePhraseBox(id){ $(id+'New').onclick=()=>{ $(id).value=suggestPhrase(); }; }
+</script>
 <script>
 const REDIRECT = location.origin + location.pathname;
 const ADMIN_LS = 'choir-organiser-v1';
@@ -928,7 +1185,7 @@ async function dbx(auth, kind, endpoint, arg, body){
 
 // ---------- Shared helpers ----------
 function show(view){
-  for (const v of ['vMsg','vAdmin','vMain']) $(v).classList.toggle('hidden', v!==view);
+  for (const v of ['vMsg','vAdmin','vMain','vEv','vLock']) $(v).classList.toggle('hidden', v!==view);
   $('statusbar').classList.toggle('hidden', view!=='vMain');
 }
 function message(title, text, retry){
@@ -1191,6 +1448,11 @@ async function adminFinish(code, st){
   if (!a.pkce || a.pkce.state!==st) throw new Error('The connection was interrupted. Please try again.');
   const j=await tokenRequest({code, grant_type:'authorization_code', code_verifier:a.pkce.verifier, redirect_uri:REDIRECT, client_id:a.key});
   if (a.pkce.purpose==='committee') adminStore.patch({pkce:null, committee:j.refresh_token});
+  else if (a.pkce.purpose==='events'){
+    const old=a.em; const x=await lockToken(j.refresh_token, a.emPhrase||'');
+    adminStore.patch({pkce:null, em:j.refresh_token, emLink:REDIRECT+'#ev&k='+encodeURIComponent(a.key||'')+'&x='+encodeURIComponent(x), emPhrase:null});
+    if (old){ try{ await dbx({key:a.key, refresh:old},'rpc','auth/token/revoke'); }catch(e){} }
+  }
   else adminStore.patch({pkce:null, refresh:j.refresh_token});
 }
 function adminAuth(){ const a=adminStore.get(); return a.refresh ? {key:a.key, refresh:a.refresh} : null; }
@@ -1198,6 +1460,22 @@ function leadLink(fileId){
   const a=adminStore.get();
   return REDIRECT + '#f=' + encodeURIComponent(fileId) + '&t=' + encodeURIComponent(a.refresh) + '&k=' + encodeURIComponent(a.key);
 }
+function emRender(){
+  const a=adminStore.get(), has=!!a.em;
+  $('aEM').classList.toggle('hidden', !adminAuth());
+  $('openEvPage').href=REDIRECT+'#ev';
+  $('emNone').classList.toggle('hidden', has); $('emHas').classList.toggle('hidden', !has);
+  if (!$('emPhraseBox').innerHTML){ $('emPhraseBox').innerHTML=phraseBox('emPhrase'); wirePhraseBox('emPhrase'); }
+  if (has) $('emLink').textContent=a.emLink||'';
+}
+$('emCreate').onclick=()=>{ const ph=$('emPhrase').value; if (!phraseOk(ph)){ $('adminErr').textContent='Use at least 3 words or 12 characters for the passphrase.'; $('emPhrase').focus(); return; }
+  adminStore.patch({emPhrase:ph}); adminConnect('events'); };
+$('emChange').onclick=()=>{ $('emNone').classList.remove('hidden'); $('emHas').classList.add('hidden'); $('emPhrase').value=suggestPhrase(); $('emCreate').textContent='Create new link (stops the old one)'; };
+$('emCopy').onclick=async()=>{ try{ await navigator.clipboard.writeText(adminStore.get().emLink); $('emCopy').textContent='Copied \u2713'; setTimeout(()=>$('emCopy').textContent='Copy link',2000); }catch(e){ $('emCopy').textContent='Copy failed \u2014 select the text'; } };
+$('emCancel').onclick=()=>confirmBox('Cancel the Events Manager link? It stops working straight away. No other link is affected.', async()=>{
+  const a=adminStore.get(); try{ await dbx({key:a.key, refresh:a.em},'rpc','auth/token/revoke'); }catch(e){}
+  adminStore.patch({em:null, emLink:null}); emRender();
+}, 'Cancel link');
 function committeeRender(){
   const a=adminStore.get(), has=!!a.committee;
   $('aCommittee').classList.toggle('hidden', !adminAuth());
@@ -1209,7 +1487,7 @@ function committeeRender(){
 }
 $('comCreate').onclick=()=>adminConnect('committee');
 $('memSheet').onchange=()=>{ memSheet=+$('memSheet').value; memEdit=null; renderMembers(); };
-$('amAdd').onclick=addMemberSubmit;
+$('amAdd').onclick=addMemberSubmit; $('idRenumber').onclick=renumberIds;
 $('setSave').onclick=saveSettings;
 
 $('comCancel').onclick=()=>confirmBox('Cancel the committee link? It stops working straight away. Lead links and your organiser link are not affected.', async()=>{
@@ -1227,7 +1505,7 @@ async function viewStart(p){
     let r=await dbx(auth,'rpc','files/list_folder',{path:'', recursive:true}), entries=r.entries;
     while (r.has_more){ r=await dbx(auth,'rpc','files/list_folder/continue',{cursor:r.cursor}); entries=entries.concat(r.entries); }
     const o=n=>{ n=n.toLowerCase(); return n.includes('bass')?0:n.includes('bari')?1:n.includes('top')?2:n.includes('second')?3:9; };
-    const files=entries.filter(e=>e['.tag']==='file' && /\.xlsx$/i.test(e.name) && !/^\/backups\//i.test(e.path_display||'')).sort((x,y)=>o(x.name)-o(y.name)||x.name.localeCompare(y.name));
+    const files=entries.filter(e=>e['.tag']==='file' && /\.xlsx$/i.test(e.name) && !/^\/backups\//i.test(e.path_display||'') && (e.path_display||'').toLowerCase()!=='/events.xlsx').sort((x,y)=>o(x.name)-o(y.name)||x.name.localeCompare(y.name));
     adminSheets=[];
     await loadSettings(auth);
     for (const f of files){
@@ -1255,18 +1533,24 @@ async function adminRender(){
   if (!adminAuth()) $('aDates').classList.add('hidden');
   const auth=adminAuth();
   $('aLinks').classList.toggle('hidden', !auth); $('disconnectBtn').classList.toggle('hidden', !auth);
-  committeeRender();
+  committeeRender(); emRender();
   if (!auth){ $('connectBtn').textContent='Connect Dropbox'; $('orgLinkBox').classList.add('hidden');
     if (!window.DEMO && /[#&]t=/.test(location.hash)) history.replaceState(null,'',REDIRECT+'#admin&k='+encodeURIComponent(a.key||''));
     return; }
   $('connState').innerHTML='<span class="ok">✓ Connected.</span> The app can only reach its own folder, <b>Apps › (your app name)</b>. Put the four attendance sheets in there.';
   $('connectBtn').textContent='Reconnect';
-  const ol=REDIRECT+'#admin&k='+encodeURIComponent(a.key||'')+'&t='+encodeURIComponent(a.refresh);
-  $('orgLink').textContent=ol; $('orgLinkBox').classList.remove('hidden');
-  $('orgCopy').onclick=async()=>{ try{ await navigator.clipboard.writeText(ol); $('orgCopy').textContent='Copied \u2713'; setTimeout(()=>$('orgCopy').textContent='Copy organiser link',2000); }catch(e){ $('orgCopy').textContent='Copy failed \u2014 select the text'; } };
+  $('orgLinkBox').classList.remove('hidden');
+  if (!$('orgPhraseBox').innerHTML){ $('orgPhraseBox').innerHTML=phraseBox('orgPhrase'); wirePhraseBox('orgPhrase'); }
+  const showOrg=()=>{ const s=adminStore.get(); $('orgHas').classList.toggle('hidden', !s.orgLink); if (s.orgLink) $('orgLink').textContent=s.orgLink;
+    $('orgMake').textContent = s.orgLink ? 'Make a new locked link with this passphrase' : 'Create locked organiser link'; };
+  $('orgMake').onclick=async()=>{ const ph=$('orgPhrase').value; if (!phraseOk(ph)){ $('adminErr').textContent='Use at least 3 words or 12 characters for the passphrase.'; return; }
+    const s=adminStore.get(); const x=await lockToken(s.refresh, ph);
+    adminStore.patch({orgLink: REDIRECT+'#admin&k='+encodeURIComponent(s.key||'')+'&x='+encodeURIComponent(x)}); $('adminErr').textContent=''; showOrg(); };
+  $('orgCopy').onclick=async()=>{ try{ await navigator.clipboard.writeText(adminStore.get().orgLink); $('orgCopy').textContent='Copied \u2713'; setTimeout(()=>$('orgCopy').textContent='Copy organiser link',2000); }catch(e){ $('orgCopy').textContent='Copy failed \u2014 select the text'; } };
+  showOrg();
   if (adminStore.get().fromLink) adminStore.patch({fromLink:false});
-  // keep the address bar showing a link that works, so bookmarking the page itself also works
-  if (!window.DEMO && location.hash.slice(1)!==ol.split('#')[1]) history.replaceState(null,'',ol);
+  // never leave the connection itself in the address bar
+  if (!window.DEMO && /[#&]t=|[#&]x=/.test(location.hash)) history.replaceState(null,'',REDIRECT+'#admin');
   try{ const acct=await dbx(auth,'rpc','users/get_current_account'); $('adminWho').textContent='Dropbox: '+(acct.email||''); }catch(e){}
   adminFiles();
 }
@@ -1310,11 +1594,13 @@ async function adminPrepare(files){
   try{ await loadSettings(auth); }catch(e){}
   let upgraded=0, failed=[];
   for (const f of files){
-    try{ const r=await processSheet(auth, f, null); if (r.saved) upgraded++; adminSheets.push({f, label:labelFor(r.wb, f.name), wb:r.wb}); }
+    try{ const r=await processSheet(auth, f, null); if (r.saved) upgraded++; adminSheets.push({f, label:labelFor(r.wb, f.name), wb:r.wb, code:ATT.sectionCode(r.wb.title||f.name)}); }
     catch(e){ if (e.auth){ adminStore.patch({refresh:null}); await adminRender(); $('adminErr').textContent='That connection no longer works (it was disconnected or replaced). Connect again, then bookmark the new organiser link.'; return; } failed.push(f.name); }
   }
   $('prepNote').innerHTML = (upgraded?`<span class="ok">\u2713 Prepared ${upgraded} sheet${upgraded>1?'s':''}</span>: brought the layout up to date (Type row, plain dates, 🙏 Apologies, 🤒 Sick, “Absent”, membership columns). Originals saved in the app folder\u2019s <b>Backups</b> folder. `:'')
     + (failed.length?`<span class="warn">Couldn\u2019t read: ${E(failed.join(', '))}.</span>`:'');
+  adminSheets.sort((a,b)=>SEC_ORDER.indexOf(a.code)-SEC_ORDER.indexOf(b.code));
+  try{ const n=await ensureIds(auth, adminSheets, false); if (n) $('prepNote').innerHTML+=` <span class="ok">\u2713 Gave member IDs to ${n} singer${n>1?'s':''}.</span>`; }catch(e){}
   $('aDates').classList.toggle('hidden', !adminSheets.length);
   renderEventList(); renderStats(); renderMembers(); renderSettings();
 }
@@ -1357,7 +1643,7 @@ function statusLabel(p){
 const statusClass = p => p.status==='Deceased'?'mem':p.status==='Resigned'?'res':p.status==='Sabbatical'?'sab':'act';
 async function loadSettings(auth){
   try{ const b=await dbx(auth,'download','files/download',{path:'/settings.json'}); const j=JSON.parse(new TextDecoder().decode(b));
-       adminSettings={countSabbatical: j.countSabbatical!==false, lookahead: Math.min(365, Math.max(7, +j.lookahead||60))}; }
+       adminSettings={countSabbatical: j.countSabbatical!==false, lookahead: Math.min(365, Math.max(7, +j.lookahead||60)), emMobile: j.emMobile||''}; }
   catch(e){ if (e.auth||e.net) throw e; }   // no settings file yet: keep the defaults
 }
 
@@ -1652,10 +1938,14 @@ function renderMembers(){
   $('memSheet').innerHTML=adminSheets.map((x,i)=>`<option value="${i}"${i===memSheet?' selected':''}>${E(x.label)}</option>`).join('');
   $('memVoice').innerHTML=$('memSheet').innerHTML;
   const list=$('memList'); list.innerHTML='';
+  const dupIni=new Map(); allMembers().forEach(x=>{ if (x.p.initials){ const k=x.p.initials.toUpperCase(); dupIni.set(k,(dupIni.get(k)||0)+1); } });
+  const clashes=[...dupIni].filter(([,n])=>n>1).map(([k])=>allMembers().find(x=>(x.p.initials||'').toUpperCase()===k).p.initials);
+  $('memDup').innerHTML = clashes.length ? `<span class="warn">\u26a0 Initials used by more than one singer: ${E(clashes.join(', '))}. Change one in the edit form so each is unique.</span>` : '';
   if (!sh.wb.mcol.Status){ list.innerHTML='<p class="sub">This sheet hasn\u2019t been prepared yet. Tap Refresh list above.</p>'; return; }
   sh.wb.people.forEach(p=>{
     const row=document.createElement('button'); row.className='mem-row'; row.type='button';
-    row.innerHTML=`<span>${E(p.first)} ${E(p.last)}</span><span class="pill ${statusClass(p)}">${E(statusLabel(p))}</span>`;
+    const dup=p.initials && dupIni.get(p.initials.toUpperCase())>1;
+    row.innerHTML=`<span>${E(p.first)} ${E(p.last)}${p.initials?` <span class="sub">\u00b7 ${E(p.initials)}</span>`:''}${dup?' <span class="warn" title="Shared initials">\u26a0 same initials</span>':''}</span><span class="pill ${statusClass(p)}">${E(statusLabel(p))}</span>`;
     row.onclick=()=>{ memEdit=p.last+'|'+p.first; renderMemberForm(); $('memForm').scrollIntoView({block:'nearest'}); };
     list.appendChild(row);
   });
@@ -1670,41 +1960,70 @@ function renderMemberForm(){
     <div class="mem-grid">
       <label>Status<select id="mfStatus">${ATT.STATUSES.map(s=>`<option value="${s}"${s===p.status?' selected':''}>${s==='Deceased'?'In memoriam (Deceased)':s}</option>`).join('')}</select></label>
       <label>Joined<input type="date" id="mfJoined" value="${isoOf(p.joined)}"></label>
-      <label id="mfFromL">From<input type="date" id="mfFrom" value="${isoOf(p.left)}"></label>
+      <label id="mfFromL"><span id="mfFromT">From</span><input type="date" id="mfFrom" value="${isoOf(p.left)}"></label>
       <label id="mfRetL">Expected return<input type="date" id="mfRet" value="${isoOf(p.ret)}"></label>
       <label>Date of birth<input type="date" id="mfB" value="${p.bday&&p.bday.y?ATT.serialToISO(Math.round(Date.UTC(p.bday.y,p.bday.m-1,p.bday.d)/864e5)+25569):''}">${p.bday&&!p.bday.y?`<small class="sub">Sheet has ${p.bday.d} ${MON3[p.bday.m-1]} with no year</small>`:''}</label>
       <label>Note (optional)<input type="text" id="mfNote" value="${E(p.note||'')}" maxlength="80"></label>
+      ${sh.wb.mcol.ID?`<label>Preferred stack row<select id="mfRow"><option value="">Any</option>${ROW_LABEL.map((l,i)=>`<option value="${i+1}"${p.prow===i+1?' selected':''}>${l}</option>`).join('')}</select></label>
+      <label>Initials<input type="text" id="mfIni" maxlength="5" value="${E(p.initials||'')}"><small class="sub" id="mfIniDup"></small></label>
+      <label>Mobile<input type="tel" id="mfMob" value="${E(p.mobile||'')}"></label>
+      <label>Member ID<input type="text" id="mfId" maxlength="8" value="${E(p.id||'')}" style="text-transform:uppercase"></label>`:''}
     </div>
     <div class="warn" id="mfErr" style="margin-top:8px"></div>
     <div class="row" style="margin-top:10px"><button class="btn primary" id="mfSave">Save</button><button class="btn" id="mfCancel">Cancel</button></div>`;
-  const sync=()=>{ const s=$('mfStatus').value; $('mfFromL').classList.toggle('hidden', s==='Active'); $('mfRetL').classList.toggle('hidden', s!=='Sabbatical'); };
+  const sync=()=>{ const s=$('mfStatus').value; $('mfFromL').classList.toggle('hidden', s==='Active'); $('mfRetL').classList.toggle('hidden', s!=='Sabbatical'); $('mfFromT').textContent = s==='Sabbatical' ? 'From' : 'On'; };
   $('mfStatus').onchange=sync; sync();
+  if ($('mfIni')){ const chk=()=>{ const v=$('mfIni').value.trim().toUpperCase(); const o=v && allMembers().find(x=>x.p!==p && (x.p.initials||'').toUpperCase()===v); $('mfIniDup').innerHTML = o ? `<span class="warn">Same as ${E(o.p.first)} ${E(o.p.last)} (${E(o.sh.label)})</span>` : ''; }; $('mfIni').oninput=chk; chk(); }
   $('mfCancel').onclick=()=>{ memEdit=null; renderMemberForm(); };
   $('mfSave').onclick=()=>saveMember(sh, p);
 }
 async function saveMember(sh, p){
   const status=$('mfStatus').value, from=serOf($('mfFrom').value), ret=serOf($('mfRet').value);
-  if (status!=='Active' && !from){ $('mfErr').textContent='Enter the date this takes effect from.'; return; }
+  if (status!=='Active' && !from){ $('mfErr').textContent = status==='Sabbatical' ? 'Enter the date the sabbatical starts.' : status==='Deceased' ? 'Enter the date they passed away.' : 'Enter the date they resigned.'; return; }
   if (status==='Sabbatical' && ret!=null && ret<=from){ $('mfErr').textContent='The return date must be after the start date.'; return; }
-  const f={status, joined:serOf($('mfJoined').value), left:status==='Active'?null:from, ret:status==='Sabbatical'?ret:null, bday:$('mfB').value?readBday('mfB'):(p.bday&&!p.bday.y?p.bday:null), note:$('mfNote').value.trim()};
+  const f={status, joined:serOf($('mfJoined').value), left:status==='Active'?null:from, ret:status==='Sabbatical'?ret:null, bday:$('mfB').value?readBday('mfB'):(p.bday&&!p.bday.y?p.bday:null), note:$('mfNote').value.trim(),
+    ...($('mfRow')?{prow:+$('mfRow').value||null, initials:$('mfIni').value.trim(), mobile:$('mfMob').value.trim()}:{})};
+  let newId=null;
+  if ($('mfId')){
+    const v=$('mfId').value.trim().toUpperCase();
+    if (v!==(p.id||'')){
+      if (!/^M\d{3,}$/.test(v)){ $('mfErr').textContent='A member ID is M followed by at least 3 digits, e.g. M042.'; return; }
+      const who=allMembers().find(x=>x.p.id===v && x.p!==p);
+      if (who){ $('mfErr').textContent=`${v} already belongs to ${who.p.first} ${who.p.last} (${who.sh.label}).`; return; }
+      newId=v; f.id=v;
+    }
+  }
   $('mfSave').disabled=true; $('mfErr').textContent='';
-  const key=p.last+'|'+p.first;
+  const key=p.last+'|'+p.first, oldId=p.id||idKey(sh,p);
   try{
     const r=await processSheet(adminAuth(), sh.f, wb=>{ const q=wb.people.find(x=>x.last+'|'+x.first===key); if(!q) throw new Error('missing'); ATT.setMember(wb, q, f); return {changed:true}; });
     sh.wb=r.wb; memEdit=null; renderMembers(); renderStats();
+    if (newId){ try{ await remapEventIds(adminAuth(), {[oldId]:newId}); }catch(e){ $('memMsg').innerHTML='<span class="warn">Saved, but the events file couldn\u2019t be updated with the new ID \u2014 tap Refresh list and try again.</span>'; return; } }
     $('memMsg').innerHTML=`<span class="ok">\u2713 Saved ${E(p.first)} ${E(p.last)}</span>`;
   }catch(e){ $('mfSave').disabled=false; $('mfErr').textContent = e.net ? 'No connection \u2014 not saved.' : 'Couldn\u2019t save \u2014 please try again.'; }
+}
+const allMembers = () => adminSheets.flatMap(sh=>sh.wb.people.map(p=>({sh,p})));
+function renumberIds(){
+  const n=allMembers().length;
+  confirmBox(`Renumber all ${n} members M001, M002 \u2026 in order of joining date? Event replies and stack places will be updated to match.`, async ()=>{
+    $('idRenumber').disabled=true; $('idMsg').textContent='Renumbering\u2026';
+    try{ const c=await ensureIds(adminAuth(), adminSheets, true); $('idMsg').innerHTML=`<span class="ok">\u2713 ${c?`Renumbered ${c} member${c>1?'s':''}`:'Already in joining order \u2014 nothing to change'}.</span>`; renderMembers(); }
+    catch(e){ $('idMsg').innerHTML='<span class="warn">Couldn\u2019t finish \u2014 check the connection, then tap Refresh list and try again.</span>'; }
+    $('idRenumber').disabled=false;
+  }, 'Renumber');
 }
 async function addMemberSubmit(){
   const first=$('amFirst').value.trim(), last=$('amLast').value.trim(), sh=adminSheets[+$('memVoice').value];
   if (!first || !last){ $('amErr').textContent='Enter a first and last name.'; return; }
   $('amErr').textContent=''; $('amAdd').disabled=true;
-  const f={first, last, joined:serOf($('amJoined').value), bday:readBday('amB')};
+  const top=allMembers().reduce((m,x)=>{ const k=(x.p.id||'').match(/^M(\d+)$/); return k?Math.max(m,+k[1]):m; },0);
+  const f={first, last, joined:serOf($('amJoined').value), bday:readBday('amB'), prow:+$('amRow').value||null, mobile:$('amMob').value.trim(), id:sh.wb.mcol.ID?'M'+String(top+1).padStart(3,'0'):null};
+  if (sh.wb.mcol.ID) f.initials=ATT.uniqueInitials(f, new Set(allMembers().map(x=>x.p.initials).filter(Boolean)));
   try{
     const r=await processSheet(adminAuth(), sh.f, wb=>{ ATT.addMember(wb, f); return {changed:true}; });
     sh.wb=r.wb; memSheet=adminSheets.indexOf(sh); renderMembers(); renderStats();
-    $('memMsg').innerHTML=`<span class="ok">\u2713 Added ${E(first)} ${E(last)} to ${E(sh.label)}</span>`;
-    $('amFirst').value=''; $('amLast').value=''; $('amB').value='';
+    $('memMsg').innerHTML=`<span class="ok">\u2713 Added ${E(first)} ${E(last)} to ${E(sh.label)}${f.initials?` (initials ${E(f.initials)})`:''}</span>`;
+    $('amFirst').value=''; $('amLast').value=''; $('amB').value=''; $('amRow').value=''; $('amMob').value='';
   }catch(e){ $('amErr').textContent = e.message==='exists' ? 'Someone with that name is already in this sheet.' : e.net ? 'No connection \u2014 not added.' : 'Couldn\u2019t add \u2014 please try again.'; }
   $('amAdd').disabled=false;
 }
@@ -1715,7 +2034,7 @@ function renderSettings(){
 async function saveSettings(){
   const look=Math.round(+$('setLook').value);
   if (!(look>=7 && look<=365)){ $('setMsg').innerHTML='<span class="warn">Choose between 7 and 365 days.</span>'; return; }
-  const next={countSabbatical:$('setSab').checked, lookahead:look};
+  const next=Object.assign({}, adminSettings, {countSabbatical:$('setSab').checked, lookahead:look});
   try{
     await dbx(adminAuth(),'upload','files/upload',{path:'/settings.json', mode:'overwrite', mute:true}, new TextEncoder().encode(JSON.stringify(next)));
     adminSettings=next; renderStats(); $('setMsg').innerHTML='<span class="ok">\u2713 Saved \u2014 the committee page uses these too.</span>';
@@ -1728,7 +2047,7 @@ async function adminFiles(){
   try{
     let r=await dbx(auth,'rpc','files/list_folder',{path:'', recursive:true}), entries=r.entries;
     while (r.has_more){ r=await dbx(auth,'rpc','files/list_folder/continue',{cursor:r.cursor}); entries=entries.concat(r.entries); }
-    const files=entries.filter(e=>e['.tag']==='file' && /\.xlsx$/i.test(e.name) && !/^\/backups\//i.test(e.path_display||'')).sort((x,y)=>{ const o=n=>{ n=n.toLowerCase(); return n.includes('bass')?0:n.includes('bari')?1:n.includes('top')?2:n.includes('second')?3:9; }; return o(x.name)-o(y.name) || x.name.localeCompare(y.name); });
+    const files=entries.filter(e=>e['.tag']==='file' && /\.xlsx$/i.test(e.name) && !/^\/backups\//i.test(e.path_display||'') && (e.path_display||'').toLowerCase()!=='/events.xlsx').sort((x,y)=>{ const o=n=>{ n=n.toLowerCase(); return n.includes('bass')?0:n.includes('bari')?1:n.includes('top')?2:n.includes('second')?3:9; }; return o(x.name)-o(y.name) || x.name.localeCompare(y.name); });
     if (!files.length){ out.innerHTML='<p class="sub">No spreadsheets in the app folder yet. In Dropbox, open <b>Apps</b> › your app’s folder, add the four .xlsx sheets, then tap Refresh list.</p>'; return; }
     out.innerHTML='';
     setTimeout(()=>adminPrepare(files), 0);
@@ -1778,6 +2097,12 @@ async function start(){
   }
   const h=(window.DEMO_HASH!=null?window.DEMO_HASH:location.hash).slice(1);
   const hp=new URLSearchParams(h);
+  if (hp.has('ev')) return evStart(hp);
+  if ((h==='admin' || hp.has('admin')) && hp.get('x') && !adminStore.get().refresh){
+    $('lockRememberRow').classList.add('hidden');
+    const r=await askPassphrase(hp.get('x'), 'Organiser page');
+    adminStore.patch({key:hp.get('k'), refresh:r.token, orgLink:location.href});
+  }
   if (h==='admin' || hp.has('admin')){
     if (hp.get('k')) adminStore.patch({key:hp.get('k')});
     // use the link's connection only if this browser has none of its own (a newer one may be saved here)
@@ -1789,6 +2114,605 @@ async function start(){
   if (p.get('f')) return leadStart(p);
   message('Choir attendance', 'Please open this page using the link you were sent for your voice part.');
 }
+// =====================================================================
+// EVENTS WORKBOOK (Events.xlsx): an Events tab and a Responses tab, written whole each save
+// =====================================================================
+const EV_PATH = '/Events.xlsx';
+const EV_COLS = ['ID','Name','Type','Date','Venue','Arrival','Reply by','Rows','Notes'];
+const RS_COLS = ['Event ID','Event','Member ID','Section','Last name','First name','Response','Updated','Note','History'];
+const ST_COLS = ['Event ID','Row','Position','Member ID','Section','Name','Moved'];
+const RESPONSES = ['Can','Maybe',"Can't"];
+const xmlEsc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g,'');
+const colL = n => { let s=''; while(n>0){ const m=(n-1)%26; s=String.fromCharCode(65+m)+s; n=Math.floor((n-1)/26);} return s; };
+function sheetXml(cols, rows, widths, dateCols, dtCols){
+  let x='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+    +'<sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>'
+    +'<cols>'+widths.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('')+'</cols><sheetData>';
+  const cell=(c,r,v,hdr)=>{
+    const ref=colL(c)+r;
+    if (v==null || v==='') return '';
+    if (typeof v==='number') return `<c r="${ref}"${dtCols.includes(c-1)?' s="3"':dateCols.includes(c-1)?' s="2"':''}><v>${v}</v></c>`;
+    return `<c r="${ref}"${hdr?' s="1"':''} t="inlineStr"><is><t xml:space="preserve">${xmlEsc(v)}</t></is></c>`;
+  };
+  x+='<row r="1">'+cols.map((h,i)=>cell(i+1,1,h,true)).join('')+'</row>';
+  rows.forEach((row,ri)=>{ x+=`<row r="${ri+2}">`+row.map((v,i)=>cell(i+1,ri+2,v)).join('')+'</row>'; });
+  return x+'</sheetData></worksheet>';
+}
+async function buildEventsXlsx(data){
+  const z=new JSZip();
+  z.file('[Content_Types].xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/worksheets/sheet2.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/worksheets/sheet3.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>');
+  z.file('_rels/.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>');
+  z.file('xl/workbook.xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Events" sheetId="1" r:id="rId1"/><sheet name="Responses" sheetId="2" r:id="rId2"/><sheet name="Stack" sheetId="3" r:id="rId4"/></sheets></workbook>');
+  z.file('xl/_rels/workbook.xml.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet2.xml"/><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rId4" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet3.xml"/></Relationships>');
+  z.file('xl/styles.xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="2"><numFmt numFmtId="190" formatCode="d mmm yyyy"/><numFmt numFmtId="191" formatCode="d mmm yyyy hh:mm"/></numFmts><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="4"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="190" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="191" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>');
+  const evRows=data.events.slice().sort((a,b)=>a.date-b.date).map(e=>[e.id,e.name,e.type,e.date,e.venue,e.arrival,e.replyBy,e.rows,e.notes]);
+  const rsRows=data.responses.slice().sort((a,b)=>(a.eventId>b.eventId?1:a.eventId<b.eventId?-1:0)||(a.section>b.section?1:a.section<b.section?-1:0)||String(a.last).localeCompare(b.last))
+    .map(r=>{ const e=data.events.find(x=>x.id===r.eventId); return [r.eventId, e?e.name:'', r.memberId, r.section, r.last, r.first, r.response, r.updated, r.note, r.history]; });
+  z.file('xl/worksheets/sheet1.xml', sheetXml(EV_COLS, evRows, [16,30,11,13,28,9,13,6,30], [3,6], []));
+  z.file('xl/worksheets/sheet2.xml', sheetXml(RS_COLS, rsRows, [16,26,10,14,16,14,10,18,28,60], [], [7]));
+  const stRows=[];
+  for (const [eid, rows] of Object.entries(data.stacks||{})) rows.forEach((row,ri)=>row.forEach((c,pi)=>{ if (c) stRows.push([eid, ri+1, pi+1, c.id, c.section||'', c.name||'', c.moved?'Yes':'']); }));
+  z.file('xl/worksheets/sheet3.xml', sheetXml(ST_COLS, stRows, [16,6,9,10,8,22,7], [], []));
+  return z.generateAsync({type:'uint8array', compression:'DEFLATE'});
+}
+// generic reader: works on our own file and on one Excel has re-saved
+async function readEventsXlsx(buf){
+  const z=await JSZip.loadAsync(buf);
+  const wbx=await z.file('xl/workbook.xml').async('string');
+  const rels=await z.file('xl/_rels/workbook.xml.rels').async('string');
+  const sstF=z.file('xl/sharedStrings.xml'); const sst=[];
+  if (sstF){ const x=await sstF.async('string'); const re=/<si>([\s\S]*?)<\/si>/g; let m;
+    while((m=re.exec(x))){ let t=''; const tr=/<t(?:\s[^>]*)?>([\s\S]*?)<\/t>/g; let k; while((k=tr.exec(m[1]))) t+=k[1]; sst.push(unx(t)); } }
+  const out={};
+  for (const m of wbx.matchAll(/<sheet\s[^>]*name="([^"]+)"[^>]*r:id="([^"]+)"/g)){
+    const rel=rels.match(new RegExp('<Relationship[^>]*Id="'+m[2]+'"[^>]*Target="([^"]+)"'))||rels.match(new RegExp('<Relationship[^>]*Target="([^"]+)"[^>]*Id="'+m[2]+'"'));
+    if (!rel) continue;
+    const path=rel[1].startsWith('/')?rel[1].slice(1):'xl/'+rel[1].replace(/^\.\//,'');
+    const x=await z.file(path).async('string'), rows=[];
+    for (const r of x.matchAll(/<row [^>]*?(?:\/>|>([\s\S]*?)<\/row>)/g)){
+      const row=[];
+      for (const c of (r[1]||'').matchAll(/<c r="([A-Z]+)\d+"([^>]*?)(?:\/>|>([\s\S]*?)<\/c>)/g)){
+        let ci=0; for (const ch of c[1]) ci=ci*26+ch.charCodeAt(0)-64;
+        const t=(c[2].match(/\bt="([^"]+)"/)||[])[1], inner=c[3]||'';
+        let v=null;
+        if (t==='inlineStr'){ const k=inner.match(/<t(?:\s[^>]*)?>([\s\S]*?)<\/t>/); v=k?unx(k[1]):''; }
+        else { const k=inner.match(/<v>([\s\S]*?)<\/v>/); if (k) v = t==='s' ? sst[+k[1]] : t==='str'||t==='b' ? unx(k[1]) : +k[1]; }
+        row[ci-1]=v;
+      }
+      rows.push(row);
+    }
+    out[unx(m[1])]=rows;
+  }
+  const table=(rows, cols)=>{ if(!rows||!rows.length) return []; const h=rows[0].map(v=>String(v||'').trim());
+    return rows.slice(1).filter(r=>r.some(v=>v!=null&&v!=='')).map(r=>Object.fromEntries(cols.map(c=>[c, r[h.indexOf(c)]??null]))); };
+  const num=v=>v==null||v===''?null:(typeof v==='number'?v:(isNaN(+v)?null:+v));
+  const str=v=>v==null?'':String(v);
+  return {
+    events: table(out.Events, EV_COLS).map(e=>({id:str(e.ID), name:str(e.Name), type:str(e.Type)||'Concert', date:Math.round(num(e.Date)), venue:str(e.Venue), arrival:str(e.Arrival), replyBy:num(e['Reply by'])!=null?Math.round(num(e['Reply by'])):null, rows:Math.min(5,Math.max(2,+e.Rows||4)), notes:str(e.Notes)})).filter(e=>e.id&&e.date),
+    stacks: (()=>{ const st={}; for (const x of table(out.Stack, ST_COLS)){ const e=str(x['Event ID']), r=+x.Row-1, pi=+x.Position-1; if (!e||!(r>=0)||!(pi>=0)) continue;
+        st[e]=st[e]||[]; while (st[e].length<=r) st[e].push([]); const row=st[e][r]; while (row.length<pi) row.push(null);
+        row[pi]={id:str(x['Member ID']), section:str(x.Section), name:str(x.Name), moved:/^y/i.test(str(x.Moved))}; }
+      for (const e in st) st[e]=st[e].map(r=>Array.from(r, v=>v||null)); return st; })(),
+    responses: table(out.Responses, RS_COLS).map(r=>({eventId:str(r['Event ID']), memberId:str(r['Member ID']), section:str(r.Section), last:str(r['Last name']), first:str(r['First name']), response:str(r.Response), updated:num(r.Updated), note:str(r.Note), history:str(r.History)})).filter(r=>r.eventId&&r.memberId)
+  };
+}
+function unx(s){ return String(s).replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&apos;/g,"'").replace(/&amp;/g,'&'); }
+
+// =====================================================================
+// EVENTS MANAGER PAGE  (#ev&k=..&x=..  or  #ev from the organiser's own browser)
+// =====================================================================
+const EVS = { auth:null, sheets:[], data:{events:[],responses:[],stacks:{}}, rev:null, sel:null, open:null, maybes:true, sent:new Set(), stackSel:null, people:new Map() };
+const EV_LS='choir-events-v1';
+const evStore={ get(){ try{return JSON.parse(localStorage.getItem(EV_LS)||'{}');}catch(e){return {};} }, set(v){ try{localStorage.setItem(EV_LS, JSON.stringify(v));}catch(e){} }, clear(){ try{localStorage.removeItem(EV_LS);}catch(e){} } };
+const SEC_ORDER=['TT','ST','BR','BS'];
+const SEC_NAME={TT:'Top Tenor', ST:'Second Tenor', BR:'Baritone', BS:'Bass'};
+const nowSerial = () => (Date.now()/864e5)+25569;
+const dmy = s => ATT.fmtDate(Math.floor(s));
+const dayName = s => ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date((Math.floor(s)-25569)*864e5).getUTCDay()];
+
+async function evStart(p){
+  document.body.classList.add('evmode');
+  const key=p.get('k'), x=p.get('x');
+  // the organiser's own browser can open it with its own connection
+  const a=adminStore.get();
+  if (!x && a.refresh) EVS.auth={key:a.key, refresh:a.refresh};
+  else if (x){
+    const s=evStore.get();
+    if (s.x===x && s.refresh) EVS.auth={key:s.key, refresh:s.refresh};
+    else {
+      const r=await askPassphrase(x, 'Choir events');
+      EVS.auth={key, refresh:r.token};
+      if (r.remember) evStore.set({x, key, refresh:r.token});
+    }
+    history.replaceState(null,'',REDIRECT+'#ev&k='+encodeURIComponent(key)+'&x='+encodeURIComponent(x));
+  } else return message('This link is incomplete','Please open the page using the full link you were sent.');
+  message('Loading…','Fetching the sheets and events.');
+  try{ await evLoadAll(); }
+  catch(e){
+    if (e.auth){ evStore.clear(); return message('This link no longer works','It has been cancelled or replaced. Please ask the organiser for a new link and passphrase.'); }
+    if (e.net) return message('No connection','Couldn’t reach Dropbox. Check you’re online and try again.', ()=>location.reload());
+    return message('Couldn’t load','Please try again in a moment.', ()=>location.reload());
+  }
+  document.title='Choir events'; $('h1').textContent='Choir events'; $('sub').textContent='Who can sing at each concert or event, and where they stand.';
+  show('vEv'); evRender();
+}
+async function evLoadAll(){
+  const auth=EVS.auth;
+  let r=await dbx(auth,'rpc','files/list_folder',{path:'', recursive:true}), entries=r.entries;
+  while (r.has_more){ r=await dbx(auth,'rpc','files/list_folder/continue',{cursor:r.cursor}); entries=entries.concat(r.entries); }
+  const files=entries.filter(e=>e['.tag']==='file' && /\.xlsx$/i.test(e.name) && !/^\/backups\//i.test(e.path_display||'') && e.path_display.toLowerCase()!==EV_PATH.toLowerCase());
+  await loadSettings(auth);
+  EVS.sheets=[];
+  for (const f of files){
+    try{ const res=await processSheet(auth, f, null); const code=ATT.sectionCode(res.wb.title||f.name); EVS.sheets.push({f, wb:res.wb, code, label:labelFor(res.wb,f.name)}); }
+    catch(e){ if (e.auth||e.net) throw e; }
+  }
+  EVS.sheets.sort((a,b)=>SEC_ORDER.indexOf(a.code)-SEC_ORDER.indexOf(b.code));
+  await ensureIds(auth, EVS.sheets, false);
+  await evLoadEvents();
+  EVS.data.stacks=EVS.data.stacks||{};
+}
+async function loadEventsFile(auth){
+  try{
+    const meta=await dbx(auth,'rpc','files/get_metadata',{path:EV_PATH});
+    return {data:await readEventsXlsx(await dbx(auth,'download','files/download',{path:EV_PATH})), rev:meta.rev};
+  }catch(e){ if (e.summary && /not_found/.test(e.summary)) return {data:{events:[],responses:[],stacks:{}}, rev:null}; throw e; }
+}
+async function evLoadEvents(){ const r=await loadEventsFile(EVS.auth); EVS.data=r.data; EVS.rev=r.rev; }
+// change member IDs everywhere in Events.xlsx (map: old id -> new id)
+async function remapEventIds(auth, map){
+  if (!Object.keys(map).length) return;
+  for (let i=0;i<3;i++){
+    const {data, rev}=await loadEventsFile(auth); if (!rev) return;
+    let changed=false;
+    for (const r of data.responses) if (map[r.memberId]){ r.memberId=map[r.memberId]; changed=true; }
+    for (const e in data.stacks) for (const row of data.stacks[e]) for (const c of row) if (c && map[c.id]){ c.id=map[c.id]; changed=true; }
+    if (!changed) return;
+    try{ await dbx(auth,'upload','files/upload',{path:EV_PATH, mode:{'.tag':'update', update:rev}, autorename:false, mute:true, strict_conflict:true}, await buildEventsXlsx(data)); return; }
+    catch(e){ if (!(e.summary && /conflict/.test(e.summary))) throw e; }
+  }
+}
+// Choir-wide member IDs (M001, M002 ...). Fill in any missing ones; with renumber=true, number everyone by joining date.
+const idKey = (sh, p) => sh.code+':'+p.last+'|'+p.first;
+async function ensureIds(auth, sheets, renumber){
+  const all=[]; for (const sh of sheets) if (sh.wb.mcol.ID) for (const p of sh.wb.people) all.push({sh, p});
+  const ok = id => /^M\d{3,}$/.test(id||'');
+  const byJoin=(a,b)=>((a.p.joined??9e9)-(b.p.joined??9e9)) || a.p.last.localeCompare(b.p.last) || a.p.first.localeCompare(b.p.first);
+  const assign=new Map(), map={};
+  if (renumber){ all.slice().sort(byJoin).forEach((x,i)=>assign.set(x, 'M'+String(i+1).padStart(3,'0'))); }
+  else {
+    let max=all.reduce((m,x)=>{ const k=(x.p.id||'').match(/^M(\d+)$/); return k?Math.max(m,+k[1]):m; },0);
+    all.filter(x=>!ok(x.p.id)).sort(byJoin).forEach(x=>assign.set(x, 'M'+String(++max).padStart(3,'0')));
+  }
+  for (const [x,id] of assign){ if (x.p.id===id) assign.delete(x); else { map[x.p.id||idKey(x.sh,x.p)]=id; map[idKey(x.sh,x.p)]=id; } }
+  // blank initials get ones nobody else in the choir has
+  const taken=new Set(all.map(x=>x.p.initials).filter(Boolean)), ini=new Map();
+  all.filter(x=>!x.p.initials).sort(byJoin).forEach(x=>{ const v=ATT.uniqueInitials(x.p, taken); taken.add(v); ini.set(x, v); });
+  if (!assign.size && !ini.size) return 0;
+  for (const sh of sheets){
+    const mine=all.filter(x=>x.sh===sh && (assign.has(x)||ini.has(x))).map(x=>({key:x.p.last+'|'+x.p.first, f:Object.assign({}, assign.has(x)?{id:assign.get(x)}:{}, ini.has(x)?{initials:ini.get(x)}:{})}));
+    if (!mine.length) continue;
+    const r=await processSheet(auth, sh.f, wb=>{ for (const m of mine){ const q=wb.people.find(p=>p.last+'|'+p.first===m.key); if (q) ATT.setMember(wb, q, m.f); } return {changed:true}; });
+    sh.wb=r.wb;
+  }
+  await remapEventIds(auth, map);
+  return assign.size;
+}
+// save a change to Events.xlsx; on a clash with someone else's save, reload and apply the change again
+async function evSave(change){
+  for (let i=0;i<3;i++){
+    change(EVS.data);
+    const bytes=await buildEventsXlsx(EVS.data);
+    try{
+      const res=await dbx(EVS.auth,'upload','files/upload',{path:EV_PATH, mode:EVS.rev?{'.tag':'update', update:EVS.rev}:{'.tag':'add'}, autorename:false, mute:true, strict_conflict:true}, bytes);
+      EVS.rev=res.rev; return;
+    }catch(e){ if (!(e.summary && /conflict/.test(e.summary))) throw e; await evLoadEvents(); }
+  }
+  throw new Error('busy');
+}
+function evStatus(kind, text){ const el=$('evStatus'); el.className='evstatus '+kind; el.textContent=text; }
+
+// ---- who is in the choir for an event ----
+function evMembers(ev){
+  const out=[];
+  for (const sh of EVS.sheets) for (const p of sh.wb.people){
+    if (!ATT.isMember(p, ev.date)) continue;
+    out.push({sh, p, id:p.id||idKey(sh,p), away:ATT.isAway(p, ev.date)});
+  }
+  return out;
+}
+const respOf = (ev, m) => EVS.data.responses.find(r=>r.eventId===ev.id && r.memberId===m.id);
+function attendedOf(ev, m){
+  if (ev.date > Math.floor(nowSerial())) return null;
+  const d=m.sh.wb.dates.find(x=>x.serial===ev.date && x.type===ev.type) || m.sh.wb.dates.find(x=>x.serial===ev.date);
+  if (!d) return null;
+  const v=m.p.marks[d.col]; if (!v) return null;
+  const l=m.sh.wb.legend.find(x=>x.sym===v); return l ? kindOf(l) : null;
+}
+function evSelected(){
+  const evs=EVS.data.events.slice().sort((a,b)=>a.date-b.date);
+  let e=evs.find(x=>x.id===EVS.sel);
+  if (!e){ const today=Math.floor(nowSerial()); e=evs.find(x=>x.date>=today) || evs[evs.length-1]; }
+  EVS.sel=e?e.id:null; return e;
+}
+
+function evRender(){
+  const evs=EVS.data.events.slice().sort((a,b)=>a.date-b.date), ev=evSelected();
+  const today=Math.floor(nowSerial());
+  $('evPick').innerHTML=evs.length ? evs.map(e=>`<option value="${E(e.id)}"${ev&&e.id===ev.id?' selected':''}>${E(dayName(e.date)+' '+dmy(e.date)+' — '+e.name)}${e.date<today?' (past)':''}</option>`).join('') : '<option>No events yet</option>';
+  $('evPick').disabled=!evs.length;
+  $('evEditBtn').classList.toggle('hidden', !ev);
+  $('evMain').classList.toggle('hidden', !ev);
+  $('evEmpty').classList.toggle('hidden', !!ev);
+  $('emMobile').value=adminSettings.emMobile||'';
+  if (!ev) return;
+  const days=ev.date-today;
+  $('evHead').innerHTML=`<div class="sc-h"><b>${E(ev.name)}</b><span class="sub">${days>1?`in ${days} days`:days===1?'tomorrow':days===0?'today':`${-days} days ago`}</span></div>
+    <div class="sub">${E(dayName(ev.date)+' '+dmy(ev.date))} · ${E(ev.type)}${ev.venue?' · '+E(ev.venue):''}${ev.arrival?' · arrive '+E(ev.arrival):''}${ev.replyBy?' · reply by '+E(dmy(ev.replyBy)):''}</div>${ev.notes?`<div class="sub" style="margin-top:4px">${E(ev.notes)}</div>`:''}`;
+  // summary by section
+  const ms=evMembers(ev), past=ev.date<=today;
+  const cols=['Can','Maybe',"Can't",'No reply'].concat(past?['Attended']:[]);
+  const tot=Object.fromEntries(cols.map(c=>[c,0]));
+  const rows=SEC_ORDER.filter(c=>EVS.sheets.some(s=>s.code===c)).map(code=>{
+    const t=Object.fromEntries(cols.map(c=>[c,0]));
+    for (const m of ms.filter(m=>m.sh.code===code && !m.away)){ const r=respOf(ev,m); t[r&&RESPONSES.includes(r.response)?r.response:'No reply']++; if (past && attendedOf(ev,m)==='yes') t.Attended++; }
+    cols.forEach(c=>tot[c]+=t[c]);
+    return `<tr><td>${E(SEC_NAME[code])}</td>${cols.map(c=>`<td class="n">${t[c]}</td>`).join('')}</tr>`;
+  }).join('');
+  $('evSummary').innerHTML=`<table class="evt"><tr><th></th>${cols.map(c=>`<th class="n">${c}</th>`).join('')}</tr>${rows}<tr class="tot"><td>Total</td>${cols.map(c=>`<td class="n">${tot[c]}</td>`).join('')}</tr></table>`;
+  $('remindBtn').textContent=`Remind ${tot['No reply']} no-repl${tot['No reply']===1?'y':'ies'}`;
+  $('remindBtn').disabled=!tot['No reply'];
+  evRenderReplies(ev, ms, past);
+  $('stackCard').classList.toggle('hidden', ev.type!=='Concert');
+  if (ev.type==='Concert') evRenderStack(ev, ms);
+}
+const pillCls = r => r==='Can'?'can':r==='Maybe'?'may':r==="Can't"?'cant':'nr';
+function evRenderReplies(ev, ms, past){
+  const box=$('evReplies'); box.innerHTML='';
+  for (const code of SEC_ORDER){
+    const list=ms.filter(m=>m.sh.code===code); if (!list.length) continue;
+    const h=document.createElement('div'); h.className='sc-t'; h.style.marginTop='14px'; h.textContent=SEC_NAME[code]; box.appendChild(h);
+    for (const m of list){
+      const r=respOf(ev,m), resp=r&&RESPONSES.includes(r.response)?r.response:'No reply';
+      const late = r && r.updated && ev.replyBy && Math.floor(r.updated)>ev.replyBy && r.history;
+      const att = past ? attendedOf(ev,m) : null;
+      const row=document.createElement('div'); row.className='evr'+(m.away?' away':'');
+      const name=`${E(m.p.first)} ${E(m.p.last)}`;
+      row.innerHTML=`<button type="button" class="evr-main"><span>${name}${r&&r.history?' <small class="chg">changed</small>':''}${late?' <small class="late">late change</small>':''}${r&&r.note?`<small class="nt">${E(r.note)}</small>`:''}</span>
+        <span class="evr-pills">${m.away?'<span class="pill nr">On sabbatical</span>':`<span class="pill ${pillCls(resp)}">${E(resp)}</span>`}${att?`<span class="pill ${att==='yes'?'att':'nr'}">${att==='yes'?'Attended':KIND_NAME[att]||'Marked'}</span>`:''}</span></button>`;
+      if (!m.away) row.querySelector('.evr-main').onclick=()=>{ EVS.open = EVS.open===m.id ? null : m.id; evRenderReplies(ev, ms, past); };
+      if (EVS.open===m.id && !m.away){
+        const ed=document.createElement('div'); ed.className='evr-ed';
+        const hist=(r&&r.history?r.history.split(' | ').filter(Boolean):[]);
+        ed.innerHTML=`<div class="row" style="gap:6px">${RESPONSES.concat(['No reply']).map(x=>`<button type="button" class="btn rb ${pillCls(x)}${x===resp?' on':''}" data-r="${E(x)}">${E(x)}</button>`).join('')}</div>
+          <input type="text" class="evr-note" maxlength="80" placeholder="Note, e.g. arriving late" value="${E(r&&r.note||'')}">
+          <div class="row" style="margin-top:8px;gap:6px"><button type="button" class="btn" data-a="note">Save note</button>${m.p.mobile?`<a class="btn" target="_blank" rel="noopener" href="${E(waLink(m.p.mobile, reminderText(ev, m.p)))}">WhatsApp ${E(m.p.first||'')}</a>`:'<span class="sub">No mobile number on file</span>'}</div>
+          ${hist.length?`<div class="sub" style="margin-top:8px"><b>History</b><br>${hist.map(E).join('<br>')}</div>`:''}`;
+        ed.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>setResponse(ev, m, b.dataset.r, ed.querySelector('.evr-note').value.trim()));
+        ed.querySelector('[data-a="note"]').onclick=()=>setResponse(ev, m, resp, ed.querySelector('.evr-note').value.trim());
+        row.appendChild(ed);
+      }
+      box.appendChild(row);
+    }
+  }
+}
+async function setResponse(ev, m, resp, note){
+  const stamp=nowSerial(), id=m.id;
+  evStatus('busy','Saving…');
+  try{
+    await evSave(d=>{
+      let r=d.responses.find(x=>x.eventId===ev.id && x.memberId===id);
+      const old=r&&RESPONSES.includes(r.response)?r.response:'No reply';
+      if (resp==='No reply' && !r) return;
+      if (!r){ r={eventId:ev.id, memberId:id, section:m.sh.code, last:m.p.last, first:m.p.first, response:'', updated:null, note:'', history:''}; d.responses.push(r); }
+      if (old!==resp){
+        const when=new Date((stamp-25569)*864e5); const tag=when.getUTCDate()+' '+MON3[when.getUTCMonth()];
+        if (r.updated || old!=='No reply') r.history=(r.history?r.history+' | ':'')+`${tag}: ${old} → ${resp}`;
+        r.response = resp==='No reply' ? '' : resp;
+      }
+      r.note=note; r.updated=Math.round(stamp*1440)/1440; r.last=m.p.last; r.first=m.p.first; r.section=m.sh.code;
+    });
+    evStatus('ok','Saved'); evRender();
+  }catch(e){ evStatus('err', e.net?'No connection — not saved':'Couldn’t save — try again'); }
+}
+
+// ---- WhatsApp ----
+function waNumber(m){ let d=String(m||'').replace(/[^\d+]/g,''); if (d.startsWith('+')) d=d.slice(1); else if (d.startsWith('00')) d=d.slice(2); else if (d.startsWith('0')) d='44'+d.slice(1); return d; }
+const waLink = (num, text) => 'https://wa.me/'+waNumber(num)+'?text='+encodeURIComponent(text);
+const evTitle = ev => `${ev.name} (${dayName(ev.date)} ${dmy(ev.date)})`;
+function reminderText(ev, p){
+  return `Hi ${p.first||''}, can you make ${evTitle(ev)}${ev.venue?' at '+ev.venue:''}${ev.arrival?', arriving '+ev.arrival:''}? Please reply Can, Can't or Maybe${ev.replyBy?' by '+dmy(ev.replyBy):''}. Thanks!`;
+}
+function communityText(ev){
+  const em=adminSettings.emMobile;
+  const opt=(label, word)=>`${label}: ${waLink(em, `${evTitle(ev)}: ${word}`)}`;
+  return `🎶 ${evTitle(ev)}\n${ev.venue?'📍 '+ev.venue+'\n':''}${ev.arrival?'🕒 Please arrive by '+ev.arrival+'\n':''}${ev.notes?ev.notes+'\n':''}\nCan you sing? Please tap one${ev.replyBy?' by '+dmy(ev.replyBy):''}:\n`
+    + `✅ ${opt('Can attend','CAN attend')}\n❓ ${opt('Maybe','MAYBE')}\n❌ ${opt("Can't attend","CAN'T attend")}`;
+}
+
+// ---- stack ----
+const ROW_LABEL=['1-Front','2-Second','3-Third','4-Fourth','5-Fifth'];
+const PADN=2;   // spare places kept at each end of every row
+function attending(ev, ms, withMaybe){
+  return ms.filter(m=>!m.away).map(m=>({m, r:respOf(ev,m)})).filter(x=>x.r && (x.r.response==='Can' || (withMaybe && x.r.response==='Maybe')));
+}
+const cellOf = x => ({id:x.m.id, section:x.m.sh.code, name:(x.m.p.first?x.m.p.first+' ':'')+x.m.p.last});
+// Automatic layout: rows balanced across the whole choir (alternating sizes so rows stagger),
+// each section shared across rows in proportion, preferred rows honoured where there's room.
+function autoLayout(ev, att){
+  const R=ev.rows||4, tot=att.length, base=Math.floor(tot/R), target=Array(R).fill(base);
+  let extra=tot-base*R;
+  for (let r=R-1; r>=0 && extra>0; r-=2){ target[r]++; extra--; }
+  for (let r=0; r<R && extra>0; r++) if (target[r]===base){ target[r]++; extra--; }
+  const rows=Array.from({length:R},()=>[]), used=Array(R).fill(0);
+  for (const code of SEC_ORDER){
+    const ps=att.filter(x=>x.m.sh.code===code);
+    if (!ps.length) continue;
+    // share this section across the rows in proportion to each row's size, keeping every row near its target
+    const quota=target.map(t=>tot?Math.round(t*ps.length/tot):0);
+    const room=r=>target[r]-used[r]-quota[r];
+    let q=quota.reduce((a,b)=>a+b,0);
+    while (q<ps.length){ let best=0; for (let r=1;r<R;r++) if (room(r)>room(best)) best=r; quota[best]++; q++; }
+    while (q>ps.length){ let worst=-1; for (let r=0;r<R;r++) if (quota[r]>0 && (worst<0 || room(r)<room(worst))) worst=r; quota[worst]--; q--; }
+    quota.forEach((n,r)=>used[r]+=n);
+    // preferences first; with no preference, or a tie, longer-standing members keep their place
+    ps.sort((a,b)=>((a.m.p.prow||9)-(b.m.p.prow||9)) || ((a.m.p.joined??9e9)-(b.m.p.joined??9e9)));
+    const mine=Array.from({length:R},()=>[]);
+    for (const x of ps){
+      let r=x.m.p.prow ? Math.min(x.m.p.prow,R)-1 : -1;
+      if (r<0 || mine[r].length>=quota[r]){
+        // no preference: the row with most room; otherwise the nearest row with room
+        let best=-1, d=99;
+        quota.forEach((qq,i)=>{ const left=qq-mine[i].length; if (left<=0) return; const dist = r<0 ? -left : Math.abs(i-r); if (dist<d){ d=dist; best=i; } });
+        r = best<0 ? (r<0?0:r) : best;
+      }
+      mine[r].push(x);
+    }
+    mine.forEach((m,i)=>{ m.sort((a,b)=>a.m.p.last.localeCompare(b.m.p.last)); rows[i].push(...m.map(cellOf)); });
+  }
+  return rows;
+}
+const trimRow = row => { let a=0, b=row.length; while (a<b && !row[a]) a++; while (b>a && !row[b-1]) b--; return row.slice(a,b); };
+const padRow = row => Array(PADN).fill(null).concat(trimRow(row), Array(PADN).fill(null));
+// What's on show: the saved arrangement brought up to date with the latest replies, or the automatic one
+function currentLayout(ev, ms){
+  const att=attending(ev, ms, EVS.maybes), byId=new Map(att.map(x=>[x.m.id,x]));
+  const saved=(EVS.data.stacks||{})[ev.id];
+  if (!saved) return {rows:autoLayout(ev, att), saved:false, fresh:new Set()};
+  const R=ev.rows||4, rows=Array.from({length:R},(_,i)=>(saved[i]||[]).map(c=>c && byId.has(c.id) ? Object.assign({}, c, cellOf(byId.get(c.id)), {moved:c.moved}) : null));
+  const placed=new Set(rows.flat().filter(Boolean).map(c=>c.id)), fresh=new Set();
+  for (const x of att) if (!placed.has(x.m.id)){
+    // a late reply joins its preferred row (or the shortest row) ...
+    let r=x.m.p.prow ? Math.min(x.m.p.prow,R)-1 : rows.reduce((b,row,i)=>trimRow(row).filter(Boolean).length<trimRow(rows[b]).filter(Boolean).length?i:b,0);
+    // ... placed beside their own section: after the last singer of it in that row, or where their section would start
+    const row=trimRow(rows[r]), me=SEC_ORDER.indexOf(x.m.sh.code), c=cellOf(x);
+    let at=-1; row.forEach((q,i)=>{ if (q && SEC_ORDER.indexOf(q.section)<=me) at=i; });
+    if (at<0){ row.unshift(c); }
+    else if (at+1<row.length && !row[at+1]) row[at+1]=c;      // fill a gap right beside them if there is one
+    else row.splice(at+1, 0, c);
+    rows[r]=row; fresh.add(x.m.id);
+  }
+  return {rows, saved:true, fresh};
+}
+// half-place shifts so each row stands between the shoulders of the row in front
+function staggers(rows){
+  let s=0; return rows.map((row,r)=>{ if (r===0){ s=0; return 0; } const same=(trimRow(row).length-trimRow(rows[r-1]).length)%2===0; s = same ? (s?0:1) : 0; return s; });
+}
+function stackHTML(ev, layout, opts={}){
+  const rows=layout.rows.map(opts.print ? trimRow : padRow), shifts=staggers(layout.rows), sel=EVS.stackSel;
+  const resp=new Map(EVS.data.responses.filter(r=>r.eventId===ev.id).map(r=>[r.memberId, r.response]));
+  let h='<div class="stk2">';
+  for (let ri=rows.length-1; ri>=0; ri--){
+    h+=`<div class="st-row"><span class="st-rl"><b>${ri+1}</b><span class="lt">${E(ROW_LABEL[ri].replace(/^\d+/,''))}</span></span><div class="st-seats${shifts[ri]?' half':''}">`;
+    rows[ri].forEach((c,i)=>{
+      const isSel=sel && sel.r===ri && sel.i===i;
+      if (!c){ h+=`<span class="st-c blank${sel&&!opts.print?' target':''}" data-r="${ri}" data-i="${i}"${opts.print?'':' role="button" aria-label="Empty place"'}></span>`; return; }
+      const maybe=resp.get(c.id)==='Maybe', ini=(c.name||'').split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase();
+      const first=(c.name||'').split(' ')[0];
+      const person=EVS.people.get(c.id), initials=person&&person.initials ? person.initials : ini;
+      h+=`<span class="st-c sec-${c.section}${maybe?' maybe':''}${c.moved&&!opts.print?' moved':''}${layout.fresh.has(c.id)&&!opts.print?' fresh':''}${isSel?' sel':''}" data-r="${ri}" data-i="${i}"${opts.print?'':' draggable="true" role="button"'} title="${E(c.name)}${maybe?' (Maybe)':''}"><b>${E(initials)}</b><small>${E(first)}</small></span>`;
+    });
+    h+='</div></div>';
+  }
+  const counts=SEC_ORDER.filter(c=>EVS.sheets.some(s=>s.code===c)).map(c=>`${c} ${layout.rows.flat().filter(x=>x&&x.section===c).length}`).join(' · ');
+  return h+`</div><div class="stk-aud">Audience</div><div class="st-counts">${counts}</div>`;
+}
+let stackSaveTimer=null;
+function stackCommit(ev, rows){
+  EVS.data.stacks=EVS.data.stacks||{};
+  EVS.data.stacks[ev.id]=rows.map(r=>trimRow(r).map(c=>c?{id:c.id, section:c.section, name:c.name, moved:!!c.moved}:null));
+  evRenderStack(ev, evMembers(ev));
+  const keep=JSON.parse(JSON.stringify(EVS.data.stacks[ev.id]));
+  clearTimeout(stackSaveTimer); evStatus('busy','Saving…');
+  stackSaveTimer=setTimeout(async()=>{
+    try{ await evSave(d=>{ d.stacks=d.stacks||{}; d.stacks[ev.id]=keep; }); evStatus('ok','Arrangement saved'); }
+    catch(e){ evStatus('err','Couldn’t save the arrangement — try again'); }
+  }, 700);
+}
+function stackMove(ev, from, to){
+  const layout=currentLayout(ev, evMembers(ev));
+  const rows=layout.rows.map(padRow);
+  const a=rows[from.r][from.i], b=rows[to.r][to.i];
+  if (!a || (from.r===to.r && from.i===to.i)) return;
+  rows[to.r][to.i]=Object.assign({}, a, {moved:true});
+  rows[from.r][from.i]= b ? Object.assign({}, b, {moved:true}) : null;
+  EVS.stackSel=null;
+  stackCommit(ev, rows);
+  $('stackHint').textContent = b ? `Swapped ${a.name} and ${b.name}.` : `Moved ${a.name}. The space they left stays open until filled.`;
+}
+// size the places to the space available: names show when there is room, initials only on a phone
+function stackFit(){
+  const box=$('stackBox'), stk=box.querySelector('.stk2'); if (!stk) return;
+  const most=Math.max(...[...stk.querySelectorAll('.st-seats')].map(r=>r.children.length + (r.classList.contains('half')?1:0)));
+  const lab=box.clientWidth<520?22:62, w=box.clientWidth-lab-8;
+  const cw=Math.max(lab<30?24:26, Math.min(60, Math.floor((w - 3*(most-1)) / most)));
+  const keep=box.scrollWidth>box.clientWidth && box.dataset.fitted ? box.scrollLeft : null;
+  stk.style.setProperty('--cw', cw+'px'); stk.classList.toggle('named', cw>=44); stk.classList.toggle('narrow', box.clientWidth<520);
+  // on a small screen start in the middle of the stack (keep the place while editing)
+  box.scrollLeft = keep!=null ? keep : (box.scrollWidth-box.clientWidth)/2; box.dataset.fitted='1';
+}
+window.addEventListener('resize', ()=>{ if (!$('vEv').classList.contains('hidden')) stackFit(); });
+function evRenderStack(ev, ms){
+  const layout=currentLayout(ev, ms);
+  EVS.people=new Map(ms.map(m=>[m.id, m.p]));
+  $('stackRows').innerHTML=[2,3,4,5].map(n=>`<button type="button" class="btn rb2${(ev.rows||4)===n?' on':''}" data-n="${n}">${n}</button>`).join('');
+  $('stackRows').querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>stackSetRows(ev, +b.dataset.n));
+  $('stackBox').innerHTML=stackHTML(ev, layout);
+  const n=layout.rows.flat().filter(Boolean).length;
+  $('stackNote').textContent=`${n} singer${n===1?'':'s'}${layout.saved?' · arranged by hand':' · automatic'}`;
+  $('stackHint').textContent = EVS.stackSel ? 'Now tap a blank to move them there, or another singer to swap.' : (layout.fresh.size ? `${layout.fresh.size} late repl${layout.fresh.size===1?'y':'ies'} placed beside their section (marked new).` : 'Tap a singer, then a blank to move them, or another singer to swap. On a computer you can drag.');
+  const box=$('stackBox');
+  stackFit();
+  box.querySelectorAll('.st-c').forEach(el=>{
+    const pos={r:+el.dataset.r, i:+el.dataset.i};
+    el.onclick=()=>{
+      const sel=EVS.stackSel;
+      if (!sel){ if (el.classList.contains('blank')) return; EVS.stackSel=pos; evRenderStack(ev, ms); return; }
+      if (sel.r===pos.r && sel.i===pos.i){ EVS.stackSel=null; evRenderStack(ev, ms); return; }
+      stackMove(ev, sel, pos);
+    };
+    el.ondragstart=e=>{ EVS.stackSel=pos; e.dataTransfer.effectAllowed='move'; try{ e.dataTransfer.setData('text/plain','x'); }catch(_){} el.classList.add('sel'); };
+    el.ondragover=e=>{ e.preventDefault(); el.classList.add('over'); };
+    el.ondragleave=()=>el.classList.remove('over');
+    el.ondrop=e=>{ e.preventDefault(); const sel=EVS.stackSel; if (sel) stackMove(ev, sel, pos); };
+  });
+}
+function stackSetRows(ev, n){
+  if ((ev.rows||4)===n) return;
+  const go=async()=>{
+    try{ await evSave(d=>{ const e=d.events.find(x=>x.id===ev.id); if (e) e.rows=n; if (d.stacks) delete d.stacks[ev.id]; }); EVS.stackSel=null; evStatus('ok',`${n} rows`); evRender(); }
+    catch(e){ evStatus('err','Couldn’t save — try again'); }
+  };
+  if ((EVS.data.stacks||{})[ev.id]) confirmBox(`Change to ${n} rows? Your hand-made arrangement will be replaced by a fresh automatic one.`, go, 'Change rows'); else go();
+}
+function stackAfresh(){
+  const ev=evSelected(); if (!ev) return;
+  confirmBox('Start afresh? Every hand-made move for this concert is cleared and the automatic layout is used.', async()=>{
+    try{ await evSave(d=>{ if (d.stacks) delete d.stacks[ev.id]; }); EVS.stackSel=null; evStatus('ok','Back to the automatic layout'); evRender(); }
+    catch(e){ evStatus('err','Couldn’t save — try again'); }
+  }, 'Start afresh');
+}
+function stackCloseGaps(){
+  const ev=evSelected(); if (!ev) return;
+  const layout=currentLayout(ev, evMembers(ev));
+  stackCommit(ev, layout.rows.map(r=>r.filter(Boolean)));
+  $('stackHint').textContent='Gaps closed.';
+}
+function printStack(){
+  const ev=evSelected(); if (!ev) return;
+  const layout=currentLayout(ev, evMembers(ev));
+  $('printArea').innerHTML=`<h1>${E(ev.name)}</h1><p>${E(dayName(ev.date)+' '+dmy(ev.date))}${ev.venue?' · '+E(ev.venue):''}${ev.arrival?' · arrive '+E(ev.arrival):''}</p>`
+    + stackHTML(ev, layout, {print:true}) + `<p class="pfoot">${EVS.maybes?'Faded = Maybe. ':''}Printed ${E(dmy(nowSerial()))}</p>`;
+  const pst=$('printArea').querySelector('.stk2');
+  if (pst){ const most=Math.max(...[...pst.querySelectorAll('.st-seats')].map(r=>r.children.length+(r.classList.contains('half')?1:0)));
+    pst.style.setProperty('--cw', Math.min(22, Math.floor((245 - 1.5*(most-1))/most*10)/10)+'mm'); pst.classList.add('named'); }
+  document.body.classList.add('printing');
+  setTimeout(()=>{ window.print(); setTimeout(()=>document.body.classList.remove('printing'), 500); }, 50);
+}
+
+// ---- create / edit an event ----
+function evForm(ev){
+  const f=$('evForm'); f.classList.remove('hidden');
+  const iso=s=>s==null?'':ATT.serialToISO(Math.floor(s));
+  f.innerHTML=`<h3 class="viz-h" style="margin:0 0 8px">${ev?'Edit event':'New concert or event'}</h3>
+    <div class="mem-grid">
+      <label style="grid-column:1/-1">Name<input type="text" id="efName" maxlength="60" value="${E(ev?ev.name:'')}" placeholder="Christmas Concert"></label>
+      <label>Type<select id="efType" ${ev?'disabled':''}>${['Concert','Event'].map(t=>`<option${ev&&ev.type===t?' selected':''}>${t}</option>`).join('')}</select></label>
+      <label>Date<input type="date" id="efDate" value="${iso(ev&&ev.date)}" ${ev?'disabled':''}></label>
+      <label style="grid-column:1/-1">Venue<input type="text" id="efVenue" maxlength="80" value="${E(ev?ev.venue:'')}"></label>
+      <label>Arrival time<input type="time" id="efArr" value="${E(ev?ev.arrival:'')}"></label>
+      <label>Reply by<input type="date" id="efReply" value="${iso(ev&&ev.replyBy)}"></label>
+      <label id="efRowsL">Stack rows<select id="efRows">${[2,3,4,5].map(n=>`<option value="${n}"${(ev?ev.rows:4)===n?' selected':''}>${n}</option>`).join('')}</select></label>
+      <label style="grid-column:1/-1">Notes (optional)<input type="text" id="efNotes" maxlength="120" value="${E(ev?ev.notes:'')}" placeholder="Black folders, red ties"></label>
+    </div>
+    ${ev?'<p class="sub" style="margin:6px 0 0">To change the date or type, delete this event and create it again.</p>':'<p class="sub" style="margin:6px 0 0">Saving also adds this date to all four attendance sheets, so leads can mark who came.</p>'}
+    <div class="warn" id="efErr" style="margin-top:8px"></div>
+    <div class="row" style="margin-top:10px"><button class="btn primary" id="efSave">${ev?'Save changes':'Create event'}</button><button class="btn" id="efCancel">Cancel</button>${ev?'<button class="btn link" id="efDel" style="margin-left:auto">Delete event</button>':''}</div>`;
+  $('efCancel').onclick=()=>f.classList.add('hidden');
+  const syncRows=()=>$('efRowsL').classList.toggle('hidden', $('efType').value!=='Concert'); $('efType').onchange=syncRows; syncRows();
+  if (ev) $('efDel').onclick=()=>confirmBox(`Delete ${ev.name}? Its replies are removed too. The date stays in the attendance sheets.`, ()=>evDelete(ev), 'Delete');
+  $('efSave').onclick=()=>evSaveForm(ev);
+}
+async function evSaveForm(ev){
+  const name=$('efName').value.trim(), date=$('efDate').value?ATT.isoToSerial($('efDate').value):null;
+  if (!name){ $('efErr').textContent='Give the event a name.'; return; }
+  if (!date){ $('efErr').textContent='Pick the date.'; return; }
+  const fields={name, venue:$('efVenue').value.trim(), arrival:$('efArr').value, replyBy:$('efReply').value?ATT.isoToSerial($('efReply').value):null, rows:+$('efRows').value||4, notes:$('efNotes').value.trim()};
+  if (fields.replyBy && fields.replyBy>date){ $('efErr').textContent='The reply-by date should be on or before the event.'; return; }
+  $('efSave').disabled=true; $('efErr').textContent='';
+  try{
+    if (ev){ await evSave(d=>{ const e=d.events.find(x=>x.id===ev.id); if (!e) return; if (e.rows!==fields.rows && d.stacks) delete d.stacks[e.id]; Object.assign(e, fields); }); }
+    else {
+      const type=$('efType').value;
+      const iso=$('efDate').value, base='E'+iso;
+      let id=base; for (let k=2; EVS.data.events.some(e=>e.id===id); k++) id=base+'-'+k;
+      await evSave(d=>{ if (!d.events.some(e=>e.id===id)) d.events.push(Object.assign({id, type, date}, fields)); });
+      EVS.sel=id;
+      // put the date into every voice sheet
+      evStatus('busy','Adding the date to the attendance sheets…');
+      for (const sh of EVS.sheets){
+        const r=await processSheet(EVS.auth, sh.f, wb=>{
+          const ex=wb.dates.filter(d=>d.serial===date);
+          if (ex.some(d=>d.type===type)) return {changed:false};
+          if (ex.length){ ATT.setMark(wb, ex[0].col, wb.typeRow, type); return {changed:true}; }
+          ATT.insertDate(wb, date, type); return {changed:true};
+        });
+        sh.wb=r.wb;
+      }
+    }
+    $('evForm').classList.add('hidden'); evStatus('ok', ev?'Saved':'Event created'); evRender();
+  }catch(e){ $('efSave').disabled=false; $('efErr').textContent = e.net?'No connection — not saved.':'Couldn’t save — please try again.'; }
+}
+async function evDelete(ev){
+  try{ await evSave(d=>{ d.events=d.events.filter(e=>e.id!==ev.id); d.responses=d.responses.filter(r=>r.eventId!==ev.id); if (d.stacks) delete d.stacks[ev.id]; }); EVS.sel=null; $('evForm').classList.add('hidden'); evStatus('ok','Event deleted'); evRender(); }
+  catch(e){ evStatus('err','Couldn’t delete — try again'); }
+}
+// ---- reminders, one at a time ----
+function openReminders(){
+  const ev=evSelected(); if (!ev) return;
+  const list=evMembers(ev).filter(m=>!m.away && !(respOf(ev,m) && RESPONSES.includes(respOf(ev,m).response)));
+  const box=$('remindList'); box.innerHTML='';
+  for (const m of list){
+    const k=ev.id+'|'+m.id, row=document.createElement('div'); row.className='evr';
+    row.innerHTML=`<div class="evr-main" style="cursor:default"><span>${E(m.p.first)} ${E(m.p.last)} <small class="nt">${E(SEC_NAME[m.sh.code])}</small></span>
+      ${m.p.mobile?`<a class="btn${EVS.sent.has(k)?' sent':''}" target="_blank" rel="noopener" href="${E(waLink(m.p.mobile, reminderText(ev, m.p)))}">${EVS.sent.has(k)?'Opened ✓':'Send reminder'}</a>`:'<span class="sub">No mobile</span>'}</div>`;
+    const a=row.querySelector('a'); if (a) a.addEventListener('click', ()=>{ EVS.sent.add(k); a.textContent='Opened ✓'; a.classList.add('sent'); });
+    box.appendChild(row);
+  }
+  $('remindModal').classList.remove('hidden');
+}
+async function saveEmMobile(){
+  const v=$('emMobile').value.trim();
+  if (v && waNumber(v).length<10){ evStatus('err','That doesn’t look like a full mobile number'); return; }
+  try{
+    let cur={}; try{ cur=JSON.parse(new TextDecoder().decode(await dbx(EVS.auth,'download','files/download',{path:'/settings.json'}))); }catch(e){ if (e.auth||e.net) throw e; }
+    cur.emMobile=v;
+    await dbx(EVS.auth,'upload','files/upload',{path:'/settings.json', mode:'overwrite', mute:true}, new TextEncoder().encode(JSON.stringify(cur)));
+    adminSettings.emMobile=v; evStatus('ok','Number saved');
+  }catch(e){ evStatus('err','Couldn’t save the number'); }
+}
+function evWire(){
+  $('evPick').onchange=()=>{ EVS.sel=$('evPick').value; EVS.open=null; EVS.stackSel=null; evRender(); };
+  $('evNewBtn').onclick=()=>evForm(null);
+  $('evEditBtn').onclick=()=>{ const ev=evSelected(); if (ev) evForm(ev); };
+  $('postBtn').onclick=()=>{
+    const ev=evSelected(); if (!ev) return;
+    if (!adminSettings.emMobile){ evStatus('err','Add your WhatsApp number at the bottom of the page first — the reply links go to it'); $('emMobile').focus(); return; }
+    $('postText').value=communityText(ev); $('postOpen').href='https://wa.me/?text='+encodeURIComponent(communityText(ev)); $('postModal').classList.remove('hidden');
+  };
+  $('postCopy').onclick=async()=>{ try{ await navigator.clipboard.writeText($('postText').value); $('postCopy').textContent='Copied ✓'; }catch(e){ $('postText').select(); } };
+  $('postClose').onclick=()=>{ $('postModal').classList.add('hidden'); $('postCopy').textContent='Copy text'; };
+  $('remindBtn').onclick=openReminders;
+  $('remindClose').onclick=()=>$('remindModal').classList.add('hidden');
+  $('maybeToggle').onchange=()=>{ EVS.maybes=$('maybeToggle').checked; EVS.stackSel=null; const ev=evSelected(); if (ev) evRenderStack(ev, evMembers(ev)); };
+  $('stackAfresh').onclick=stackAfresh; $('stackGaps').onclick=stackCloseGaps;
+  $('printBtn').onclick=printStack;
+  $('emMobileSave').onclick=saveEmMobile;
+  $('evForget').onclick=()=>confirmBox('Forget the passphrase on this device? You’ll need it again next time.', ()=>{ evStore.clear(); location.reload(); }, 'Forget');
+  $('evRefresh').onclick=async()=>{ evStatus('busy','Refreshing…'); try{ await evLoadAll(); evRender(); evStatus('ok','Up to date'); }catch(e){ evStatus('err','Couldn’t refresh'); } };
+}
+
+evWire();
 if (!window.DEMO) window.addEventListener('hashchange', ()=>location.reload());
 start();
 </script>
