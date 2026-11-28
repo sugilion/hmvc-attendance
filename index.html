@@ -76,6 +76,7 @@ code{font-size:13px;background:var(--bg);border:1px solid var(--line);border-rad
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10}
 .modal .card{max-width:360px;width:100%}
 .modal p{margin:0 0 14px}
+.mhead{position:sticky;top:0;background:var(--card,#fff);display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 0 10px;margin-bottom:4px;z-index:1}
 </style>
 
 <style>
@@ -212,6 +213,11 @@ body.viewonly #aEM{display:none!important}
   #printArea .st-c b{font-size:12pt} #printArea .st-c small{display:block;font-size:8.5pt}
   #printArea .st-rl,#printArea .stk-aud,#printArea .st-counts{font-size:10pt;color:#444} #printArea .st-rl{width:20mm}
   #printArea .pfoot{margin-top:5mm;font-size:9pt;color:#666}
+  /* printing the page itself (browser menu): no buttons, fields, pop-ups or status line */
+  body:not(.printing) :is(button:not(.evr-main),.btn,input,select,textarea,.modal,.noprint,.foot,#evForm,#stackHint,.set-row,.evr-ed){display:none!important}
+  body:not(.printing) .evr-main{border:0;background:none;padding:2px 0;width:100%;color:#000}
+  html,body{background:#fff!important} body:not(.printing) .card{box-shadow:none;background:#fff;border:1px solid #ddd;break-inside:avoid}
+  body:not(.printing) .st-c{-webkit-print-color-adjust:exact;print-color-adjust:exact} body:not(.printing) .st-c.blank{border:none}
 }
 .stk2{display:flex;flex-direction:column;gap:4px;min-width:max-content;margin:0 auto;padding:2px}
 .st-row{display:flex;align-items:center}
@@ -396,7 +402,7 @@ body.viewonly #aStats{margin-top:0!important}
 
   <!-- Events Manager -->
   <div id="vEv" class="hidden">
-    <div class="card">
+    <div class="card noprint">
       <div class="row" style="gap:8px;flex-wrap:nowrap"><select id="evPick" aria-label="Event" style="flex:1;min-width:0"></select><button class="btn" id="evEditBtn">Edit</button></div>
       <div class="row" style="margin-top:8px"><button class="btn primary" id="evNewBtn">+ New concert or event</button><button class="btn link" id="evRefresh">Refresh</button></div>
       <div id="evForm" class="hidden mem-form"></div>
@@ -411,7 +417,7 @@ body.viewonly #aStats{margin-top:0!important}
       </div>
       <div class="card" style="margin-top:12px">
         <h2 style="margin-bottom:2px">Replies</h2>
-        <p class="sub" style="margin:0">Tap a name to record or change what they sent.</p>
+        <p class="sub noprint" style="margin:0">Tap a name to record or change what they sent.</p>
         <div id="evReplies"></div>
       </div>
       <div class="card" id="stackCard" style="margin-top:12px">
@@ -423,7 +429,7 @@ body.viewonly #aStats{margin-top:0!important}
         <div class="row" style="margin-top:10px"><button class="btn" id="printBtn">Print or save as PDF</button><button class="btn" id="stackGaps">Close gaps</button><button class="btn link" id="stackAfresh">Start afresh</button></div>
       </div>
     </div>
-    <div class="card" style="margin-top:12px">
+    <div class="card noprint" style="margin-top:12px">
       <h2>Your WhatsApp number</h2>
       <p class="sub" style="margin-bottom:8px">The Can / Maybe / Can't links in the Community post open a chat with this number.</p>
       <div class="row" style="flex-wrap:nowrap"><input type="tel" id="emMobile" class="phr" placeholder="07700 900123" style="flex:1;min-width:0"><button class="btn" id="emMobileSave">Save</button></div>
@@ -463,14 +469,14 @@ body.viewonly #aStats{margin-top:0!important}
   <button class="btn hidden" id="retryBtn">Try again</button>
 </div></div>
 
-<div class="modal hidden" id="postModal"><div class="card" style="max-width:460px">
-  <h2 style="margin-bottom:6px">Community post</h2>
+<div class="modal hidden" id="postModal"><div class="card" style="max-width:460px;max-height:90vh;overflow:auto;padding-top:0">
+  <div class="mhead"><h2 style="margin:0">Community post</h2><button class="btn" id="postBack">← Back</button></div>
   <p class="sub" style="margin:0 0 8px">Open WhatsApp and choose the choir Community announcements, or copy the text.</p>
   <textarea id="postText" rows="11" style="width:100%;font:14px Inter,sans-serif;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)"></textarea>
   <div class="row" style="margin-top:10px"><a class="btn primary" id="postOpen" target="_blank" rel="noopener">Open WhatsApp</a><button class="btn" id="postCopy">Copy text</button><button class="btn link" id="postClose">Close</button></div>
 </div></div>
-<div class="modal hidden" id="remindModal"><div class="card" style="max-width:460px;max-height:85vh;overflow:auto">
-  <h2 style="margin-bottom:6px">Reminders</h2>
+<div class="modal hidden" id="remindModal"><div class="card" style="max-width:460px;max-height:85vh;overflow:auto;padding-top:0">
+  <div class="mhead"><h2 style="margin:0">Reminders</h2><button class="btn" id="remindBack">← Back</button></div>
   <p class="sub" style="margin:0 0 8px">Each button opens that singer's WhatsApp chat with a reminder ready to send.</p>
   <div id="remindList"></div>
   <div class="row" style="margin-top:10px"><button class="btn" id="remindClose">Done</button></div>
@@ -1202,6 +1208,10 @@ function labelFor(wb, filename){
 }
 function confirmBox(text, yes, yesLabel){ $('modalText').textContent=text; $('modalYes').textContent=yesLabel||'OK'; $('modal').classList.remove('hidden'); $('modalYes').onclick=()=>{ $('modal').classList.add('hidden'); yes(); }; }
 $('modalNo').onclick=()=>$('modal').classList.add('hidden');
+// every pop-up closes with its Back button, a tap outside it, or the Esc key
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click', e=>{ if (e.target===m) m.classList.add('hidden'); }));
+document.addEventListener('keydown', e=>{ if (e.key==='Escape') document.querySelectorAll('.modal:not(.hidden)').forEach(m=>m.classList.add('hidden')); });
+['remindBack','postBack'].forEach(id=>$(id).onclick=()=>$(id).closest('.modal').classList.add('hidden'));
 
 // =====================================================================
 // LEAD VIEW — opened from a private link: #f=<file id>&t=<token>&k=<app key>
@@ -1999,9 +2009,11 @@ async function saveMember(sh, p){
     const r=await processSheet(adminAuth(), sh.f, wb=>{ const q=wb.people.find(x=>x.last+'|'+x.first===key); if(!q) throw new Error('missing'); ATT.setMember(wb, q, f); return {changed:true}; });
     sh.wb=r.wb; memEdit=null; renderMembers(); renderStats();
     if (newId){ try{ await remapEventIds(adminAuth(), {[oldId]:newId}); }catch(e){ $('memMsg').innerHTML='<span class="warn">Saved, but the events file couldn\u2019t be updated with the new ID \u2014 tap Refresh list and try again.</span>'; return; } }
+    clearAddForm();
     $('memMsg').innerHTML=`<span class="ok">\u2713 Saved ${E(p.first)} ${E(p.last)}</span>`;
   }catch(e){ $('mfSave').disabled=false; $('mfErr').textContent = e.net ? 'No connection \u2014 not saved.' : 'Couldn\u2019t save \u2014 please try again.'; }
 }
+function clearAddForm(){ ['amFirst','amLast','amB','amRow','amMob'].forEach(id=>{ if ($(id)) $(id).value=''; }); }
 const allMembers = () => adminSheets.flatMap(sh=>sh.wb.people.map(p=>({sh,p})));
 function renumberIds(){
   const n=allMembers().length;
@@ -2023,7 +2035,7 @@ async function addMemberSubmit(){
     const r=await processSheet(adminAuth(), sh.f, wb=>{ ATT.addMember(wb, f); return {changed:true}; });
     sh.wb=r.wb; memSheet=adminSheets.indexOf(sh); renderMembers(); renderStats();
     $('memMsg').innerHTML=`<span class="ok">\u2713 Added ${E(first)} ${E(last)} to ${E(sh.label)}${f.initials?` (initials ${E(f.initials)})`:''}</span>`;
-    $('amFirst').value=''; $('amLast').value=''; $('amB').value=''; $('amRow').value=''; $('amMob').value='';
+    clearAddForm();
   }catch(e){ $('amErr').textContent = e.message==='exists' ? 'Someone with that name is already in this sheet.' : e.net ? 'No connection \u2014 not added.' : 'Couldn\u2019t add \u2014 please try again.'; }
   $('amAdd').disabled=false;
 }
@@ -2420,14 +2432,20 @@ async function setResponse(ev, m, resp, note){
 function waNumber(m){ let d=String(m||'').replace(/[^\d+]/g,''); if (d.startsWith('+')) d=d.slice(1); else if (d.startsWith('00')) d=d.slice(2); else if (d.startsWith('0')) d='44'+d.slice(1); return d; }
 const waLink = (num, text) => 'https://wa.me/'+waNumber(num)+'?text='+encodeURIComponent(text);
 const evTitle = ev => `${ev.name} (${dayName(ev.date)} ${dmy(ev.date)})`;
+function replyLinks(ev){
+  const em=adminSettings.emMobile; if (!em) return '';
+  const opt=(label, word)=>`${label}: ${waLink(em, `${evTitle(ev)}: ${word}`)}`;
+  return `✅ ${opt('Can attend','CAN attend')}\n❓ ${opt('Maybe','MAYBE')}\n❌ ${opt("Can't attend","CAN'T attend")}`;
+}
 function reminderText(ev, p){
-  return `Hi ${p.first||''}, can you make ${evTitle(ev)}${ev.venue?' at '+ev.venue:''}${ev.arrival?', arriving '+ev.arrival:''}? Please reply Can, Can't or Maybe${ev.replyBy?' by '+dmy(ev.replyBy):''}. Thanks!`;
+  const links=replyLinks(ev);
+  return `Hi ${p.first||''}, can you make ${evTitle(ev)}${ev.venue?' at '+ev.venue:''}${ev.arrival?', arriving '+ev.arrival:''}?\n`
+    + (links ? `Please tap one${ev.replyBy?' by '+dmy(ev.replyBy):''}:\n${links}\n` : `Please reply Can, Can't or Maybe${ev.replyBy?' by '+dmy(ev.replyBy):''}.\n`) + `Thanks!`;
 }
 function communityText(ev){
   const em=adminSettings.emMobile;
-  const opt=(label, word)=>`${label}: ${waLink(em, `${evTitle(ev)}: ${word}`)}`;
   return `🎶 ${evTitle(ev)}\n${ev.venue?'📍 '+ev.venue+'\n':''}${ev.arrival?'🕒 Please arrive by '+ev.arrival+'\n':''}${ev.notes?ev.notes+'\n':''}\nCan you sing? Please tap one${ev.replyBy?' by '+dmy(ev.replyBy):''}:\n`
-    + `✅ ${opt('Can attend','CAN attend')}\n❓ ${opt('Maybe','MAYBE')}\n❌ ${opt("Can't attend","CAN'T attend")}`;
+    + replyLinks(ev);
 }
 
 // ---- stack ----
@@ -2607,7 +2625,10 @@ function printStack(){
   if (pst){ const most=Math.max(...[...pst.querySelectorAll('.st-seats')].map(r=>r.children.length+(r.classList.contains('half')?1:0)));
     pst.style.setProperty('--cw', Math.min(22, Math.floor((245 - 1.5*(most-1))/most*10)/10)+'mm'); pst.classList.add('named'); }
   document.body.classList.add('printing');
-  setTimeout(()=>{ window.print(); setTimeout(()=>document.body.classList.remove('printing'), 500); }, 50);
+  const done=()=>{ document.body.classList.remove('printing'); window.removeEventListener('afterprint', done); window.removeEventListener('focus', later); document.removeEventListener('pointerdown', done, true); };
+  const later=()=>setTimeout(done, 1000);
+  window.addEventListener('afterprint', done);
+  setTimeout(()=>{ window.print(); window.addEventListener('focus', later); setTimeout(()=>document.addEventListener('pointerdown', done, true), 800); }, 50);
 }
 
 // ---- create / edit an event ----
@@ -2670,6 +2691,7 @@ async function evDelete(ev){
 // ---- reminders, one at a time ----
 function openReminders(){
   const ev=evSelected(); if (!ev) return;
+  if (!adminSettings.emMobile){ evStatus('err','Add your WhatsApp number at the bottom of the page first — the reply links go to it'); $('emMobile').focus(); return; }
   const list=evMembers(ev).filter(m=>!m.away && !(respOf(ev,m) && RESPONSES.includes(respOf(ev,m).response)));
   const box=$('remindList'); box.innerHTML='';
   for (const m of list){
